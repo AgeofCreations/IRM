@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-
+import { Layout, Menu, Breadcrumb, Icon, Input } from 'antd';
+import Combinator from '../components/infields';
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -79,9 +79,10 @@ class CustomLayout extends Component {
                 <Breadcrumb.Item>User</Breadcrumb.Item>
                 <Breadcrumb.Item>Bill</Breadcrumb.Item>
               </Breadcrumb>
-              <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Bill is a cat.</div>
+              <div style={{ padding: 24, background: '#ffffff', minHeight: 70, margin: 'auto', textAlign: 'center' }}>Thanks, kitty ♥</div>
+                <Combinator />
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+            <Footer style={{ textAlign: 'center' }}>I am footer. You are not so ©</Footer>
           </Layout>
         </Layout>
       );

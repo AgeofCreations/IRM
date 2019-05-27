@@ -11,3 +11,8 @@
   -webkit-user-select: all;
   user-select: all;
 }
+
+.container {
+  width: 1300px;
+  margin-left: 250px;
+  }
