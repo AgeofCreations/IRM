@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon, Input } from 'antd';
-import Combinator from '../components/infields';
+import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import Combinator from '../components/combinator-infields';
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -17,17 +17,13 @@ class CustomLayout extends Component {
   
     render() {
       return (
-        <Layout style={{ minHeight: '100vh' }}>
+        <Layout id="unselectable" style={{ minHeight: '100vh' }}>
           <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
             <div className="logo" />
             <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
               <Menu.Item key="1">
-                <Icon type="pie-chart" />
-                <span>Option 1</span>
-              </Menu.Item>
-              <Menu.Item key="2">
                 <Icon type="desktop" />
-                <span>Option 2</span>
+                <span>Mainpage</span>
               </Menu.Item>
               <SubMenu
                 key="sub1"
@@ -38,9 +34,9 @@ class CustomLayout extends Component {
                   </span>
                 }
               >
-                <Menu.Item key="3">Tom</Menu.Item>
-                <Menu.Item key="4">Bill</Menu.Item>
-                <Menu.Item key="5">Alex</Menu.Item>
+                <Menu.Item key="3">Kitty</Menu.Item>
+                <Menu.Item key="4">Is</Menu.Item>
+                <Menu.Item key="5">You</Menu.Item>
               </SubMenu>
               <SubMenu
                 key="sub2"
@@ -74,12 +70,12 @@ class CustomLayout extends Component {
               <Menu.Item key="3">nav 3</Menu.Item>
             </Menu>
           </Header>
-            <Content style={{ margin: '0 16px' }}>
+            <Content id="selectable" style={{ margin: '0 16px' }}>
               <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>User</Breadcrumb.Item>
-                <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                <Breadcrumb.Item>CRM</Breadcrumb.Item>
+                <Breadcrumb.Item>Combinator</Breadcrumb.Item>
               </Breadcrumb>
-              <div style={{ padding: 24, background: '#ffffff', minHeight: 70, margin: 'auto', textAlign: 'center' }}>Thanks, kitty ♥</div>
+              {/* <div style={{ padding: 24, background: '#ffffff', minHeight: 70, margin: 'auto', textAlign: 'center' }}>Thanks, kitty ♥</div> */}
                 <Combinator />
             </Content>
             <Footer style={{ textAlign: 'center' }}>I am footer. You are not so ©</Footer>
