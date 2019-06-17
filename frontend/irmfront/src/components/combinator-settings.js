@@ -1,4 +1,4 @@
-import { Collapse, Checkbox, Switch } from 'antd';
+import { Collapse, Checkbox } from 'antd';
 import React from 'react'
 
 const Panel = Collapse.Panel;
@@ -43,7 +43,7 @@ class CombinatorSettings extends React.Component {
         <Collapse bordered={true} defaultActiveKey={['']}>
           <Panel header="Показать настройки" key="1">
             <div>
-              <div style={{width: '20%'}}>
+              <div style={{width: '18%'}}>
                 <p>Результат</p>
                 <Checkbox type="checkbox" name="combinateDoubles" checked={this.state.combinateDoubles} onChange={this.handleCheckboxChange} style={{marginLeft: '8px'}}>Пересекать дубли</Checkbox>
                 <Checkbox type="checkbox" name="deteleTabs" checked={this.state.deteleTabs} onChange={this.handleCheckboxChange}>Удалить табуляцию</Checkbox>

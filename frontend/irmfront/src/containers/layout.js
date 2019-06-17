@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import * as actions from '../store/actions/auth';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import Combinator from '../components/combinator-infields';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux'
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
+
 
 
 class CustomLayout extends Component {
@@ -20,24 +23,38 @@ class CustomLayout extends Component {
         <Layout id="unselectable" style={{ minHeight: '100vh' }}>
           <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
             <div className="logo" />
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+            <Menu theme="dark" defaultSelectedKeys={['5']} defaultOpenKeys ={['sub1']}mode="inline">
+
               <Menu.Item key="1">
                 <Icon type="desktop" />
-                <span>Mainpage</span>
+                <span><Link to="/" style={{color: 'white'}}>Mainpage</Link></span>
               </Menu.Item>
               <SubMenu
-                key="sub1"
-                title={
-                  <span>
-                    <Icon type="user" />
-                    <span>User</span>
-                  </span>
-                }
-              >
-                <Menu.Item key="3">Kitty</Menu.Item>
-                <Menu.Item key="4">Is</Menu.Item>
-                <Menu.Item key="5">You</Menu.Item>
-              </SubMenu>
+              key="sub1"
+              title={
+                <span>
+                  <Icon type="user" />
+                  <span>User</span>
+                </span>
+              }
+            >
+              <Menu.Item key="3">Kitty</Menu.Item>
+              <Menu.Item key="4">Is</Menu.Item>
+              {
+                this.props.isAuthenticated ?
+                <Menu.Item key="5" onClick={this.props.logout}>
+                  Logout
+                </Menu.Item>
+
+                :
+
+                <Menu.Item key="5">
+                <Link to="/login">Login</Link>
+                </Menu.Item>
+
+            }
+
+            </SubMenu>
               <SubMenu
                 key="sub2"
                 title={
@@ -57,15 +74,15 @@ class CustomLayout extends Component {
             </Menu>
           </Sider>
           <Layout>
-          <Header className="header">
+          <Header className="header" style={{height: '46px'}}>
             <div className="logo" />
             <Menu
               theme="dark"
               mode="horizontal"
               defaultSelectedKeys={['2']}
-              style={{ lineHeight: '64px' }}
+              style={{ lineHeight: '46px' }}
             >
-              <Menu.Item key="1">nav 1</Menu.Item>
+              <Menu.Item key="1"><Link to="/combinator">App</Link></Menu.Item>
               <Menu.Item key="2">nav 2</Menu.Item>
               <Menu.Item key="3">nav 3</Menu.Item>
             </Menu>
@@ -75,8 +92,8 @@ class CustomLayout extends Component {
                 <Breadcrumb.Item>CRM</Breadcrumb.Item>
                 <Breadcrumb.Item>Combinator</Breadcrumb.Item>
               </Breadcrumb>
+              <div>{this.props.children}</div>
               {/* <div style={{ padding: 24, background: '#ffffff', minHeight: 70, margin: 'auto', textAlign: 'center' }}>Thanks, kitty ♥</div> */}
-                <Combinator />
             </Content>
             <Footer style={{ textAlign: 'center' }}>I am footer. You are not so ©</Footer>
           </Layout>
@@ -85,4 +102,11 @@ class CustomLayout extends Component {
     }
   }
 
-export default CustomLayout;
+
+const mapDispatchToProps = dispatch => {
+  return {
+      logout: () => dispatch(actions.authLogout()) 
+  }
+}
+
+export default connect(null, mapDispatchToProps)(CustomLayout);
