@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import * as actions from '../store/actions/auth';
 
-import { Form, Input, Icon, Button } from 'antd';
+import { Form, Input, Icon, Button, Alert } from 'antd';
 import { NavLink } from 'react-router-dom'
     
   
@@ -11,7 +11,6 @@ import { NavLink } from 'react-router-dom'
       confirmDirty: false,
       autoCompleteResult: [],
     };
-  
     handleSubmit = e => {
       e.preventDefault();
       this.props.form.validateFieldsAndScroll((err, values) => {
@@ -22,8 +21,8 @@ import { NavLink } from 'react-router-dom'
                 values.password,
                 values.confirm
             );
-        this.props.history.push('/');
         }
+        this.signupSucessRedirect()
       });
     };
   
@@ -35,7 +34,7 @@ import { NavLink } from 'react-router-dom'
     compareToFirstPassword = (rule, value, callback) => {
       const form = this.props.form;
       if (value && value !== form.getFieldValue('password')) {
-        callback('Two passwords that you enter is inconsistent!');
+        callback('Пароли не совпадают!');
       } else {
         callback();
       }
@@ -48,20 +47,45 @@ import { NavLink } from 'react-router-dom'
       }
       callback();
     };
+    // signupSucessRedirect = e => {
+    //   if(this.state.type == AUTH_SUCCESS) {
+    //   this.props.history.push('/signup/verification_sent/');
+    //   }
+    // }
   
     render() {
       const { getFieldDecorator } = this.props.form;
+      let errorMessage = null;
+      if (this.props.error) {
+        if (this.props.error.username) {
+        errorMessage =(
+            <Alert style={{marginBottom: '25px'}} message={this.props.error.username} type="error" />
+        );
+      } else if (this.props.error.email) {
+        errorMessage =(
+          <Alert style={{marginBottom: '25px'}} message={this.props.error.email} type="error" />
+        );
+      } else if (this.props.error.password) {
+        errorMessage =(
+          <Alert style={{marginBottom: '25px'}} message={this.props.error.password} type="error" />
+        );
+      }
+    }    //   } else if (this.props.error.detail) {
+    //     this.props.history.push('/signup/verification_sent/');
+    // }
   
       return (
+        <div>
+          {errorMessage}
         <Form onSubmit={this.handleSubmit}>
-
+          
             <Form.Item>
             {getFieldDecorator('username', {
-                rules: [{ required: true, message: 'Please input your username!' }],
+                rules: [{ required: true, message: 'Введите имя пользователя!' }],
             })(
                 <Input
                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder="Username"
+                        placeholder="Имя пользователя"
                 />,
             )}
         </Form.Item>
@@ -71,11 +95,11 @@ import { NavLink } from 'react-router-dom'
               rules: [
                 {
                   type: 'email',
-                  message: 'The input is not valid E-mail!',
+                  message: 'Введённый адрес не существует',
                 },
                 {
                   required: true,
-                  message: 'Please input your E-mail!',
+                  message: 'Введите адрес электронной почты!',
                 },
               ],
             })(<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -87,14 +111,15 @@ import { NavLink } from 'react-router-dom'
               rules: [
                 {
                   required: true,
-                  message: 'Please input your password!',
-                },
+                  message: 'Введите пароль!',
+                }, 
+                { min: 8, message: 'Пароль должен содержать минимум 8 символов!'},
                 {
                   validator: this.validateToNextPassword,
                 },
               ],
             })(<Input.Password prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Password" />)}
+            placeholder="Пароль" />)}
           </Form.Item>
 
           <Form.Item hasFeedback>
@@ -102,24 +127,25 @@ import { NavLink } from 'react-router-dom'
               rules: [
                 {
                   required: true,
-                  message: 'Please confirm your password!',
+                  message: 'Подтвердите пароль!',
                 },
                 {
                   validator: this.compareToFirstPassword,
                 },
               ],
             })(<Input.Password prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Password" onBlur={this.handleConfirmBlur} />)}
+            placeholder="Пароль" onBlur={this.handleConfirmBlur} />)}
           </Form.Item>
 
           <Form.Item>
-              <Button type="primary" htmlType="submit" style={{marginRight: '10px'}}>Register</Button>
-              Or
-              <NavLink style={{marginRight: '10px'}} to='/login/'>  Login now!</NavLink>
+              <Button type="primary" htmlType="submit" style={{marginRight: '10px'}}>Зарегистрироваться</Button>
+              или
+              <NavLink style={{marginRight: '10px'}} to='/login/'>  войдите под существующим аккаунтом!</NavLink>
 
           </Form.Item>
 
         </Form>
+        </div>
       );
     }
   }

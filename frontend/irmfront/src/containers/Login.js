@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Form, Icon, Input, Button, Spin } from 'antd';
+import { Form, Icon, Input, Button, Spin, Alert } from 'antd';
 import { connect } from 'react-redux'
 import * as actions from '../store/actions/auth';
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -14,7 +14,7 @@ class NormalLoginForm extends React.Component {
         this.props.onAuth(values.username, values.password)
       }
     });
-    this.props.history.push('/')
+    
   }
 
   render() {
@@ -22,10 +22,9 @@ class NormalLoginForm extends React.Component {
     let errorMessage = null;
     if (this.props.error) {
         errorMessage =(
-            <p>{this.props.error.message}</p>
+            <Alert style={{marginBottom: '25px'}} message={this.props.error.non_field_errors} type="error" />
         );
     }
-
     const { getFieldDecorator } = this.props.form;
     return (
         <div>
@@ -36,35 +35,38 @@ class NormalLoginForm extends React.Component {
 
                 <Spin indicator={antIcon} />
 
+                : this.props.isAuthenticated ?
+                <div><span>Вы уже вошли</span></div>
+
                 :
 
 
                 <Form onSubmit={this.handleSubmit} className="login-form">
                     <Form.Item>
                     {getFieldDecorator('username', {
-                        rules: [{ required: true, message: 'Please input your username!' }],
+                        rules: [{ required: true, message: 'Введите имя пользователя!' }],
                     })(
                         <Input
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder="Username"
+                        placeholder="Имя пользователя"
                         />,
                     )}
                     </Form.Item>
                     <Form.Item>
                     {getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your Password!' }],
+                        rules: [{ required: true, message: 'Введите пароль!' }],
                     })(
                         <Input
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         type="password"
-                        placeholder="Password"
+                        placeholder="Пароль"
                         />,
                     )}
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" style={{marginRight: '10px'}}>Login</Button>
-                        Or
-                        <NavLink style={{marginRight: '10px'}} to='/signup/'>  Register now!</NavLink>
+                        <Button type="primary" htmlType="submit" style={{marginRight: '10px'}}>Войти</Button>
+                        или
+                        <NavLink style={{marginRight: '10px'}} to='/signup/'>  Загеристрироваться</NavLink>
 
                     </Form.Item>
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import * as actions from '../store/actions/auth';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
+import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -19,6 +19,7 @@ class CustomLayout extends Component {
     };
   
     render() {
+
       return (
         <Layout id="unselectable" style={{ minHeight: '100vh' }}>
           <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
@@ -27,29 +28,29 @@ class CustomLayout extends Component {
 
               <Menu.Item key="1">
                 <Icon type="desktop" />
-                <span><Link to="/" style={{color: 'white'}}>Mainpage</Link></span>
+                <span><Link to="/" style={{color: 'white'}}>Главная             </Link></span>
               </Menu.Item>
               <SubMenu
               key="sub1"
               title={
                 <span>
                   <Icon type="user" />
-                  <span>User</span>
+                  <span>Пользователь</span>
                 </span>
               }
             >
-              <Menu.Item key="3">Kitty</Menu.Item>
-              <Menu.Item key="4">Is</Menu.Item>
+              <Menu.Item key="3">Профиль</Menu.Item>
+              <Menu.Item key="4">Команда</Menu.Item>
               {
                 this.props.isAuthenticated ?
                 <Menu.Item key="5" onClick={this.props.logout}>
-                  Logout
+                  Выход
                 </Menu.Item>
 
                 :
 
                 <Menu.Item key="5">
-                <Link to="/login">Login</Link>
+                <Link to="/login">Вход</Link>
                 </Menu.Item>
 
             }
@@ -59,17 +60,19 @@ class CustomLayout extends Component {
                 key="sub2"
                 title={
                   <span>
-                    <Icon type="team" />
-                    <span>Team</span>
+                    <Icon type="appstore" />
+                    <span>Приложения</span>
                   </span>
                 }
               >
-                <Menu.Item key="6">Team 1</Menu.Item>
-                <Menu.Item key="8">Team 2</Menu.Item>
+                <Menu.Item key="6">Пересекатор</Menu.Item>
+                <Menu.Item key="8">Краулер</Menu.Item>
+                <Menu.Item key="9">Метрика</Menu.Item>
+                <Menu.Item key="10">E-mail шаблонизатор</Menu.Item>
               </SubMenu>
               <Menu.Item key="9">
                 <Icon type="file" />
-                <span>File</span>
+                <span>Заглушка</span>
               </Menu.Item>
             </Menu>
           </Sider>
@@ -82,18 +85,17 @@ class CustomLayout extends Component {
               defaultSelectedKeys={['2']}
               style={{ lineHeight: '46px' }}
             >
-              <Menu.Item key="1"><Link to="/combinator">App</Link></Menu.Item>
-              <Menu.Item key="2">nav 2</Menu.Item>
-              <Menu.Item key="3">nav 3</Menu.Item>
+              <Menu.Item key="1"><Link to="/combinator">Приложение</Link></Menu.Item>
+              <Menu.Item key="2">Заглушка</Menu.Item>
+              <Menu.Item key="3">Заглушка</Menu.Item>
             </Menu>
           </Header>
             <Content id="selectable" style={{ margin: '0 16px' }}>
               <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>CRM</Breadcrumb.Item>
-                <Breadcrumb.Item>Combinator</Breadcrumb.Item>
+                <Breadcrumb.Item>Приложение</Breadcrumb.Item>
               </Breadcrumb>
               <div>{this.props.children}</div>
-              {/* <div style={{ padding: 24, background: '#ffffff', minHeight: 70, margin: 'auto', textAlign: 'center' }}>Thanks, kitty ♥</div> */}
             </Content>
             <Footer style={{ textAlign: 'center' }}>I am footer. You are not so ©</Footer>
           </Layout>
