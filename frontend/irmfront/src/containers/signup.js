@@ -70,13 +70,17 @@ import { NavLink } from 'react-router-dom'
           <Alert style={{marginBottom: '25px'}} message={this.props.error.password} type="error" />
         );
       }
-    }    //   } else if (this.props.error.detail) {
-    //     this.props.history.push('/signup/verification_sent/');
-    // }
+    }
   
       return (
         <div>
           {errorMessage}
+          {
+            this.props.success === true ?
+            this.props.history.push('/signup/verification_sent/')
+            :
+          
+          
         <Form onSubmit={this.handleSubmit}>
           
             <Form.Item>
@@ -145,6 +149,7 @@ import { NavLink } from 'react-router-dom'
           </Form.Item>
 
         </Form>
+          }
         </div>
       );
     }
@@ -158,7 +163,8 @@ const WrappedRegistrationForm = Form.create({ name: 'register' })(RegistrationFo
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
-        error: state.error
+        error: state.error,
+        success: state.success
     }
 }
 

@@ -35,10 +35,9 @@ class NormalLoginForm extends React.Component {
 
                 <Spin indicator={antIcon} />
 
-                : this.props.isAuthenticated ?
-                <div><span>Вы уже вошли</span></div>
-
-                :
+                : this.props.token !== null ?    
+                this.props.history.push('/')
+                :                          
 
 
                 <Form onSubmit={this.handleSubmit} className="login-form">
@@ -71,6 +70,8 @@ class NormalLoginForm extends React.Component {
                     </Form.Item>
 
                 </Form>
+
+                
             }
             </div>
     );
@@ -82,6 +83,7 @@ const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLogin
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
+        token: state.token,
         error: state.error
     }
 }

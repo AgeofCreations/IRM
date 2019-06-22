@@ -18,20 +18,23 @@ const authSuccess = (state, action) => {
     return updateObject(state, {
         token: action.token,
         error: null,
-        loading: false
+        loading: false,
+        success: true
     });
 }
 
 const authFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
-        loading: false
+        loading: false,
+        success: false
     });
 }
 
 const authLogout = (state, action) => {
     return updateObject(state, {
-        token: null
+        token: null,
+        success: false
     });
 }
 

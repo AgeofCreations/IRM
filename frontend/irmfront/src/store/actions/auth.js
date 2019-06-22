@@ -11,13 +11,15 @@ export const authSuccess = token => {
     return {
         type: actionTypes.AUTH_SUCCESS,
         token: token,
+        success: true
     }
 }
 
 export const authFail = error => {
     return {
         type: actionTypes.AUTH_FAIL,
-        error: error
+        error: error,
+        success: false
     }
 }
 
@@ -58,9 +60,7 @@ export const authLogin = (username, password) => {
             if(error.response) {
                 dispatch(authFail(error.response.data))
                 console.error(error.response.data)
-            } else {
-                this.props.history.push('/')
-            }
+            } 
         })
     }
 }
