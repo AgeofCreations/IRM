@@ -6,6 +6,7 @@ import Login from './containers/Login';
 import Signup from './containers/signup';
 import Mainpage from './components/mainpage';
 import VerificationSent from './containers/email_verification_sent'
+import EmailConfirmationContainer from './containers/email_confirmed'
 
 
 
@@ -17,7 +18,7 @@ const BaseRouter = () => (
         <Route exact path="/signup/" component={Signup} />{" "}
         <Route exact path='/' component={Mainpage} /> {""}
         <Route exact path='/signup/verification_sent/' component={VerificationSent} /> {""}
-        {/* <Route exact path='/(?P<key>[-:\w]+)/$' component={email_confirmed} /> {""} */}
+        <Route exact path='/signup/confirm-email/' component={EmailConfirmationContainer} /> {""}
     </div>
 );
 

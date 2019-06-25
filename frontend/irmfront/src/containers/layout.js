@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import * as actions from '../store/actions/auth';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Popconfirm } from 'antd';
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
-
 
 
 class CustomLayout extends Component {
@@ -17,20 +16,20 @@ class CustomLayout extends Component {
       console.log(collapsed);
       this.setState({ collapsed });
     };
+    
   
     render() {
 
       return (
-        <Layout id="unselectable" style={{ minHeight: '100vh' }}>
-          <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+        <Layout className="unselectable" style={{ minHeight: '100vh' }}>
+          <Sider className="unselectable" collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
             <div className="logo" />
-            <Menu theme="dark" defaultSelectedKeys={['5']} defaultOpenKeys ={['sub1']}mode="inline">
+            <Menu  className="unselectable" theme="dark" defaultSelectedKeys={['5']} defaultOpenKeys ={['sub1']}mode="inline">
 
-              <Menu.Item key="1">
-                <Icon type="desktop" />
-                <span><Link to="/" style={{color: 'white'}}>Главная             </Link></span>
+              <Menu.Item className="unselectable" key="1">
+                <Link icon={<Icon type="desktop" />} className="unselectable"  to="/" style={{color: 'white'}}><Icon className="unselectable" type="desktop" /><span style={{color: 'white'}}>Главная</span></Link>
               </Menu.Item>
-              <SubMenu
+              <SubMenu className="unselectable"
               key="sub1"
               title={
                 <span>
@@ -38,13 +37,25 @@ class CustomLayout extends Component {
                   <span>Пользователь</span>
                 </span>
               }
-            >
-              <Menu.Item key="3">Профиль</Menu.Item>
+            > {this.props.user_name ?
+              <Menu.Item key="3"><div>{this.props.user_name}</div></Menu.Item>
+            :
+              <Menu.Item key="3"><div>Профиль</div></Menu.Item>
+            }
               <Menu.Item key="4">Команда</Menu.Item>
               {
                 this.props.isAuthenticated ?
-                <Menu.Item key="5" onClick={this.props.logout}>
-                  Выход
+                
+                <Menu.Item key="5">
+                <Popconfirm 
+                title="Вы действительно хотите выйти?"
+                onConfirm={this.props.logout}
+                okText="Да"
+                cancelText="Нет"
+              >
+                  <div style={{width: '100%'}}>Выход</div> 
+                  {/* Такое расположение. Типа div и ширина, чтобы триггер срабатывал при нажатии в любом месте кнопки */}
+                  </Popconfirm>
                 </Menu.Item>
 
                 :
@@ -65,12 +76,12 @@ class CustomLayout extends Component {
                   </span>
                 }
               >
-                <Menu.Item key="6">Пересекатор</Menu.Item>
+                <Menu.Item key="6"><Link to="/combinator">Пересекатор</Link></Menu.Item>
                 <Menu.Item key="8">Краулер</Menu.Item>
                 <Menu.Item key="9">Метрика</Menu.Item>
                 <Menu.Item key="10">E-mail шаблонизатор</Menu.Item>
               </SubMenu>
-              <Menu.Item key="9">
+              <Menu.Item key="11">
                 <Icon type="file" />
                 <span>Заглушка</span>
               </Menu.Item>

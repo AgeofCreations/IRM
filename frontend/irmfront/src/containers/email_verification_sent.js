@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import * as actions from '../store/actions/auth';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { Steps, Icon } from 'antd';
 
@@ -15,7 +15,7 @@ class VerificationSent extends React.Component {
                 :
 
             
-            <Steps size="small" style={{width: '70%', marginLeft: '10%'}}>
+            <Steps style={{width: '70%', marginLeft: '10%'}}>
                 <Step status="finish" title="Регистрация" description="
                 Вы успешно предоставили данные и прошли регистрацию." icon={<Icon type="user" />} />
                 <Step status="progress" title="Подтверждение E-Mail" description="

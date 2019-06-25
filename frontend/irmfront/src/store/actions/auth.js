@@ -7,6 +7,7 @@ export const authStart = () => {
     }
 }
 
+
 export const authSuccess = token => {
     return {
         type: actionTypes.AUTH_SUCCESS,
@@ -30,7 +31,44 @@ export const authLogout = () => {
         type: actionTypes.AUTH_LOGOUT
     };
 }
+export const emailConfirmationRequest = () => {
+    return {
+      type: actionTypes.EMAIL_CONFIRMATION_REQUEST
+    }
+  }
+export const emailConfirmationRequestSuccess= key => {
+    return {
+      type: actionTypes.EMAIL_CONFIRMATION_REQUEST_SUCCESS
+    }
+  }
+  
+export const emailConfirmationRequestError = confirmation_error => {
+    return {
+      type: actionTypes.EMAIL_CONFIRMATION_REQUEST_ERROR,
+      confirmation_error: confirmation_error
+    }
+  }
 
+export const userProfileGet = () => {
+    return {
+        type: actionTypes.USER_PROFILE_GET,
+    }
+}
+
+export const userProfileGetSuccess = (username, email, groups) => {
+    return {
+        type: actionTypes.USER_PROFILE_GET_SUCCESS,
+        user_name: username,
+        user_email: email,
+        user_groups: groups
+    }
+}
+export const userProfileGetFail = (user_error) => {
+    return {
+        type: actionTypes.USER_PROFILE_GET_FAIL,
+        user_error: user_error
+    }
+}
 export const checkAuthTimeout = expirationTime => {
     return dispatch => {
         setTimeout(() => {
@@ -38,6 +76,43 @@ export const checkAuthTimeout = expirationTime => {
         }, expirationTime * 1000)
     }
 }
+export function emailConfirmationAction(key) {
+    return (dispatch) => {
+      dispatch(emailConfirmationRequest())
+      axios
+        .post('http://127.0.0.1:8000/account-confirm-email/', key )
+        .then(response => {
+          dispatch(emailConfirmationRequestSuccess())
+        })
+        .catch(confirmation_error => {
+            if(confirmation_error.response) {
+                dispatch(emailConfirmationRequestError(confirmation_error.response.data))
+            }
+        })
+    }
+  }
+
+export const userProfileGetAction = (token) => {
+    return (dispatch) => {
+        dispatch(userProfileGet())
+        axios.defaults.headers = {
+            "Content-Type": "application/json",
+            Authorization: 'Token ' + token 
+        }
+        axios.get('http://127.0.0.1:8000/rest-auth/user/')
+        .then(res => {
+            const username = res.data.username;
+            const email = res.data.email;
+            const groups = res.data.groups;
+            dispatch(userProfileGetSuccess(username, email, groups))
+        })
+        .catch(user_error => {
+            if (user_error.res) {
+                dispatch(userProfileGetFail(user_error.res.data))
+            }
+            })
+        }
+    }
 
 export const authLogin = (username, password) => {
     return dispatch => {
@@ -53,13 +128,13 @@ export const authLogin = (username, password) => {
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
             dispatch(authSuccess(token));
+            dispatch(userProfileGetAction(token));
             dispatch(checkAuthTimeout(3600));
             
         })
         .catch(error => {
             if(error.response) {
                 dispatch(authFail(error.response.data))
-                console.error(error.response.data)
             } 
         })
     }
@@ -80,6 +155,7 @@ export const authSignup = (username, email, password1, password2) => {
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
             dispatch(authSuccess(token));
+            dispatch(userProfileGetAction(token));
             dispatch(checkAuthTimeout(3600));
             
         })
@@ -103,6 +179,7 @@ export const authCheckState = () => {
                 dispatch(authLogout());
             } else {
                 dispatch(authSuccess(token));
+                dispatch(userProfileGetAction(token));
             }
         }
     }
