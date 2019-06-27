@@ -36,7 +36,7 @@ class NormalLoginForm extends React.Component {
                 <Spin indicator={antIcon} />
 
                 : this.props.token !== null ?    
-                this.props.history.push('/')
+                this.props.history.push('/profile/')
                 :                          
 
 
@@ -84,7 +84,8 @@ const mapStateToProps = (state) => {
     return {
         loading: state.loading,
         token: state.token,
-        error: state.error
+        error: state.error,
+        success: state.success
     }
 }
 
