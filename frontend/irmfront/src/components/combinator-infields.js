@@ -11,7 +11,7 @@ class Combinator extends React.Component {
         return (
             this.props.user_loading ?
             <Spin indicator={antIcon} />
-            : this.props.token !== null && this.props.user_groups === 1 ?
+            : this.props.isAuthenticated && this.props.user_groups === 1 ?
                 <div className="container" >
                     <CombinatorSettings className="unselectable" />
                     <TextArea type="textarea" placeholder="Стоблец 1" allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '30px' }}/>
@@ -36,7 +36,7 @@ class Combinator extends React.Component {
                     <Button type="danger" size="large" style={{position: 'sticky', marginLeft: '75%', width: '25%', marginTop: '25px'}}>Очистить поля</Button>
                 </div>
 
-                : this.props.token !== null && this.props.user_groups !== 1 ?
+                : this.props.isAuthenticated && this.props.user_groups !== 1 ?
                 <div>Тебе не хватает прав.</div>
                 :
                 <div>Сначала залогинься мрась</div>
@@ -48,7 +48,7 @@ const mapStateToProps = (state) => {
     return {
         user_error: state.user_error,
         user_groups: state.user_groups,
-        token: state.token,
+        isAuthenticated: state.token !== null,
         user_loading: state.user_loading
     }
 }

@@ -38,7 +38,7 @@ class CustomLayout extends Component {
                 </span>
               }
             > {this.props.user_name ?
-              <Menu.Item key="3"><div>{this.props.user_name}</div></Menu.Item>
+              <Menu.Item key="3"><Link to="/profile/"><div>{this.props.user_name}</div></Link></Menu.Item>
             :
               <Menu.Item key="3"><div>Профиль</div></Menu.Item>
             }
@@ -61,7 +61,7 @@ class CustomLayout extends Component {
                 :
 
                 <Menu.Item key="5">
-                <Link to="/login">Вход</Link>
+                <Link to="/login/">Вход</Link>
                 </Menu.Item>
 
             }
@@ -101,11 +101,7 @@ class CustomLayout extends Component {
               <Menu.Item key="3">Заглушка</Menu.Item>
             </Menu>
           </Header>
-            <Content id="selectable" style={{ margin: '0 16px' }}>
-              <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>CRM</Breadcrumb.Item>
-                <Breadcrumb.Item>Приложение</Breadcrumb.Item>
-              </Breadcrumb>
+            <Content id="selectable" style={{ margin: '30px 30px' }}>
               <div>{this.props.children}</div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>I am footer. You are not so ©</Footer>
