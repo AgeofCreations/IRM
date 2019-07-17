@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('rest-auth/', include('rest_auth.urls')),
+    path('combinator/', include('api.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     re_path(r'^account-confirm-email/(?P<key>[-:\w]+)/$', VerifyEmailView.as_view(),
     name='account_confirm_email'),

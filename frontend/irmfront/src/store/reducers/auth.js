@@ -1,8 +1,8 @@
-import * as actionTypes from '../actions/actionTypes';
+import * as actionTypes from '../actionTypes';
 import { updateObject } from '../utility';
 
 
-// ТУТ ВСЁ ПОНЯТНО ЭТО ИЗНАЧАЛЬНОЕ СОСТОЯНИЕ
+// ИЗНАЧАЛЬНОЕ СОСТОЯНИЕ
 const initialState = {
     token: null,
     error: null, 

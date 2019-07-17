@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../store/actions/auth'
-import EmailConfirmationComponent from '../components/email_confirmed_component'
+import * as actions from '../../store/actions/auth'
+import EmailConfirmationComponent from '../../components/auth/email_confirmed_component'
 
 class EmailConfirmationContainer extends React.Component {
 

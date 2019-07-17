@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import * as actions from '../store/actions/auth';
+import * as actions from '../../store/actions/auth';
 
 import { Form, Input, Icon, Button, Alert } from 'antd';
 import { NavLink } from 'react-router-dom'
@@ -47,11 +47,6 @@ import { NavLink } from 'react-router-dom'
       }
       callback();
     };
-    // signupSucessRedirect = e => {
-    //   if(this.state.type == AUTH_SUCCESS) {
-    //   this.props.history.push('/signup/verification_sent/');
-    //   }
-    // }
   
     render() {
       const { getFieldDecorator } = this.props.form;

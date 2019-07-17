@@ -8,8 +8,8 @@ UserModel = get_user_model()
 class CombinatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = CombinatorCols
-        fields = ('first_column', 'second_column', 'third_column', 'fourth_column', 'fifth_column', 'sixth_column', 'seventh_column',
-             'eighth_column', 'result', 'account_owner', 'operation_datetime')
+        fields = ('pk', 'first_column', 'second_column', 'third_column', 'fourth_column', 'fifth_column', 'sixth_column', 'seventh_column',
+             'eighth_column', 'result', 'account_owner')
 
 class UserModelSerializer(serializers.ModelSerializer):
     class Meta:

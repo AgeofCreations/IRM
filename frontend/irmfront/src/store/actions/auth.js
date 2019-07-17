@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as actionTypes from './actionTypes';
+import * as actionTypes from '../actionTypes';
 
 export const authStart = () => {
     return {
@@ -77,7 +77,7 @@ export const checkAuthTimeout = expirationTime => {
     }
 }
 export function emailConfirmationAction(key) {
-    return (dispatch) => {
+    return dispatch => {
       dispatch(emailConfirmationRequest())
       axios
         .post('http://127.0.0.1:8000/account-confirm-email/', key )
@@ -93,7 +93,7 @@ export function emailConfirmationAction(key) {
   }
 
 export const userProfileGetAction = (token) => {
-    return (dispatch) => {
+    return dispatch => {
         dispatch(userProfileGet())
         axios.defaults.headers = {
             "Content-Type": "application/json",

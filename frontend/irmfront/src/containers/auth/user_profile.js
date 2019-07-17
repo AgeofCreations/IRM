@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { Drawer, List, Avatar, Divider, Col, Row } from 'antd';
+import { Divider, Col, Row } from 'antd';
 
 const pStyle = {
   fontSize: 16,
