@@ -6,7 +6,17 @@ import { updateObject } from '../utility';
 const initialState = {
     token: null,
     error: null, 
-    loading: false
+    loading: false,
+    confirmation_await: false,
+    success: false,
+    confirmation_success: false,
+    confirmation_error: null,
+    user_loading: false,
+    user_error: null,
+    user_groups: null,
+    user_email: null,
+    user_name: null,
+
 }
 
 // АУТЕНТИФИКАЦИЯ
@@ -88,15 +98,15 @@ const authLogout = (state, action) => {
         token: null,
         success: false,
         user_groups: null,
-        user_name: null,
         user_email: null,
+        user_name: null,
         user_loading: false,
     });
 }
 
 
 // ТУТ ВСЁ ПОНЯТНО ЭТО REDUCER
-const reducer = (state=initialState, action) => {
+const authReducer = (state=initialState, action) => {
     switch (action.type) {
         // СООТВЕТСТВЕННО АУТЕНТИФИКАЦИЯ
         case actionTypes.AUTH_START: return authStart(state, action);
@@ -116,4 +126,4 @@ const reducer = (state=initialState, action) => {
     }
 }
 
-export default reducer;
+export default authReducer;

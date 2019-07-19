@@ -82,10 +82,10 @@ const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLogin
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.loading,
-        token: state.token,
-        error: state.error,
-        success: state.success
+        loading: state.authReducer.loading,
+        token: state.authReducer.token,
+        error: state.authReducer.error,
+        success: state.authReducer.success
     }
 }
 

@@ -31,8 +31,8 @@ class VerificationSent extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        token: state.token,
-        success: state.success
+        token: state.authReducer.token,
+        success: state.authReducer.success
     }
 }
 

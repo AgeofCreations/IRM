@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore, compose, applyMiddleware } from 'redux';
-import authReducer from './store/reducers/auth';
+import { createStore, compose, applyMiddleware,} from 'redux';
+import reducer from './store/reducers/index'
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 //import CustomLayout from './containers/layout';
@@ -15,7 +15,6 @@ import { Provider } from 'react-redux';
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register();
 
-
 const composeEnhances =
   typeof window === 'object' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
@@ -23,7 +22,7 @@ const composeEnhances =
       // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
     }) : compose;
 
-const store = createStore(authReducer, composeEnhances(
+const store = createStore(reducer, composeEnhances(
     applyMiddleware(thunk)
 ));
 const app = (

@@ -1,4 +1,4 @@
-import { Input, Button, Popover, Icon, Spin, Form} from 'antd';
+import { Input, Button, Popover, Icon, Spin, Form, Checkbox} from 'antd';
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/combinator'
@@ -25,7 +25,30 @@ class CombinatorForm extends React.Component {
           }
         });
       };
+
+    // makeResult = () => {
+    //     var result =  this.props.combinator_result.replace(",", "\n")
+    // }
+
     render() {
+        // var copyTextareaBtn = document.querySelector('.js-textareacopybtn')
+
+        // copyTextareaBtn.addEventListener('click', function(event) {
+        // var copyTextarea = document.querySelector('.js-copytextarea');
+        // copyTextarea.focus();
+        // copyTextarea.select();
+
+        // try {
+        //     var successful = document.execCommand('copy');
+        //     var msg = successful ? 'successful' : 'unsuccessful';
+        //     console.log('Copying text command was ' + msg);
+        // } catch (err) {
+        //     console.log('Oops, unable to copy');
+        // }
+        // });
+        // if (this.props.combinator_result !== null) {
+        //     var result =  this.props.combinator_result.replace(",", "\n")
+        // }
         const { getFieldDecorator } = this.props.form;
         return (
             this.props.user_loading ?
@@ -85,7 +108,7 @@ class CombinatorForm extends React.Component {
                             <Button type="default" shape="circle" icon="download" size={"default"} style={{marginLeft: '50%'}} />
                         </Popover>
                     </div>
-                    <TextArea placeholder="Results" disabled={true} defaultValue="Тут будет результат" autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}} />
+                    <TextArea placeholder="Тут будет результат" disabled={false} value={this.props.combinator_result} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
                     <Button type="danger" size="large" style={{position: 'sticky', marginLeft: '75%', width: '25%', marginTop: '25px'}}>Очистить поля</Button>
                     </Form>
                 </div>
@@ -102,11 +125,11 @@ const WrappedRCombinatorForm = Form.create({ name: 'register' })(CombinatorForm)
 
 const mapStateToProps = (state) => {
     return {
-        user_error: state.user_error,
-        user_groups: state.user_groups,
-        isAuthenticated: state.token !== null,
-        user_loading: state.user_loading,
-        combinator_result: state.combinator_result
+        user_error: state.authReducer.user_error,
+        user_groups: state.authReducer.user_groups,
+        isAuthenticated: state.authReducer.token !== null,
+        user_loading: state.authReducer.user_loading,
+        combinator_result: state.combinatorReducer.combinator_result
     }
 }
 const mapDispatchToProps = dispatch => {

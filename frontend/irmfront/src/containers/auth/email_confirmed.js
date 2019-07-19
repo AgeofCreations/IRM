@@ -33,11 +33,11 @@ class EmailConfirmationContainer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        confirmation_await: state.confirmation_await,
-        confirmation_success: state.confirmation_success,
-        confirmation_error: state.confirmation_error,
-        isAuthenticated: state.token !== null,
-        auth_sucess: state.success
+        confirmation_await: state.authReducer.confirmation_await,
+        confirmation_success: state.authReducer.confirmation_success,
+        confirmation_error: state.authReducer.confirmation_error,
+        isAuthenticated: state.authReducer.token !== null,
+        auth_sucess: state.authReducer.success
 
     }
 }

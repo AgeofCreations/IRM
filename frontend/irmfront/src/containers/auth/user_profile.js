@@ -155,11 +155,11 @@ class UserProfile extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        user_error: state.user_error,
-        user_groups: state.user_groups,
-        isAuthenticated: state.token !== null,
-        user_loading: state.user_loading,
-        user_name: state.user_name
+        user_error: state.authReducer.user_error,
+        user_groups: state.authReducer.user_groups,
+        isAuthenticated: state.authReducer.token !== null,
+        user_loading: state.authReducer.user_loading,
+        user_name: state.authReducer.user_name
     }
 }
 export default connect(mapStateToProps)(UserProfile);
