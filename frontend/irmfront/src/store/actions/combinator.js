@@ -24,13 +24,13 @@ export const combinatorFail = (combinator_error) => {
 }
 export const combinatorAction = (col1, col2, col3, col4, col5, col6, col7, col8, user_name, token) => {
     col1 ? col1 = col1 : col1 = ""
-    col2 ? col2 = col1 : col2 = ""
-    col3 ? col3 = col1 : col3 = ""
-    col4 ? col4 = col1 : col4 = ""
-    col5 ? col5 = col1 : col5 = ""
-    col6 ? col6 = col1 : col6 = ""
-    col7 ? col7 = col1 : col7 = ""
-    col8 ? col8 = col1 : col8 = ""
+    col2 ? col2 = col2 : col2 = ""
+    col3 ? col3 = col3 : col3 = ""
+    col4 ? col4 = col4 : col4 = ""
+    col5 ? col5 = col5 : col5 = ""
+    col6 ? col6 = col6 : col6 = ""
+    col7 ? col7 = col7 : col7 = ""
+    col8 ? col8 = col8 : col8 = ""
     return dispatch => {
         dispatch(combinatorStart())
         // axios.defaults.headers = {

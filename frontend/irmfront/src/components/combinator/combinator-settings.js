@@ -15,22 +15,12 @@ class CombinatorSettings extends React.Component {
       ignoreEmptyRows: true
     }
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.handleSwitches = this.handleSwitches.bind(this);
   }
 
   handleCheckboxChange(e) {
 
     const target = e.target
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name
-      this.setState({
-        [name]: value
-      });
-    }
-
-  handleSwitches(event) {
-    const target = event.target
-    const value = target.id === 'switch' ? target.checked : target.value;
     const name = target.name
       this.setState({
         [name]: value
