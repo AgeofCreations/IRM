@@ -39,6 +39,17 @@ class CombinatorForm extends React.Component {
           }
         });
       };
+    copyText() {
+        /* Get the text field */
+        var copyText = document.getElementById("result");
+      
+        /* Select the text field */
+        copyText.select();
+      
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+      
+      }
     
       handleCheckboxChange(e) {
 
@@ -129,7 +140,7 @@ class CombinatorForm extends React.Component {
 
 
                     <Button type="primary" htmlType="submit" style={{marginTop: '40px', height: '45px', width: '30%'}} >Скомбинировать</Button>
-                    <Button type="default" size="large" style={{position: 'sticky', marginLeft: '45%', width: '25%'}}>Скопировать результат</Button>
+                    <Button type="default" size="large" onClick={this.copyText} style={{position: 'sticky', marginLeft: '45%', width: '25%'}}>Скопировать результат</Button>
                     <div style={{marginTop: '10px', marginLeft: '80%'}}>
                         <Popover content="Скачать в .XLS">
                             <Button type="primary" shape="circle" icon="download" size={"default"} />
@@ -138,7 +149,7 @@ class CombinatorForm extends React.Component {
                             <Button type="default" shape="circle" icon="download" size={"default"} style={{marginLeft: '50%'}} />
                         </Popover>
                     </div>
-                    <TextArea placeholder="Тут будет результат" disabled={false} value={this.props.combinator_result} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
+                    <TextArea placeholder="Тут будет результат" disabled={false} id="result" value={this.props.combinator_result} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
                     <Button type="danger" size="large" style={{position: 'sticky', marginLeft: '75%', width: '25%', marginTop: '25px'}}>Очистить поля</Button>
                     </Form>
                 </div>
@@ -159,6 +170,7 @@ const mapStateToProps = (state) => {
         user_groups: state.authReducer.user_groups,
         isAuthenticated: state.authReducer.token !== null,
         user_loading: state.authReducer.user_loading,
+        token: state.authReducer.token,
         combinator_result: state.combinatorReducer.combinator_result
     }
 }

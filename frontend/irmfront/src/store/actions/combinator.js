@@ -46,7 +46,6 @@ export const combinatorAction = (col1, col2, col3, col4, col5, col6, col7, col8,
             sixth_column: col6,
             seventh_column: col7,
             eighth_column: col8,
-            // result: result.toString(),
             account_owner: user_name
         })
         .then(res => {
