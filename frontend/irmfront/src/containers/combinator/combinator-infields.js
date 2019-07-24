@@ -1,4 +1,4 @@
-import { Input, Button, Popover, Icon, Spin, Form, Checkbox} from 'antd';
+import { Input, Button, Popover, Icon, Spin, Form, Checkbox, Modal} from 'antd';
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/combinator'
@@ -19,7 +19,7 @@ class CombinatorForm extends React.Component {
           col6: true,
           col7: true,
           col8: true,
-          allLength: null,
+          allLength: 0,
           length1: 1,
           length2: 1,
           length3: 1,
@@ -33,9 +33,21 @@ class CombinatorForm extends React.Component {
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.onChangeColumn = this.onChangeColumn.bind(this);
       }
+
+    warning() {
+        Modal.warning({
+          title: 'Такое количество результатов не может быть отображено.',
+          content: 'Мы не можем отобразить более 100000 результатов прямо на странице. Вместо этого воспользуйтесь фунцией скачивания в одном из форматов.',
+        });
+      }
+
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
+        if (this.state.allLength > 100000) {
+                this.warning()
+        } else {
+
           if (!err) {
               this.props.onSubmit(
                   values.value1,
@@ -48,18 +60,14 @@ class CombinatorForm extends React.Component {
                   values.value8,
               );
           }
+        }
         });
       };
-    copyText() {
-        /* Get the text field */
+    
+    copyText = e => {
         var copyText = document.getElementById("result");
-      
-        /* Select the text field */
         copyText.select();
-      
-        /* Copy the text inside the text field */
         document.execCommand("copy");
-      
       }
     
       handleCheckboxChange = e => {
