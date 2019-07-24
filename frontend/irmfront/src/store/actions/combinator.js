@@ -22,15 +22,15 @@ export const combinatorFail = (combinator_error) => {
         user_error: combinator_error
     }
 }
-export const combinatorAction = (col1, col2, col3, col4, col5, col6, col7, col8, user_name, token) => {
-    col1 ? col1 = col1 : col1 = ""
-    col2 ? col2 = col2 : col2 = ""
-    col3 ? col3 = col3 : col3 = ""
-    col4 ? col4 = col4 : col4 = ""
-    col5 ? col5 = col5 : col5 = ""
-    col6 ? col6 = col6 : col6 = ""
-    col7 ? col7 = col7 : col7 = ""
-    col8 ? col8 = col8 : col8 = ""
+export const combinatorAction = (value1, value2, value3, value4, value5, value6, value7, value8, user_name, token) => {
+    value1 ? value1 = value1 : value1 = ""
+    value2 ? value2 = value2 : value2 = ""
+    value3 ? value3 = value3 : value3 = ""
+    value4 ? value4 = value4 : value4 = ""
+    value5 ? value5 = value5 : value5 = ""
+    value6 ? value6 = value6 : value6 = ""
+    value7 ? value7 = value7 : value7 = ""
+    value8 ? value8 = value8 : value8 = ""
     return dispatch => {
         dispatch(combinatorStart())
         // axios.defaults.headers = {
@@ -38,14 +38,14 @@ export const combinatorAction = (col1, col2, col3, col4, col5, col6, col7, col8,
         //     Authorization: 'Token ' + token 
         // }
         axios.post('http://127.0.0.1:8000/combinator/', {
-            first_column: col1,
-            second_column: col2,
-            third_column: col3,
-            fourth_column: col4,
-            fifth_column: col5,
-            sixth_column: col6,
-            seventh_column: col7,
-            eighth_column: col8,
+            first_column: value1,
+            second_column: value2,
+            third_column: value3,
+            fourth_column: value4,
+            fifth_column: value5,
+            sixth_column: value6,
+            seventh_column: value7,
+            eighth_column: value8,
             account_owner: user_name
         })
         .then(res => {
