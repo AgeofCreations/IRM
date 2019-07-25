@@ -3,6 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/combinator'
 import CombinatorSettings from '../../components/combinator/combinator-settings'
+import { saveAs } from 'file-saver';
 
 const { TextArea } = Input;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -78,29 +79,20 @@ class CombinatorForm extends React.Component {
             [name]: value
           });
         }
-        
-    onChangeColumn(event) {
-        var length1 = this.state.length1
-        var length2 = this.state.length2
-        var length3 = this.state.length3
-        var length4 = this.state.length4
-        var length5 = this.state.length5
-        var length6 = this.state.length6
-        var length7 = this.state.length7
-        var length8 = this.state.length8
 
-        const target = event.target;
+    onChangeColumn(e) {
+        const target = e.target;
 
         var len = target.value.endsWith("\n") ? target.value.slice(0, -1) : target.value
 
-        var length1 = target.name === 'target1' ? len.split('\n').length : length1
-        var length2 = target.name === 'target2' ? len.split('\n').length : length2
-        var length3 = target.name === 'target3' ? len.split('\n').length : length3
-        var length4 = target.name === 'target4' ? len.split('\n').length : length4
-        var length5 = target.name === 'target5' ? len.split('\n').length : length5
-        var length6 = target.name === 'target6' ? len.split('\n').length : length6
-        var length7 = target.name === 'target7' ? len.split('\n').length : length7
-        var length8 = target.name === 'target8' ? len.split('\n').length : length8
+        var length1 = target.name === 'target1' ? len.split('\n').length : this.state.length1
+        var length2 = target.name === 'target2' ? len.split('\n').length : this.state.length2
+        var length3 = target.name === 'target3' ? len.split('\n').length : this.state.length3
+        var length4 = target.name === 'target4' ? len.split('\n').length : this.state.length4
+        var length5 = target.name === 'target5' ? len.split('\n').length : this.state.length5
+        var length6 = target.name === 'target6' ? len.split('\n').length : this.state.length6
+        var length7 = target.name === 'target7' ? len.split('\n').length : this.state.length7
+        var length8 = target.name === 'target8' ? len.split('\n').length : this.state.length8
 
         const allLengthVal = (
             length1 * length2 * length3 * length4 * length5 *
@@ -122,6 +114,17 @@ class CombinatorForm extends React.Component {
     clearFields = () => {
         this.props.form.resetFields();
         this.setState({allLength: 0})
+    }
+
+    saveTXT = () => {
+        var FileSaver = require('file-saver');
+        var blob = new Blob([this.props.combinator_result], {type: "text/plain;charset=utf-8"});
+        FileSaver.saveAs(blob, "Results.txt");
+    }
+    saveCSV = () => {
+        var FileSaver = require('file-saver');
+        var blob = new Blob([this.props.combinator_result], {type: "text/plain;charset=utf-8"});
+        FileSaver.saveAs(blob, "Results.csv");
     }
 
 
@@ -188,11 +191,11 @@ class CombinatorForm extends React.Component {
                         <Button type="primary" htmlType="submit" style={{marginTop: '40px', height: '45px', width: '30%'}} >Скомбинировать {this.state.allLength} фраз </Button>
                         <Button type="default" size="large" onClick={this.copyText} style={{position: 'sticky', marginLeft: '45%', width: '25%'}}>Скопировать результат</Button>
                         <div style={{marginTop: '10px', marginLeft: '80%'}}>
-                        <Popover content="Скачать в .XLS">
-                            <Button type="primary" shape="circle" onClick={this.CheckValues} icon="download" size={"default"} />
+                        <Popover content="Скачать в .TXT">
+                            <Button type="primary" onClick={this.saveTXT} shape="circle" icon="download" size={"default"} />
                         </Popover>,
                         <Popover content="Скачать в .CSV"> 
-                            <Button type="default" shape="circle" icon="download" size={"default"} style={{marginLeft: '50%'}} />
+                            <Button type="default" onClick={this.saveCSV} shape="circle" icon="download" size={"default"} style={{marginLeft: '50%'}} />
                         </Popover>
                         </div>
                         <TextArea placeholder="Тут будет результат" disabled={false} id="result" value={this.props.combinator_result} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
