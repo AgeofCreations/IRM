@@ -50,14 +50,14 @@ class CombinatorForm extends React.Component {
 
           if (!err) {
               this.props.onSubmit(
-                  values.value1,
-                  values.value2,
-                  values.value3,
-                  values.value4,
-                  values.value5,
-                  values.value6,
-                  values.value7,
-                  values.value8,
+                  this.state.col1 ? values.value1 : ' ',
+                  this.state.col2 ? values.value2 : ' ',
+                  this.state.col3 ? values.value3 : ' ',
+                  this.state.col4 ? values.value4 : ' ',
+                  this.state.col5 ? values.value5 : ' ',
+                  this.state.col6 ? values.value6 : ' ',
+                  this.state.col7 ? values.value7 : ' ',
+                  this.state.col8 ? values.value8 : ' ',
               );
           }
         }
@@ -70,8 +70,7 @@ class CombinatorForm extends React.Component {
         document.execCommand("copy");
       }
     
-      handleCheckboxChange = e => {
-
+    handleCheckboxChange = e => {
         const target = e.target
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name
@@ -79,6 +78,7 @@ class CombinatorForm extends React.Component {
             [name]: value
           });
         }
+        
     onChangeColumn(event) {
         var length1 = this.state.length1
         var length2 = this.state.length2
@@ -88,15 +88,20 @@ class CombinatorForm extends React.Component {
         var length6 = this.state.length6
         var length7 = this.state.length7
         var length8 = this.state.length8
+
         const target = event.target;
-        var length1 = target.name === 'target1' ? target.value.split('\n').length : length1
-        var length2 = target.name === 'target2' ? target.value.split('\n').length : length2
-        var length3 = target.name === 'target3' ? target.value.split('\n').length : length3
-        var length4 = target.name === 'target4' ? target.value.split('\n').length : length4
-        var length5 = target.name === 'target5' ? target.value.split('\n').length : length5
-        var length6 = target.name === 'target6' ? target.value.split('\n').length : length6
-        var length7 = target.name === 'target7' ? target.value.split('\n').length : length7
-        var length8 = target.name === 'target8' ? target.value.split('\n').length : length8
+
+        var len = target.value.endsWith("\n") ? target.value.slice(0, -1) : target.value
+
+        var length1 = target.name === 'target1' ? len.split('\n').length : length1
+        var length2 = target.name === 'target2' ? len.split('\n').length : length2
+        var length3 = target.name === 'target3' ? len.split('\n').length : length3
+        var length4 = target.name === 'target4' ? len.split('\n').length : length4
+        var length5 = target.name === 'target5' ? len.split('\n').length : length5
+        var length6 = target.name === 'target6' ? len.split('\n').length : length6
+        var length7 = target.name === 'target7' ? len.split('\n').length : length7
+        var length8 = target.name === 'target8' ? len.split('\n').length : length8
+
         const allLengthVal = (
             length1 * length2 * length3 * length4 * length5 *
             length6 * length7 * length8
@@ -113,9 +118,12 @@ class CombinatorForm extends React.Component {
                         length8: length8
             });
           }
-        CheckValues = e => {
-            console.log(this.state.allLength)
-        }
+    
+    clearFields = () => {
+        this.props.form.resetFields();
+        this.setState({allLength: 0})
+    }
+
 
 
     render() {
@@ -126,20 +134,21 @@ class CombinatorForm extends React.Component {
             : this.props.isAuthenticated && this.props.user_groups === 1 ?
                 <div className="container" >
                     <CombinatorSettings className="unselectable" />
-                    <Form onSubmit={this.handleSubmit}>
-                    <div><Checkbox type="checkbox" name="col1" checked={this.state.col1} onChange={this.handleCheckboxChange} style={{marginLeft: '4%', marginTop: '40px'}}>Столбец 1</Checkbox>
-                        <Checkbox type="checkbox" name="col2" checked={this.state.col2} onChange={this.handleCheckboxChange} style={{marginLeft: '16.3%', marginTop: '40px'}}>Столбец 2</Checkbox>
-                        <Checkbox type="checkbox" name="col3" checked={this.state.col3} onChange={this.handleCheckboxChange} style={{marginLeft: '16.1%', marginTop: '40px'}}>Столбец 3</Checkbox>
-                        <Checkbox type="checkbox" name="col4" checked={this.state.col4} onChange={this.handleCheckboxChange} style={{marginLeft: '16.2%', marginTop: '40px'}}>Столбец 4</Checkbox>
+                    <Form  onSubmit={this.handleSubmit}>
+                        <div>
+                            <Checkbox type="checkbox" name="col1" checked={this.state.col1} onChange={this.handleCheckboxChange} style={{marginLeft: '4%', marginTop: '40px'}}>Столбец 1</Checkbox>
+                            <Checkbox type="checkbox" name="col2" checked={this.state.col2} onChange={this.handleCheckboxChange} style={{marginLeft: '16.3%', marginTop: '40px'}}>Столбец 2</Checkbox>
+                            <Checkbox type="checkbox" name="col3" checked={this.state.col3} onChange={this.handleCheckboxChange} style={{marginLeft: '16.1%', marginTop: '40px'}}>Столбец 3</Checkbox>
+                            <Checkbox type="checkbox" name="col4" checked={this.state.col4} onChange={this.handleCheckboxChange} style={{marginLeft: '16.2%', marginTop: '40px'}}>Столбец 4</Checkbox>
                         </div>
                     
-                    {getFieldDecorator('value1')(
-                        <TextArea placeholder="Столбец 1" name="target1" onChange={this.onChangeColumn} allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '5px' }}/>,
+                    {getFieldDecorator('value1')( 
+                        <TextArea placeholder="Столбец 1" id="combinatorForm" name="target1" onChange={this.onChangeColumn} allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '5px' }}/>,
                         )}
                                 
                                        
                     {getFieldDecorator('value2')(
-                        <TextArea placeholder="Столбец 2" name="target2" onChange={this.onChangeColumn} allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '5px' }}/>,
+                        <TextArea placeholder="Столбец 2" id="column" name="target2" onChange={this.onChangeColumn} allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '5px' }}/>,
                         )}
 
 
@@ -176,18 +185,18 @@ class CombinatorForm extends React.Component {
                         )}
 
 
-                    <Button type="primary" htmlType="submit" style={{marginTop: '40px', height: '45px', width: '30%'}} >Скомбинировать {this.state.allLength} фраз </Button>
-                    <Button type="default" size="large" onClick={this.copyText} style={{position: 'sticky', marginLeft: '45%', width: '25%'}}>Скопировать результат</Button>
-                    <div style={{marginTop: '10px', marginLeft: '80%'}}>
+                        <Button type="primary" htmlType="submit" style={{marginTop: '40px', height: '45px', width: '30%'}} >Скомбинировать {this.state.allLength} фраз </Button>
+                        <Button type="default" size="large" onClick={this.copyText} style={{position: 'sticky', marginLeft: '45%', width: '25%'}}>Скопировать результат</Button>
+                        <div style={{marginTop: '10px', marginLeft: '80%'}}>
                         <Popover content="Скачать в .XLS">
                             <Button type="primary" shape="circle" onClick={this.CheckValues} icon="download" size={"default"} />
                         </Popover>,
                         <Popover content="Скачать в .CSV"> 
                             <Button type="default" shape="circle" icon="download" size={"default"} style={{marginLeft: '50%'}} />
                         </Popover>
-                    </div>
-                    <TextArea placeholder="Тут будет результат" disabled={false} id="result" value={this.props.combinator_result} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
-                    <Button type="danger" size="large" style={{position: 'sticky', marginLeft: '75%', width: '25%', marginTop: '25px'}}>Очистить поля</Button>
+                        </div>
+                        <TextArea placeholder="Тут будет результат" disabled={false} id="result" value={this.props.combinator_result} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
+                        <Button type="danger" size="large" onClick={this.clearFields} style={{position: 'sticky', marginLeft: '75%', width: '25%', marginTop: '25px'}}>Очистить поля</Button>
                     </Form>
                 </div>
 
