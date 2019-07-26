@@ -1,9 +1,10 @@
-import { Input, Button, Popover, Icon, Spin, Form, Checkbox, Modal} from 'antd';
+import { Input, Button, Popover, Icon, Spin, Form, Checkbox, Modal, notification} from 'antd';
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/combinator'
 import CombinatorSettings from '../../components/combinator/combinator-settings'
 import { saveAs } from 'file-saver';
+import NotLoggedIn from '../../components/accessDenied/notLoggedIn'
 
 const { TextArea } = Input;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -47,8 +48,7 @@ class CombinatorForm extends React.Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
         if (this.state.allLength > 100000) {
                 this.warning()
-        } else {
-
+        }
           if (!err) {
               this.props.onSubmit(
                   this.state.col1 ? values.value1 : ' ',
@@ -62,7 +62,7 @@ class CombinatorForm extends React.Component {
               );
           }
         }
-        });
+        );
       };
     
     copyText = e => {
@@ -110,7 +110,7 @@ class CombinatorForm extends React.Component {
                         length8: length8
             });
           }
-    
+
     clearFields = () => {
         this.props.form.resetFields();
         this.setState({allLength: 0})
@@ -119,12 +119,12 @@ class CombinatorForm extends React.Component {
     saveTXT = () => {
         var FileSaver = require('file-saver');
         var blob = new Blob([this.props.combinator_result], {type: "text/plain;charset=utf-8"});
-        FileSaver.saveAs(blob, "Results.txt");
+        FileSaver.saveAs(blob, "CombinatorResults.txt");
     }
     saveCSV = () => {
         var FileSaver = require('file-saver');
         var blob = new Blob([this.props.combinator_result], {type: "text/plain;charset=utf-8"});
-        FileSaver.saveAs(blob, "Results.csv");
+        FileSaver.saveAs(blob, "CombinatorResults.csv");
     }
 
 
@@ -132,6 +132,8 @@ class CombinatorForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
+            <div>
+                {
             this.props.user_loading ?
             <Spin indicator={antIcon} />
             : this.props.isAuthenticated && this.props.user_groups === 1 ?
@@ -188,7 +190,7 @@ class CombinatorForm extends React.Component {
                         )}
 
 
-                        <Button type="primary" htmlType="submit" style={{marginTop: '40px', height: '45px', width: '30%'}} >Скомбинировать {this.state.allLength} фраз </Button>
+                        <Button type="primary" htmlType="submit" style={{marginTop: '40px', height: '45px', width: '30%'}}>Скомбинировать {this.state.allLength} фраз </Button>
                         <Button type="default" size="large" onClick={this.copyText} style={{position: 'sticky', marginLeft: '45%', width: '25%'}}>Скопировать результат</Button>
                         <div style={{marginTop: '10px', marginLeft: '80%'}}>
                         <Popover content="Скачать в .TXT">
@@ -198,7 +200,7 @@ class CombinatorForm extends React.Component {
                             <Button type="default" onClick={this.saveCSV} shape="circle" icon="download" size={"default"} style={{marginLeft: '50%'}} />
                         </Popover>
                         </div>
-                        <TextArea placeholder="Тут будет результат" disabled={false} id="result" value={this.props.combinator_result} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
+                        <TextArea placeholder="Тут будет результат" disabled={false} id="result" value={this.state.allLength < 100000 ? this.props.combinator_result : "Нельзя отобразить более 100000 результатов. Скачайте в файле"} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
                         <Button type="danger" size="large" onClick={this.clearFields} style={{position: 'sticky', marginLeft: '75%', width: '25%', marginTop: '25px'}}>Очистить поля</Button>
                     </Form>
                 </div>
@@ -206,8 +208,10 @@ class CombinatorForm extends React.Component {
                 : this.props.isAuthenticated && this.props.user_groups !== 1 ?
                 <div>Тебе не хватает прав.</div>
                 :
-                <div>Сначала залогинься мрась</div>
-                );
+                <NotLoggedIn {...this.props}></NotLoggedIn>
+                
+                }
+                </div>);
             }
         }
 
@@ -219,8 +223,8 @@ const mapStateToProps = (state) => {
         user_groups: state.authReducer.user_groups,
         isAuthenticated: state.authReducer.token !== null,
         user_loading: state.authReducer.user_loading,
-        token: state.authReducer.token,
-        combinator_result: state.combinatorReducer.combinator_result
+        combinator_result: state.combinatorReducer.combinator_result,
+        combinator_loading: state.combinatorReducer.combinator_loading
     }
 }
 const mapDispatchToProps = dispatch => {

@@ -40,7 +40,7 @@ class CustomLayout extends Component {
             > {this.props.user_name ?
               <Menu.Item key="3"><Link to="/profile/"><div>{this.props.user_name}</div></Link></Menu.Item>
             :
-              <Menu.Item key="3"><div>Профиль</div></Menu.Item>
+              <Menu.Item key="3"><Link to="/profile/"><div>Профиль</div></Link></Menu.Item>
             }
               <Menu.Item key="4">Команда</Menu.Item>
               {

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { connect } from 'react-redux'
-
+import NotLoggedIn from '../../components/accessDenied/notLoggedIn'
 import { Divider, Col, Row } from 'antd';
 
 const pStyle = {
@@ -145,7 +145,7 @@ class UserProfile extends React.Component {
 
                 :
 
-                <div>U MAST AUTHISTICATE FORST MURDERFURKER!!11!!</div>
+                <NotLoggedIn {...this.props}></NotLoggedIn>
                 }
             </div>
         )
