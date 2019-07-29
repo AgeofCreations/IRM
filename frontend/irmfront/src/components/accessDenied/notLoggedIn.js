@@ -3,6 +3,7 @@ import { notification } from 'antd';
 
 class NotLoggedIn extends React.Component { 
     loginNotification = () => {
+        if (this.props.token === null) {
         notification.error({
             message: 'Вы не авторизованы',
             description:
@@ -13,10 +14,11 @@ class NotLoggedIn extends React.Component {
             },
         });
         this.props.history.push('/login/')
+    }
     };
     render () {
         return (
-            <div>{this.loginNotification()}</div>
+            <div>{setTimeout(this.loginNotification, 1000)}</div>
             )
         }
 }
