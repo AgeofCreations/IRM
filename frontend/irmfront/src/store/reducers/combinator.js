@@ -15,13 +15,14 @@ const combinatorStart = (state, action) => {
         combinator_loading: true
     });
 }
-export const combinatorSuccess = (state, action) => {
+const combinatorSuccess = (state, action) => {
     return updateObject(state, {
         combinator_result: action.result,
         combinator_loading: false,
         combinator_error: false
     })
 }
+
 const combinatorFail = (state, action) => {
     return updateObject(state, {
         combinator_error: action.combinator_error,
@@ -29,11 +30,18 @@ const combinatorFail = (state, action) => {
     });
 }
 
+const combinatorClear = (state, action) => {
+    return updateObject(state, {
+        combinator_result: ''
+    })
+}
+
 const combinatorReducer = (state=initialState, action) => {
     switch (action.type) {
         case actionTypes.COMBINATOR_START: return combinatorStart(state, action);
         case actionTypes.COMBINATOR_SUCCESS: return combinatorSuccess(state, action);
         case actionTypes.COMBINATOR_FAIL: return combinatorFail(state, action);
+        case actionTypes.COMBINATOR_CLEAR: return combinatorClear(state, action);
         default:
             return state;
     }

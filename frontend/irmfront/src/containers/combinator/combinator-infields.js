@@ -1,9 +1,8 @@
-import { Input, Button, Popover, Icon, Spin, Form, Checkbox, Modal, notification} from 'antd';
+import { Input, Button, Popover, Icon, Spin, Form, Checkbox, Modal} from 'antd';
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/combinator'
 import CombinatorSettings from '../../components/combinator/combinator-settings'
-import { saveAs } from 'file-saver';
 import NotLoggedIn from '../../components/accessDenied/notLoggedIn'
 
 const { TextArea } = Input;
@@ -29,7 +28,8 @@ class CombinatorForm extends React.Component {
           length5: 1,
           length6: 1,
           length7: 1,
-          length8: 1
+          length8: 1,
+          target8: '1111'
 
         }
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
@@ -110,10 +110,18 @@ class CombinatorForm extends React.Component {
                         length8: length8
             });
           }
+    handleColumnClear = e => {
+        const target = e.target
+        const value = target.type === 'danger' ? '' : target.value;
+        const name = target.name
+        
+        console.log(this.state.target8)
+    }
 
     clearFields = () => {
         this.props.form.resetFields();
         this.setState({allLength: 0})
+        this.props.onClear()
     }
 
     saveTXT = () => {
@@ -136,12 +144,13 @@ class CombinatorForm extends React.Component {
                 {
             this.props.user_loading ?
             <Spin indicator={antIcon} />
-            : this.props.isAuthenticated && this.props.user_groups === 1 ?
+            : this.props.token && this.props.user_groups === 1 ?
                 <div className="container" >
                     <CombinatorSettings className="unselectable" />
                     <Form  onSubmit={this.handleSubmit}>
                         <div>
                             <Checkbox type="checkbox" name="col1" checked={this.state.col1} onChange={this.handleCheckboxChange} style={{marginLeft: '4%', marginTop: '40px'}}>Столбец 1</Checkbox>
+                            <Button type="danger" name="target1" icon="close" onClick={this.handleCheckboxChange}></Button>
                             <Checkbox type="checkbox" name="col2" checked={this.state.col2} onChange={this.handleCheckboxChange} style={{marginLeft: '16.3%', marginTop: '40px'}}>Столбец 2</Checkbox>
                             <Checkbox type="checkbox" name="col3" checked={this.state.col3} onChange={this.handleCheckboxChange} style={{marginLeft: '16.1%', marginTop: '40px'}}>Столбец 3</Checkbox>
                             <Checkbox type="checkbox" name="col4" checked={this.state.col4} onChange={this.handleCheckboxChange} style={{marginLeft: '16.2%', marginTop: '40px'}}>Столбец 4</Checkbox>
@@ -170,6 +179,7 @@ class CombinatorForm extends React.Component {
                         <Checkbox type="checkbox" name="col6" checked={this.state.col6} onChange={this.handleCheckboxChange} style={{marginLeft: '16.3%', marginTop: '10px'}}>Столбец 6</Checkbox>
                         <Checkbox type="checkbox" name="col7" checked={this.state.col7} onChange={this.handleCheckboxChange} style={{marginLeft: '16.1%', marginTop: '10px'}}>Столбец 7</Checkbox>
                         <Checkbox type="checkbox" name="col8" checked={this.state.col8} onChange={this.handleCheckboxChange} style={{marginLeft: '16.2%', marginTop: '10px'}}>Столбец 8</Checkbox>
+                        <Button type="danger" name="target8" icon="close" onClick={this.handleColumnClear}></Button>
                         </div>
                     {getFieldDecorator('value5')(
                         <TextArea placeholder="Столбец 5" name="target5" onChange={this.onChangeColumn} allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '5px' }}/>,
@@ -185,8 +195,8 @@ class CombinatorForm extends React.Component {
                         )}
 
 
-                    {getFieldDecorator('value8')(
-                        <TextArea placeholder="Столбец 8" name="target8" onChange={this.onChangeColumn} allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '5px' }}/>,
+                    {getFieldDecorator('value8',)(
+                        <TextArea ref= {el => this.todoTextElem = el} placeholder="Столбец 8" name="target8" onChange={this.onChangeColumn} allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '5px' }}>{this.state.target8}</TextArea>,
                         )}
 
 
@@ -205,7 +215,7 @@ class CombinatorForm extends React.Component {
                     </Form>
                 </div>
 
-                : this.props.isAuthenticated && this.props.user_groups !== 1 ?
+                : this.props.token && this.props.user_groups !== 1 ?
                 <div>Тебе не хватает прав.</div>
                 :
                 <NotLoggedIn {...this.props}></NotLoggedIn>
@@ -221,7 +231,7 @@ const mapStateToProps = (state) => {
     return {
         user_error: state.authReducer.user_error,
         user_groups: state.authReducer.user_groups,
-        isAuthenticated: state.authReducer.token !== null,
+        token : state.authReducer.token,
         user_loading: state.authReducer.user_loading,
         combinator_result: state.combinatorReducer.combinator_result,
         combinator_loading: state.combinatorReducer.combinator_loading
@@ -229,7 +239,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onSubmit: (value1, value2, value3, value4, value5, value6, value7, value8, token) => dispatch(actions.combinatorAction(value1, value2, value3, value4, value5, value6, value7, value8, token )) 
+        onSubmit: (value1, value2, value3, value4, value5, value6, value7, value8, token) => dispatch(actions.combinatorAction(value1, value2, value3, value4, value5, value6, value7, value8, token )), 
+        onClear: () => dispatch(actions.combinatorClear())
     }
 }
 

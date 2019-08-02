@@ -1,5 +1,6 @@
 import React from 'react'
-import { notification } from 'antd';
+import { notification, Icon, Spin } from 'antd';
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 class NotLoggedIn extends React.Component { 
     loginNotification = () => {
@@ -14,11 +15,19 @@ class NotLoggedIn extends React.Component {
             },
         });
         this.props.history.push('/login/')
+    } else {
+        this.props.history.push('/profile/')
     }
     };
+
     render () {
         return (
-            <div>{setTimeout(this.loginNotification, 1000)}</div>
+            <div>
+            <div style={{visibility: 'hidden'}}>{this.loginNotification()}</div>
+            <Spin indicator={antIcon} />
+            <span>Проверка авторизации</span>
+            
+            </div>
             )
         }
 }

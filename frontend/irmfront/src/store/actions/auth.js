@@ -1,6 +1,8 @@
 import axios from 'axios';
 import * as actionTypes from '../actionTypes';
 
+const backendAdress = '10.50.20.168:8000'
+
 export const authStart = () => {
     return {
         type: actionTypes.AUTH_START
@@ -80,7 +82,7 @@ export function emailConfirmationAction(key) {
     return dispatch => {
       dispatch(emailConfirmationRequest())
       axios
-        .post('http://127.0.0.1:8000/account-confirm-email/', key )
+        .post(`http://${backendAdress}/account-confirm-email/`, key )
         .then(response => {
           dispatch(emailConfirmationRequestSuccess())
         })
@@ -99,7 +101,7 @@ export const userProfileGetAction = (token) => {
             "Content-Type": "application/json",
             Authorization: 'Token ' + token 
         }
-        axios.get('http://127.0.0.1:8000/rest-auth/user/')
+        axios.get(`http://${backendAdress}/rest-auth/user/`)
         .then(res => {
             const username = res.data.username;
             const email = res.data.email;
@@ -117,7 +119,7 @@ export const userProfileGetAction = (token) => {
 export const authLogin = (username, password) => {
     return dispatch => {
         dispatch(authStart());
-        axios.post('http://127.0.0.1:8000/rest-auth/login/', {
+        axios.post(`http://${backendAdress}/rest-auth/login/`, {
             username: username,
             password: password
         })
@@ -143,7 +145,7 @@ export const authLogin = (username, password) => {
 export const authSignup = (username, email, password1, password2) => {
     return dispatch => {
         dispatch(authStart());
-        axios.post('http://127.0.0.1:8000/rest-auth/registration/', {
+        axios.post(`http://${backendAdress}/rest-auth/registration/`, {
             username: username,
             email: email,
             password1: password1,

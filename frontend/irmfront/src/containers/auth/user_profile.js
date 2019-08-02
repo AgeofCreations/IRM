@@ -54,7 +54,7 @@ class UserProfile extends React.Component {
         return(
             <div>
                 {
-                this.props.isAuthenticated ?
+                this.props.token ?
                 <div>
                                  <p style={{ ...pStyle, marginBottom: 24 }}>Профиль пользователя</p>
                   <p style={pStyle}>Личные данные</p>
@@ -157,7 +157,7 @@ const mapStateToProps = (state) => {
     return {
         user_error: state.authReducer.user_error,
         user_groups: state.authReducer.user_groups,
-        isAuthenticated: state.authReducer.token !== null,
+        token: state.authReducer.token,
         user_loading: state.authReducer.user_loading,
         user_name: state.authReducer.user_name
     }
