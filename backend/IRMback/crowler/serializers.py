@@ -1,9 +1,10 @@
 from rest_framework import serializers
 
-from .models import CombinatorCols
+from .models import CrowlerCategoryModel
 
-class CombinatorSerializer(serializers.ModelSerializer):
+class CrowlerCategoryModel(serializers.ModelSerializer):
     class Meta:
-        model = CombinatorCols
-        fields = ('pk', 'first_column', 'second_column', 'third_column', 'fourth_column', 'fifth_column', 'sixth_column', 'seventh_column',
-             'eighth_column', 'result', 'account_owner')
+        model = CrowlerCategoryModel
+        fields = ('pk', 'category_id', 'category_name', 'category_url', 'category_title', 'category_description', 'has_robots_nofollow', 'has_robots_noindex',
+             'canonical_url', 'seo_text', 'account_owner')
+

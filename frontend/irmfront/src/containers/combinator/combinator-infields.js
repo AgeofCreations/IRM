@@ -139,6 +139,7 @@ class CombinatorForm extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        console.log(this.props)
         return (
             <div>
                 {
@@ -218,7 +219,8 @@ class CombinatorForm extends React.Component {
                 : this.props.token && this.props.user_groups !== 1 ?
                 <div>Тебе не хватает прав.</div>
                 :
-                <NotLoggedIn {...this.props}></NotLoggedIn>
+                // <NotLoggedIn {...this.props}></NotLoggedIn>
+                <div>Кто не залогинен, тот ничего не получет ога.</div>
                 
                 }
                 </div>);

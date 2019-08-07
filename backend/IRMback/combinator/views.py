@@ -37,4 +37,5 @@ class CombinatorFieldsView(CreateModelMixin, GenericViewSet):
                 for x8 in eighth_handle]#Пересечение
 
         new_itog = set(itog)
+        
         return Response({'result': new_itog})

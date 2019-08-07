@@ -19,6 +19,7 @@ from django.urls import path, re_path, include
 from combinator import urls
 from rest_auth.registration.views import VerifyEmailView, RegisterView
 from rest_auth.views import UserDetailsView
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -33,4 +34,4 @@ urlpatterns = [
     name='account_email_verification_sent'),
     path('rest-auth/user/', UserDetailsView.as_view(), name='user_detail_view')
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

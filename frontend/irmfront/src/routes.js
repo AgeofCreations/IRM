@@ -14,7 +14,7 @@ import UserProfile from './containers/auth/user_profile';
 
 const BaseRouter = () => (
     <div>
-        <Route exact path='/combinator' component={Combinator} /> {""}
+        <Route exact path='/combinator/' component={Combinator} /> {""}
         <Route exact path='/login/' component={Login} /> {""}
         <Route exact path="/signup/" component={Signup} />{" "}
         <Route exact path='/' component={Mainpage} /> {""}

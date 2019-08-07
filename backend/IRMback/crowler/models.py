@@ -12,6 +12,7 @@ class CrowlerCategoryModel(models.Model):
     canonical_url = models.TextField(max_length=500)
     seo_text = models.CharField()
 
-
+    def __str__(self):
+        return self.category_name
 
 
