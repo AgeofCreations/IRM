@@ -1,0 +1,25 @@
+version: '3'
+volumes:
+  pgdata:
+services: 
+  web:
+    build:
+      context: .
+      dockerfile: docker/local/python/Dockerfile
+    volumes:
+        - .:/code
+    ports: 
+      - "8000:8000"
+    command: python app/backend/manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:10
+    environment: 
+      POSTGRES_USER: age
+      POSTGRES_DB: postgres
+      POSTGRES_pass: admin
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
