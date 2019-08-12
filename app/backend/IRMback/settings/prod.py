@@ -3,7 +3,7 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['ip-adress', 'www.hereisirm.com']
+ALLOWED_HOSTS = ['*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

@@ -18,8 +18,7 @@ services:
       - postgres
       - rabbitmq
       - celery_worker
-      - nginx
-  
+
   postgres:
     image: postgres:10
     environment: 
@@ -40,13 +39,22 @@ services:
     ports:
       - 8880:80
       - 3000:3000
+    depends_on:
+      - python
   rabbitmq:
-    image: rabbitmq:3.7.17-alpine
+    image: rabbitmq:3.7.17-management
+    ports: 
+      - 15672:15672
+      - 5672:5672
+      - 4369:4369
+    # command: rabbitmq-plugins enable --offline rabbitmq_management
+
   celery_worker:
     <<: *python
-    command: celery -a IRMback worker --loglevel=info --autoreload
+    command: celery -A IRMback worker --loglevel=info 
+    environment:
+      - C_FORCE_ROOT=true
     ports: []
     depends_on:
       - rabbitmq
       - postgres
-      - nginx
