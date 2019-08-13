@@ -41,14 +41,12 @@ services:
       - 3000:3000
     depends_on:
       - python
+
   rabbitmq:
     image: rabbitmq:3.7.17-management
     ports: 
       - 15672:15672
-      - 5672:5672
       - 4369:4369
-    # command: rabbitmq-plugins enable --offline rabbitmq_management
-
   celery_worker:
     <<: *python
     command: celery -A IRMback worker --loglevel=info 
