@@ -19,6 +19,3 @@ DATABASES = {
     }
 
 CELERY_BROKER_URL = "amqp://rabbitmq"
-CELERY_BROKER_USER = "guest"
-CELERY_BROKER_PASSWORD = "guest"
-CELERY_BROKER_VHOST = "/"

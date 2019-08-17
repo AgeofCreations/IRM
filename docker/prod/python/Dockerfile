@@ -3,8 +3,8 @@ FROM python:buster
 
 ENV PYTHONUNBUFFERED 1
 
-COPY app/backend /app
-WORKDIR /app
+COPY app /app
+WORKDIR /app/backend
 
 
 # COPY ./docker/prod/python/entrypoint.sh /entrypoint.sh
