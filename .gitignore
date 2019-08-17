@@ -2,5 +2,3 @@
 app/frontend/node_modules
 app/backend/.idea
 .pytest_cache
-env
-prod.yml

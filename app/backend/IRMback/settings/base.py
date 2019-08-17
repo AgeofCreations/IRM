@@ -46,12 +46,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.account',
     'rest_auth.registration',
+    
     'corsheaders',
 
     'django_celery_results',
     'django_celery_beat',
 
-    'mainpage',
+    'crowler',
     'combinator'
 ]
 SITE_ID = 1
