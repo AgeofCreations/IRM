@@ -6,7 +6,7 @@ DEBUG = True
 ALLOWED_HOSTS = '*'
 
 INSTALLED_APPS += [
-
+    'django_extensions'
 ]
 
 DATABASES = {
@@ -19,4 +19,7 @@ DATABASES = {
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
 		}
     }
-CELERY_BROKER_URL = ''
+CELERY_BROKER_URL = 'amqp://10.12.73.161:5672/'
+CELERY_BROKER_USER = "ageofcreations"
+CELERY_BROKER_PASSWORD = "soletstry"
+CELERY_BROKER_VHOST = "/"
