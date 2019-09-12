@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 
 from combinator.models import CombinatorCols
 from .serializers import CombinatorSerializer
-
+from crowler import tasks
 
 class CombinatorFieldsView(CreateModelMixin, GenericViewSet):
     queryset = CombinatorCols
@@ -37,5 +37,4 @@ class CombinatorFieldsView(CreateModelMixin, GenericViewSet):
                 for x8 in eighth_handle]#Пересечение
 
         new_itog = set(itog)
-        
         return Response({'result': new_itog})

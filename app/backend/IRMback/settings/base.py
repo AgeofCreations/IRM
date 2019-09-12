@@ -46,12 +46,18 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.account',
     'rest_auth.registration',
+    
     'corsheaders',
 
-    'mainpage',
+    'django_celery_results',
+    'django_celery_beat',
+    'django_filters',
+
+    'crowler',
     'combinator'
 ]
 SITE_ID = 1
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 99999
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -151,3 +157,6 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+CELERY_RESULT_BACKEND = 'django-db'
+

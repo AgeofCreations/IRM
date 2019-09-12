@@ -2,22 +2,35 @@ import React, { Component } from 'react';
 import * as actions from '../store/actions/auth';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
-import { Layout, Menu, Icon, Popconfirm } from 'antd';
+import { Layout, Menu, Icon, Popconfirm, Badge, Drawer } from 'antd';
+import NotifyPopup from './crowler/notifications/NotifyPopup'
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
+
 
 
 class CustomLayout extends Component {
     state = {
       collapsed: false,
+      visible: false
+    };
+
+    showDrawer = () => {
+      this.setState({
+        visible: true,
+      });
+    };
+    closeDrawer = () => {
+      this.setState({
+        visible: false,
+      });
     };
   
+
     onCollapse = collapsed => {
       console.log(collapsed);
       this.setState({ collapsed });
     };
-    
-  
     render() {
 
       return (
@@ -76,12 +89,37 @@ class CustomLayout extends Component {
                   </span>
                 }
               >
-                <Menu.Item key="6"><Link to="/combinator">Пересекатор</Link></Menu.Item>
-                <Menu.Item key="8">Краулер</Menu.Item>
-                <Menu.Item key="9">Метрика</Menu.Item>
-                <Menu.Item key="10">E-mail шаблонизатор</Menu.Item>
+                <Menu.Item key="6"><Link to="/combinator/">Пересекатор</Link></Menu.Item>
+                <Menu.Item key="7">Заглушка</Menu.Item>
+                <Menu.Item key="8">Метрика</Menu.Item>
+                <Menu.Item key="9">E-mail шаблонизатор</Menu.Item>
               </SubMenu>
-              <Menu.Item key="11">
+              <SubMenu
+                key="sub3"
+                title={
+                  <span>
+                    <Icon type="interaction" />
+                    <span>Краулер</span>
+                  </span>
+                }
+              >
+                <Menu.Item key="10"><Link to="/crowler/categories/">Категории</Link></Menu.Item>
+                <Menu.Item key="11"><Link to="/crowler/filter-pages/">ПФС</Link></Menu.Item>
+                <SubMenu
+                  key="sub4"
+                  title={
+                    <span>
+                      <Icon type="fork" />
+                      <span>Изменения</span>
+                    </span>
+                  }
+              >
+                  <Menu.Item key="15"><Link to="/crowler/changes/categories/">Категории</Link></Menu.Item>
+                  <Menu.Item key="16"><Link to="/crowler/changes/filter-pages/">ПФС</Link></Menu.Item>
+              </SubMenu>
+                <Menu.Item key="13">Метрики</Menu.Item>
+              </SubMenu>
+              <Menu.Item key="14">
                 <Icon type="file" />
                 <span>Заглушка</span>
               </Menu.Item>
@@ -97,7 +135,7 @@ class CustomLayout extends Component {
               style={{ lineHeight: '46px' }}
             >
               <Menu.Item key="1"><Link to="/combinator/">Приложение</Link></Menu.Item>
-              <Menu.Item key="2">Заглушка</Menu.Item>
+              <Menu.Item key="2"><Link to="/notifications/"><Badge count={this.state.notificationsCount} dot>Уведомления</Badge></Link></Menu.Item>
               <Menu.Item key="3">Заглушка</Menu.Item>
             </Menu>
           </Header>

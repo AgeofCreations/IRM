@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as actionTypes from '../actionTypes';
+import * as notificationsActions from './notifications';
 
 const backendAdress = '0.0.0.0:8000'
 
@@ -57,12 +58,13 @@ export const userProfileGet = () => {
     }
 }
 
-export const userProfileGetSuccess = (username, email, groups) => {
+export const userProfileGetSuccess = (username, email, groups, id) => {
     return {
         type: actionTypes.USER_PROFILE_GET_SUCCESS,
         user_name: username,
         user_email: email,
-        user_groups: groups
+        user_groups: groups,
+        user_id: id
     }
 }
 export const userProfileGetFail = (user_error) => {
@@ -106,7 +108,8 @@ export const userProfileGetAction = (token) => {
             const username = res.data.username;
             const email = res.data.email;
             const groups = res.data.groups;
-            dispatch(userProfileGetSuccess(username, email, groups))
+            const id = res.data.pk
+            dispatch(userProfileGetSuccess(username, email, groups, id))
         })
         .catch(user_error => {
             if (user_error.res) {
@@ -178,6 +181,7 @@ export const authCheckState = () => {
             const expirationDate = new Date(localStorage.getItem('expirationDate'));
             if ( expirationDate <= new Date() ) {
                 dispatch(authLogout());
+                dispatch(notificationsActions.notificationsLogout());
             } else {
                 dispatch(authSuccess(token));
                 dispatch(userProfileGetAction(token));

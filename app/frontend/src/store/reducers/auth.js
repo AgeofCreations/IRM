@@ -79,8 +79,9 @@ const userProfileGetSuccess = (state, action) => {
     return updateObject(state, {
         user_groups: action.user_groups[0],
         user_name: action.user_name,
-        user_email: action.email,
+        user_email: action.user_email,
         user_loading: false,
+        user_id: action.user_id,
         user_error: null
 
     })
@@ -100,6 +101,7 @@ const authLogout = (state, action) => {
         user_groups: null,
         user_email: null,
         user_name: null,
+        user_id: null,
         user_loading: false,
     });
 }
