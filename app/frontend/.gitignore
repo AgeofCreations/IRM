@@ -14,6 +14,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+/checkapi.py
 *,cover
 
 # Django stuff:
@@ -26,9 +27,11 @@ coverage.xml
 
 # testing
 /coverage
-
 # production
 /build
+
+#venv
+/env
 
 # misc
 .DS_Store

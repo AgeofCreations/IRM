@@ -2,6 +2,7 @@ from rest_framework.mixins import  CreateModelMixin
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
+<<<<<<< HEAD
 from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView
 from rest_framework.pagination import PageNumberPagination#, CursorPagination
 from django_filters import rest_framework as filters
@@ -162,3 +163,15 @@ class CrowlerStart(CreateModelMixin, GenericViewSet):
         
     
     
+=======
+
+from .models import CrowlerCategoryModel, CrowlerFilterPageModel, SiteCategoryChanges, SiteFilterpageChanges
+from .serializers import CrowlerCategorySerizalizer, CrowlerFilterpageSerizalizer, CategoryChangesSerializer, FilterpageChangesSerializer
+from crowler import tasks
+
+class CrowlerCategoriesListView(CreateModelMixin, GenericViewSet):
+    queryset = CrowlerCategoryModel
+    serializer_class = CrowlerCategorySerizalizer
+    parser_classes = [JSONParser]
+    
+>>>>>>> 00cf893ffff467989f2c64f1f85ab2801ccbf645
