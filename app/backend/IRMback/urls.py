@@ -21,7 +21,6 @@ from rest_auth.views import UserDetailsView
 from django.conf.urls.static import static
 from combinator import urls
 from crowler import urls
-import notifications.urls
 
 
 urlpatterns = [

@@ -20,5 +20,7 @@ urlpatterns = [
     path('start/category/', CrowlerStart.as_view({'post': 'category'})),
     path('start/filterpage/', CrowlerStart.as_view({'post': 'filterpage'})),
     path('notify/read/', NotificationsUpdate.as_view({'post': 'read_one'})),
+    path('notify/delete/', NotificationsUpdate.as_view({'post': 'delete_one'})),
+
 
 ]

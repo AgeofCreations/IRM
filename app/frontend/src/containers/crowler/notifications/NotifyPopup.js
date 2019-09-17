@@ -2,7 +2,6 @@ import React from 'react'
 import { BackTop, Menu, Table, Breadcrumb, Icon, Divider } from 'antd';
 import axios from 'axios'
 import { Link }  from 'react-router-dom'
-import * as actions from '../../../store/actions/notifications'
 import { connect } from 'react-redux';
 
 
@@ -10,7 +9,7 @@ const DataUrl = `http://0.0.0.0:8000/crowler/notify`;
 const menu = (
   <Menu>
     <Menu.Item>
-      <Link to='/crowler/categories/'>Категории</Link>   
+      <Link to='/notifications/is-read/'>Прочитанные</Link>   
     </Menu.Item>
   </Menu>)
 
@@ -92,23 +91,29 @@ class NotifyPopup extends React.Component {
           filterMultiple: false
   
         },
-        { onClick: (record) => this.read(record.id),
+        { 
           title: 'Действия',
+          dataIndex: 'id',
           key: 'actions',
-          render: (text, record) => (
-            <div>
-              <span>Отметить прочитанным {record.id}</span>
-              <Divider type="vertical" />
-              <div >Удалить</div>
-            </div>
+          render: (text, row) => (
+          <span>
+          <span className="custom-links" onClick={() => this.read(row.id)}>Прочитать</span>
+          <Divider type="vertical" />
+          <span style={{'color': 'red', 'cursor': 'pointer'}} onClick={() => this.delete(row.id)}>Удалить</span>
+          </span>
           )
   
         },
     ];
-    read = (notification) => {
-
-      axios.post(`${DataUrl}/read/`, {notification_id: notification.id})
-      console.log('Test')
+    read = (id) => {
+      axios.post(`${DataUrl}/read/`, {notification_id: id})
+      console.log(id)
+      this.fetch()
+    }
+    delete = (id) => {
+      axios.post(`${DataUrl}/delete/`, {notification_id: id})
+      console.log(id)
+      this.fetch()
     }
 
     handleTableChange = (pagination, filters, sorter) => {

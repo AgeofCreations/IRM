@@ -13,7 +13,6 @@ def test():
         'Accept': 'application/json'
     }
     response = requests.get(url, params=params, headers=headers).json()
-<<<<<<< HEAD
     for item in response['items']:
         print(item)
 
@@ -29,8 +28,3 @@ def test2():
     else: print('Blyatb')
 
 test2()
-=======
-    print('breakpoint')
-
-test()
->>>>>>> 00cf893ffff467989f2c64f1f85ab2801ccbf645
