@@ -31,9 +31,7 @@ export const notificationsLogout = () => {
 export const notificationsGetAction = (user_id) => {
     return dispatch => {
         dispatch(notificationsGetStart)
-        axios.get(`http://${backendAdress}/crowler/notify/`, {
-            not_read: user_id
-        })
+        axios.get(`http://${backendAdress}/crowler/notify/?not_read=${user_id}`)
              .then (res => {
                  const notifications_count = res.data.count;
                  dispatch(notificationsGetSuccess(notifications_count));

@@ -266,7 +266,7 @@ def make_pfs_notification(id, action, action_subject):
             p_index += 1
 
                 #Добавляются значение ответственного пользователя для уведомления,
-                # флаг "Не прочитано" и флаг "Акутально"(не удалено пользователем из своего фида)
+                # флаг "Не прочитано"
     elif action == 'created':
         q = CrowlerFilterPageModel.objects.get(id=id)
         kwargs_dict.update({'filterpage_id':q.filterpage_id})
@@ -339,7 +339,21 @@ def delete_one_notification(user_id, notification_id):
 
     
 
+@shared_task
+def read_all_notifications(user_id):
+    user_read = UserModel.objects.get(id=user_id)
+    notifications_all = NotificationModel.objects.all()
+    i = 0
+    for notification in notifications_all:
+        q = notification.not_read.remove(user_read)
+        q = notification.is_actual.add(user_read)
 
-    
-
+@shared_task
+def delete_all_notifications(user_id):
+    user_deleted = UserModel.objects.get(id=user_id)
+    notifications_all = NotificationModel.objects.all()
+    i = 0
+    for notification in notifications_all:
+        q = notification.not_read.remove(user_deleted)
+        q = notification.is_actual.remove(user_deleted)
 

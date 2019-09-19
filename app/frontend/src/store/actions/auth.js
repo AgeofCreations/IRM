@@ -110,6 +110,7 @@ export const userProfileGetAction = (token) => {
             const groups = res.data.groups;
             const id = res.data.pk
             dispatch(userProfileGetSuccess(username, email, groups, id))
+            dispatch(notificationsActions.notificationsGetAction(id))
         })
         .catch(user_error => {
             if (user_error.res) {

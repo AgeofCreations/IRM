@@ -135,7 +135,7 @@ class CustomLayout extends Component {
               style={{ lineHeight: '46px' }}
             >
               <Menu.Item key="1"><Link to="/combinator/">Приложение</Link></Menu.Item>
-              <Menu.Item key="2"><Link to="/notifications/"><Badge count={this.state.notificationsCount} dot>Уведомления</Badge></Link></Menu.Item>
+              <Menu.Item key="2"><Link to="/notifications/"><Badge count={this.props.notificationsCount} dot>Уведомления</Badge></Link></Menu.Item>
               <Menu.Item key="3">Заглушка</Menu.Item>
             </Menu>
           </Header>

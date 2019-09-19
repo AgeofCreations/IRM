@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackTop, Menu, Table, Breadcrumb, Icon, Divider } from 'antd';
+import { BackTop, Menu, Table, Breadcrumb, Icon, Divider, Button, message } from 'antd';
 import axios from 'axios'
 import { Link }  from 'react-router-dom'
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ const DataUrl = `http://0.0.0.0:8000/crowler/notify`;
 const menu = (
   <Menu>
     <Menu.Item>
-      <Link to='/notifications/is-read/'>Прочитанные</Link>   
+      <Link to='/notifications/is-read/'>Прочитанные</Link>
     </Menu.Item>
   </Menu>)
 
@@ -106,14 +106,26 @@ class NotifyPopup extends React.Component {
         },
     ];
     read = (id) => {
+      this.setState({ loading: true });
       axios.post(`${DataUrl}/read/`, {notification_id: id})
       console.log(id)
+      message
+      .loading('Помечаем прочитанным. Это может занять некоторое время.', 2.5)
       this.fetch()
+      this.setState({ loading: false });
+
     }
     delete = (id) => {
+      this.setState({ loading: true });
       axios.post(`${DataUrl}/delete/`, {notification_id: id})
       console.log(id)
+      message
+      .loading('Удаляем из базы. Это может занять некоторое время.', 2.5)
       this.fetch()
+      this.setState({ loading: false });
+    }
+    test = () => {
+      console.log('shit')
     }
 
     handleTableChange = (pagination, filters, sorter) => {
@@ -157,6 +169,7 @@ class NotifyPopup extends React.Component {
         {this.props.user_id ?
         <div>
         <BackTop />
+        <Button type="danger" size="small" style={{'position': 'absolute', 'right': '2%'}} onClick={() => this.read('all')}>Прочесть всё</Button>
         <Breadcrumb style={{marginBottom: '10px'}}>
             <Breadcrumb.Item><Link to="/"><Icon type="home"></Icon></Link></Breadcrumb.Item>
             <Breadcrumb.Item>

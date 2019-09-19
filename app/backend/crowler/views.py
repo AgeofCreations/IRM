@@ -78,23 +78,32 @@ class NotificationsUpdate(CreateModelMixin, GenericViewSet):
     parser_classes = [JSONParser]
 
 
-    def read_one(self, request, *args, **kwargs):
+    def read_notifications(self, request, *args, **kwargs):
         notification_id = str(self.request.data['notification_id'])
         user_id = self.request.user.id
         if notification_id == 'all':
-            pass
+            read_all_task = tasks.read_all_notifications.delay(user_id)
         else:
             read_one_task = tasks.read_one_notification.delay(user_id, notification_id)
         return Response('Уведомление помечено как прочитанное')
     
-    def delete_one(self, request, *args, **kwargs):
+    def delete_notifications(self, request, *args, **kwargs):
         notification_id = str(self.request.data['notification_id'])
         user_id = self.request.user.id
         if notification_id == 'all':
-            pass
+            delete_all_task = tasks.delete_all_notifications.delay(user_id)
         else:
             delete_one_task = tasks.delete_one_notification.delay(user_id, notification_id)
         return Response('Уведомление помечено как удалённое')
+
+    # def read_all(self, request, *args, **kwargs):
+    #     notification_id = str(self.request.data['notification_id'])
+    #     user_id = self.request.user.id
+    #     if notification_id == 'all':
+    #         pass
+    #     else:
+    #         delete_one_task = tasks.delete_one_notification.delay(user_id, notification_id)
+    #     return Response('Уведомление помечено как удалённое')
 
 
 #----------------------------------------------КАТЕГОРИИ--------------------------------------------

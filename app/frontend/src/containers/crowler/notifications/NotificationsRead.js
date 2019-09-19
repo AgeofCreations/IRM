@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackTop, Menu, Table, Breadcrumb, Icon, Divider } from 'antd';
+import { BackTop, Menu, Table, Breadcrumb, Icon, Button, message } from 'antd';
 import axios from 'axios'
 import { Link }  from 'react-router-dom'
 import { connect } from 'react-redux';
@@ -9,14 +9,14 @@ const DataUrl = `http://0.0.0.0:8000/crowler/notify`;
 const menu = (
   <Menu>
     <Menu.Item>
-      <Link to='/notifications/'>Прочитанные</Link>   
+      <Link to='/notifications/'>Непрочитанные</Link>   
     </Menu.Item>
   </Menu>)
 
 
 
 
-class NotificationsAll extends React.Component {
+class NotificationsRead extends React.Component {
     state = {
       data: [],
       pagination: {},
@@ -97,23 +97,20 @@ class NotificationsAll extends React.Component {
           key: 'actions',
           render: (text, row) => (
           <span>
-          <span className="custom-links" onClick={() => this.read(row.id)}>Прочитать</span>
-          <Divider type="vertical" />
           <span style={{'color': 'red', 'cursor': 'pointer'}} onClick={() => this.delete(row.id)}>Удалить</span>
           </span>
           )
   
         },
     ];
-    read = (id) => {
-      axios.post(`${DataUrl}/read/`, {notification_id: id})
-      console.log(id)
-      this.fetch()
-    }
+
     delete = (id) => {
-        axios.post(`${DataUrl}/delete/`, {notification_id: id})
-        console.log(id)
-        this.fetch()
+      this.setState({ loading: true });
+      axios.post(`${DataUrl}/delete/`, {notification_id: id})
+      message
+      .loading('Удаляем из базы. Это может занять некоторое время.', 2.5)
+      this.fetch()
+      this.setState({ loading: false });
     }
 
     handleTableChange = (pagination, filters, sorter) => {
@@ -157,6 +154,7 @@ class NotificationsAll extends React.Component {
         {this.props.user_id ?
         <div>
         <BackTop />
+        <Button type="danger" size="small" style={{'position': 'absolute', 'right': '2%'}} onClick={() => this.delete('all')}>Удалить всё</Button>
         <Breadcrumb style={{marginBottom: '10px'}}>
             <Breadcrumb.Item><Link to="/"><Icon type="home"></Icon></Link></Breadcrumb.Item>
             <Breadcrumb.Item>
@@ -195,4 +193,4 @@ const mapStateToProps = (state) => {
 //     }
 // }
 
-export default connect(mapStateToProps)(NotificationsAll);
+export default connect(mapStateToProps)(NotificationsRead);
