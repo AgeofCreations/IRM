@@ -3,7 +3,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/combinator'
 import CombinatorSettings from '../../components/combinator/combinator-settings'
-import NotLoggedIn from '../../components/accessDenied/notLoggedIn'
 
 const { TextArea } = Input;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
