@@ -36,12 +36,14 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = NotificationModel
         fields = ('__all__')
 
-class ResponsibilitiesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Responsibilities
-        fields = ('__all__')
         
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
-        fields = ('__all__')
+        fields = '__all__'
+        
+class ResponsibilitiesSerializer(serializers.ModelSerializer):
+    categories = CategoriesSerializer(source='responsibilities', read_only=True, many=True)
+    class Meta:
+        model = Responsibilities
+        fields = ('__all__', 'responsibilities')

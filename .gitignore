@@ -12,7 +12,6 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
-nosetests.xml
 coverage.xml
 /checkapi.py
 *,cover

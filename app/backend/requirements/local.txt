@@ -2,3 +2,6 @@
 
 django-debug-toolbar
 django-extensions
+pytest==5.1.2
+coverage==4.5.4
+pytest-cov==2.7.1

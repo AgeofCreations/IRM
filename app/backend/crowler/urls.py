@@ -4,7 +4,8 @@ from .views import (CategoryListView, CategoryDetailView,
  FilterpageListView, FilterpageDetailView,
   CategoryChangesView, FilterpageChangesView,
    CategoryChangesList, FilterpageChangesList,
-   NotificationsList, CrowlerStart, NotificationsUpdate)
+   NotificationsList, CrowlerStart, NotificationsUpdate,
+   NotificationsSubscription, CategoriesList)
   
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path('start/filterpage/', CrowlerStart.as_view({'post': 'filterpage'})),
     path('notify/read/', NotificationsUpdate.as_view({'post': 'read_notifications'})),
     path('notify/delete/', NotificationsUpdate.as_view({'post': 'delete_notifications'})),
-
+    path('notify/subscriptions/', NotificationsSubscription.as_view({'get': 'subscriptions_list'})),
+    path('notify/categories/', CategoriesList.as_view()),
 
 ]
