@@ -19,7 +19,7 @@ from django.urls import path, re_path, include
 from rest_auth.registration.views import VerifyEmailView, RegisterView
 from rest_auth.views import UserDetailsView
 from django.conf.urls.static import static
-from combinator import urls
+from combinator.views import CombinatorFieldsView
 from crowler import urls
 
 
@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('rest-auth/', include('rest_auth.urls')),
-    path('combinator/', include('combinator.urls')),
+    path('combinator/', CombinatorFieldsView.as_view({'post': 'create'}), name='combinator'),
     path('crowler/', include('crowler.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     re_path(r'^account-confirm-email/(?P<key>[-:\w]+)/$', VerifyEmailView.as_view(),

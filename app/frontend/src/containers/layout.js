@@ -141,7 +141,7 @@ class CustomLayout extends Component {
             <Content id="selectable" style={{ margin: '30px 30px' }}>
               <div>{this.props.children}</div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>I am footer. You are not so ©</Footer>
+            <Footer style={{ textAlign: 'center' }}>Олег Котов. 2019</Footer>
           </Layout>
         </Layout>
       );

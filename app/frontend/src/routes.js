@@ -18,6 +18,7 @@ import FilterpageChangesView from './containers/crowler/FilterpageChangesView'
 import CategoryChangesView from './containers/crowler/CategoryChangesView'
 import NotifyPopup from './containers/crowler/notifications/NotifyPopup'
 import NotificationsRead from './containers/crowler/notifications/NotificationsRead'
+import NotificationSubsciptions from './containers/crowler/notifications/Subscriptions'
 
 
 
@@ -42,6 +43,8 @@ const BaseRouter = () => (
         <Route exact path='/crowler/changes/categories/:categoryID' component = {CategoryChangesView} /> {""}
         <Route exact path='/notifications/' component = {NotifyPopup} /> {""}
         <Route exact path='/notifications/is-read/' component = {NotificationsRead} /> {""}
+        <Route exact path='/notifications/subscriptions/' component = {NotificationSubsciptions} /> {""}
+
 
 
     </div>

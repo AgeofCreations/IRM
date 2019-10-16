@@ -4,6 +4,7 @@ import * as actions from '../../store/actions/auth';
 
 import { Form, Input, Icon, Button, Alert } from 'antd';
 import { NavLink } from 'react-router-dom'
+
     
   
   class RegistrationForm extends React.Component {

@@ -135,7 +135,7 @@ class Categories(Model):
 
 class Responsibilities(Model):
     person = ForeignKey(UserModel, verbose_name=("User"), on_delete=CASCADE)
-    responsibilities = ManyToManyField(Categories)
+    responsibilities = ManyToManyField(Categories, blank=True)
 
     def __str__(self):
         return str(self.person)
@@ -149,6 +149,6 @@ class NotificationModel(Model):
     not_read = ManyToManyField(UserModel, related_name='not_read', blank=True)
     is_actual = ManyToManyField(UserModel,related_name='is_actual', blank=True)
     action_time = DateTimeField(default=timezone.now)
-    resposive_person = ManyToManyField(UserModel,related_name='responcive_person', blank=True)
+    resposive_person = ManyToManyField(UserModel,related_name='responsive_person', blank=True)
     def __str__(self):
         return self.action_is

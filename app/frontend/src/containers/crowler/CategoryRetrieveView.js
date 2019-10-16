@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Descriptions } from 'antd';
 import { Link } from 'react-router-dom';
 
+const token = localStorage.getItem('token');
 
 class CategoryRetrieveView extends React.Component {
     state = {

@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "env/bin/python",
+    "python.pythonPath": "/home/oleg/dev/IRM/env/bin/python3",
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django"
    ]

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Descriptions, Alert, Breadcrumb, Menu, Icon, BackTop } from 'antd';
 import { Link } from 'react-router-dom';
 
+const token = localStorage.getItem('token');
 const menu = (
     <Menu>
       <Menu.Item>

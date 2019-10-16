@@ -24,18 +24,27 @@ from crowler import tasks
 class NotificationsFilter(filters.FilterSet):
     action_is = filters.CharFilter(field_name="action_is", lookup_expr='iexact')
     action_subjects = filters.CharFilter(field_name="action_subjects", lookup_expr='icontains')
+    filterpage_id = filters.CharFilter(field_name='filterpage_id', lookup_expr='startswith')
 
     class Meta:
         model = NotificationModel
-        fields = ['is_actual', 'not_read', 'action_is', 'action_subjects']
+        fields = ['is_actual', 'not_read', 'action_is', 'action_subjects', 'filterpage_id']
 
 
 class CategoryFilter(filters.FilterSet):
     category_url = filters.CharFilter(field_name="category_url", lookup_expr='icontains')
     category_is_active = filters.NumberFilter(field_name="filterpage_is_active", distinct=True)
+    category_id = filters.CharFilter(field_name='category_id', lookup_expr='startswith')
     class Meta:
         model = CrowlerCategoryModel
-        fields = ['category_url', 'category_is_active']
+        fields = ['category_url', 'category_is_active', 'category_id']
+    
+class CategoryChangesFilter(filters.FilterSet):
+    changed_fields = filters.CharFilter(field_name="changed_fields", lookup_expr='icontains')
+    category_id = filters.CharFilter(field_name='category_id', lookup_expr='startswith')
+    class Meta:
+        model = SiteCategoryChanges
+        fields = ['changed_fields', 'category_id']
 
 
 class FiterpageFilter(filters.FilterSet):
@@ -43,11 +52,18 @@ class FiterpageFilter(filters.FilterSet):
     filterpage_created_at = filters.CharFilter(field_name="filterpage_created_at", lookup_expr='icontains')
     filterpage_is_active_changed_at = filters.CharFilter(field_name="filterpage_is_active_changed_at", lookup_expr="isnull")
     filterpage_is_active = filters.NumberFilter(field_name="filterpage_is_active")
+    filterpage_id = filters.CharFilter(field_name='filterpage_id', lookup_expr='startswith')
 
     class Meta:
         model = CrowlerFilterPageModel
-        fields = ['filterpage_url', 'filterpage_created_at', 'filterpage_is_active_changed_at']
+        fields = ['filterpage_url', 'filterpage_created_at', 'filterpage_is_active_changed_at', 'filterpage_id']
 
+class FilterpageChangesFilter(filters.FilterSet):
+    changed_fields = filters.CharFilter(field_name="changed_fields", lookup_expr='icontains')
+    filterpage_id = filters.CharFilter(field_name='filterpage_id', lookup_expr='startswith')
+    class Meta:
+        model = SiteFilterpageChanges
+        fields = ['changed_fields', 'filterpage_id']
 #---------------------------------ПАГИНАЦИЯ--------------------------------------------
 
 class CrowlerPagination(PageNumberPagination):
@@ -103,23 +119,47 @@ class NotificationsSubscription(CreateModelMixin, GenericViewSet):
         user_id = self.request.user.id
         user = UserModel.objects.get(id=user_id)
         user_set = user.responsibilities_set.all()
-        responsibilites = user_set[0].responsibilities.all()
+        try:
+            responsibilites = user_set[0].responsibilities.all()
+        except IndexError:
+            model_instance = Responsibilities(person=user)
+            model_instance.save()
+            user_set = user.responsibilities_set.all()
+            responsibilites = user_set[0].responsibilities.all()
+
         responsibilites_list = []
         for item in responsibilites:
             responsibilites_list.append(str(item))
         return Response(responsibilites_list)
 
-    def add_subscription(self, request, *args, **kwargs):
-        pass
+    def update(self, request, *args, **kwargs):
+        user_id = self.request.user.id
+        user = UserModel.objects.get(id=user_id)
+        user_set = user.responsibilities_set.all()
+        user_set[0].responsibilities.clear()
+        new_responsibilities = self.request.data['responsibilities']
+        output_list = []
+        for item in new_responsibilities:
+            q = Categories.objects.filter(category__startswith=item)
+            user_set[0].responsibilities.add(q[0].id)
+            output_list.append(str(q[0]))
 
-    def delete_subscription(self, request, *args, **kwargs):
-        pass
+        return Response(f"Оформлена подписка на категории: {output_list}")
+        
 
 
-class CategoriesList(ListAPIView): #/crowler/notify/categories/
+
+class CategoriesList(CreateModelMixin, GenericViewSet): #/crowler/notify/categories/
     queryset = Categories.objects.all()
     serializer_class = CategoriesSerializer
     parser_classes = [JSONParser]
+    def list(self, request,*args, **kwargs):
+        output_list = []
+        for item in self.queryset:
+            output_list.append(str(item.category))
+        
+        return Response(output_list)
+
 
 #----------------------------------------------КАТЕГОРИИ--------------------------------------------
 
@@ -143,6 +183,8 @@ class CategoryChangesList(ListAPIView): #/crowler/changes/category/
     queryset = SiteCategoryChanges.objects.all()
     serializer_class = CategoryChangesSerializer
     lookup_field = 'category_id'
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = CategoryChangesFilter
     parser_classes = [JSONParser]
     pagination_class = CrowlerPagination
 
@@ -173,6 +215,8 @@ class FilterpageChangesList(ListAPIView): #/crowler/changes/filterpage/
     lookup_field = 'filterpage_id'
     parser_classes = [JSONParser]
     pagination_class = CrowlerPagination
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = FilterpageChangesFilter
 
 class FilterpageChangesView(RetrieveAPIView): #crowler/changes/filterpage/<pk>/
     queryset = SiteFilterpageChanges.objects.all()

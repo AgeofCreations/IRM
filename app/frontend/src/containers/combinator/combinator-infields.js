@@ -35,6 +35,22 @@ class CombinatorForm extends React.Component {
         this.onChangeColumn = this.onChangeColumn.bind(this);
       }
 
+      info() {
+        Modal.info({
+          title: 'Пересекатор фраз',
+          content: (<div>
+            <p>Это - пересекатор фраз. Аналог всех прочих таких же.</p>
+            <p>Допускаю, что вы уже знаете как работать с подобными приложениями</p>
+            <p>Чекбокс возле надписи "Стоблец N" включает или выключает столбец. Позволяет пропустить конструкции при формировании фраз, не удаляя их.</p>
+            <p>Кнопка "Скопировать результат" копирует результат в ваш буфер обмена</p>
+            <p>Кнопка "Скомбинировать N фраз" запускает процесс формирования фраз.</p>
+            <p>ВАЖНО! Более 100 000 фраз не могут быть представлены в веб-интерфейсе. В случае большого количества фраз, результат можно скачать с помощью соответствующих кнопок над полем результата в форматах .TXT (синяя кнопка) и .CSV (белая кнопка)</p>
+            <p>Очистить все поля (включая колонки и результат) можно, нажав красную кнопку "Очистить поля", которая находится в нижнем правом углу страницы под полем результата</p>
+            </div>),
+          onOk() {},
+        });
+      }
+
     warning() {
         Modal.warning({
           title: 'Такое количество результатов не может быть отображено.',
@@ -114,7 +130,6 @@ class CombinatorForm extends React.Component {
         const value = target.type === 'danger' ? '' : target.value;
         const name = target.name
         
-        console.log(this.state.target8)
     }
 
     clearFields = () => {
@@ -138,7 +153,6 @@ class CombinatorForm extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        console.log(this.props)
         return (
             <div>
                 {
@@ -146,7 +160,8 @@ class CombinatorForm extends React.Component {
             <Spin indicator={antIcon} />
             : this.props.token && this.props.user_groups === 1 ?
                 <div className="container" >
-                    <CombinatorSettings className="unselectable" />
+                <Button icon="question-circle" style={{'position': 'absolute', 'right': '10%', top: '15%'}} onClick={this.info}></Button>
+                    <CombinatorSettings style={{marginTop: '30px'}} className="unselectable" />
                     <Form  onSubmit={this.handleSubmit}>
                         <div>
                             <Checkbox type="checkbox" name="col1" checked={this.state.col1} onChange={this.handleCheckboxChange} style={{marginLeft: '4%', marginTop: '40px'}}>Столбец 1</Checkbox>
@@ -213,6 +228,7 @@ class CombinatorForm extends React.Component {
                         <TextArea placeholder="Тут будет результат" disabled={false} id="result" value={this.state.allLength < 100000 ? this.props.combinator_result : "Нельзя отобразить более 100000 результатов. Скачайте в файле"} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>
                         <Button type="danger" size="large" onClick={this.clearFields} style={{position: 'sticky', marginLeft: '75%', width: '25%', marginTop: '25px'}}>Очистить поля</Button>
                     </Form>
+
                 </div>
 
                 : this.props.token && this.props.user_groups !== 1 ?

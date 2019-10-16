@@ -1,11 +1,12 @@
 import React from 'react'
-import { BackTop, Menu, Table, Breadcrumb, Icon, Divider, Button, message } from 'antd';
+import { BackTop, Menu, Table, Breadcrumb, Icon, Divider, Button, message, Modal, Input } from 'antd';
 import axios from 'axios'
 import { Link }  from 'react-router-dom'
 import { connect } from 'react-redux';
 
 
 const DataUrl = `http://0.0.0.0:8000/crowler/notify`;
+const token = localStorage.getItem('token');
 const menu = (
   <Menu>
     <Menu.Item>
@@ -19,8 +20,10 @@ const menu = (
 class NotifyPopup extends React.Component {
     state = {
       data: [],
-      pagination: {},
+      pagination: {current: 1},
       loading: false,
+      searchText: '',
+      filters: {},
     };
     componentDidUpdate (prevProps) {
       if (this.props.user_id !== prevProps.user_id) {
@@ -28,12 +31,76 @@ class NotifyPopup extends React.Component {
 
       }
   }
+  info() {
+    Modal.info({
+      title: 'Уведомления',
+      content: (<div>
+        <p>Это - уведомления. Они появляются, когда краулер регистриует изменения на сайте</p>
+        <p>Нажатие на ID ПФС записи переведёт вас на страницу подфильтровой страницы в общем списке. Полезно, когда действие - "Создано"</p>
+        <p>Если "Действие" у записи - "Изменено", значит изменилась страница, ранее зарегестрированная краулером. В этом случае нажатие на текст "Изменено" отправит вас к изменениям страницы</p>
+        <p>Вы можете отфильтровать список по действию или по изменённым полям(Это особенно полезно тем, что краулер также регистриует появляние или исчезновение товара на странице)</p>
+        <p>Для того, чтобы перенести уведомление в прочитанные - нажмите синюю кнопку "Прочитать"</p>
+        <p>Для того, чтобы удалить уведомления без возможности его прочтения в будущем - нажмите кнопку "Удалить"</p>
+        <p>К прочитанным уведомлениям можно попасть при помощи хлебных крошек, нажав на "Непрочитанные" --> "Прочитанные"</p>
+        <p>Новых уведомлений не появится, если вы не подписаны на разделы сайта. Для управления подписками есть специальная кнопка слева от этой</p>
+        <p>Справа от этой кнопки находится кнопка "Прочесть всё". Она переносит все непрочитанные сообщения в "Прочитанные". Это может занять некоторое время.</p>
+      </div>),
+      onOk() {},
+    });
+  }
     componentDidMount() {
       if (this.props.user_id){ 
         this.fetch()
       }
     }
+//---------------------ПОИСК----------------------
+getColumnSearchProps = dataIndex => ({
+  filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+    <div style={{ padding: 8 }}>
+      <Input
+        ref={node => {
+          this.searchInput = node;
+        }}
+        placeholder={`Search ${dataIndex}`}
+        value={selectedKeys[0]}
+        onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+        onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+        style={{ width: 188, marginBottom: 8, display: 'block' }}
+      />
+      <Button
+        type="primary"
+        onClick={() => this.handleSearch(selectedKeys, confirm)}
+        icon="search"
+        size="small"
+        style={{ width: 90, marginRight: 8 }}
+      >
+        Search
+      </Button>
+      <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+        Reset
+      </Button>
+    </div>
+  ),
+  filterIcon: filtered => (
+    <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+  ),
+  render: text => (text
+  ),
+});
 
+handleSearch = (selectedKeys, confirm) => {
+  confirm(); 
+  this.setState({ searchText: selectedKeys[0] });
+  var pagination = this.state.pagination
+  var filters = this.state.filters
+  this.handleTableChange(pagination,filters)
+};
+
+handleReset = clearFilters => {
+  clearFilters();
+  this.setState({ searchText: '' });
+};
+/////////////////////////////////////////ПОИСК/////////////////////////
     columns = [
       {
         title: 'ID категории',
@@ -45,7 +112,9 @@ class NotifyPopup extends React.Component {
         title: 'ID ПФС',
         dataIndex: 'filterpage_id',
         key: 'filterpage_id',
-        render: (text, record) => <Link rel="noopener noreferrer" target='_blank' to={`/crowler/filter-pages/${record.filterpage_id}`}>{text}</Link>,
+        ...this.getColumnSearchProps('filterpage_id'),
+
+
       },
       {
           title: 'Действие',
@@ -105,10 +174,10 @@ class NotifyPopup extends React.Component {
   
         },
     ];
+
     read = (id) => {
       this.setState({ loading: true });
       axios.post(`${DataUrl}/read/`, {notification_id: id})
-      console.log(id)
       message
       .loading('Помечаем прочитанным. Это может занять некоторое время.', 2.5)
       this.fetch()
@@ -118,33 +187,34 @@ class NotifyPopup extends React.Component {
     delete = (id) => {
       this.setState({ loading: true });
       axios.post(`${DataUrl}/delete/`, {notification_id: id})
-      console.log(id)
       message
       .loading('Удаляем из базы. Это может занять некоторое время.', 2.5)
       this.fetch()
       this.setState({ loading: false });
     }
     test = () => {
-      console.log('shit')
     }
 
-    handleTableChange = (pagination, filters, sorter) => {
+    handleTableChange = (pagination, filters) => {
       const pager = { ...this.state.pagination };
       pager.current = pagination.current;
       this.setState({
         pagination: pager,
+        filters: filters,
       });
       this.fetch({
         page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
         action_is: filters.action_is ? filters.action_is.toString() : '',
-        action_subjects: filters.action_subjects ? filters.action_subjects.toString() : ''
+        action_subjects: filters.action_subjects ? filters.action_subjects.toString() : '',
+        filterpage_id: this.state.searchText
       });
     };
 
     fetch = (params = {}) => {
       this.setState({ loading: true });
+      axios.defaults.headers = {
+          "Content-Type": "application/json",
+          Authorization: 'Token ' + token}
       axios.get(`${DataUrl}/?not_read=${this.props.user_id}`,{
         params: {
           ...params,
@@ -169,7 +239,10 @@ class NotifyPopup extends React.Component {
         {this.props.user_id ?
         <div>
         <BackTop />
+        <Button type="default" size="small" style={{'position': 'absolute', 'right': '20%'}}><Link to="/notifications/subscriptions/">Управление подписками</Link></Button>
         <Button type="danger" size="small" style={{'position': 'absolute', 'right': '2%'}} onClick={() => this.read('all')}>Прочесть всё</Button>
+        <Button icon="question-circle" style={{'position': 'absolute', 'right': '10%'}} onClick={this.info}></Button>
+        
         <Breadcrumb style={{marginBottom: '10px'}}>
             <Breadcrumb.Item><Link to="/"><Icon type="home"></Icon></Link></Breadcrumb.Item>
             <Breadcrumb.Item>
@@ -186,6 +259,7 @@ class NotifyPopup extends React.Component {
           loading={this.state.loading}
           onChange={this.handleTableChange}
           rowKey="id"
+          style={{marginTop: '20px'}}
         />
         </div>
         :

@@ -40,7 +40,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
-        fields = '__all__'
+        fields = ('__all__')
         
 class ResponsibilitiesSerializer(serializers.ModelSerializer):
     categories = CategoriesSerializer(source='responsibilities', read_only=True, many=True)

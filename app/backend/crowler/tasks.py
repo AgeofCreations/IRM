@@ -304,9 +304,14 @@ def make_cat_notification(id, action, action_subject):
                 r_user = p1[p_index].responsibilities_set.all() 
                 q = NotificationModel(**kwargs_dict)
                 q.save()
-                q.resposive_person.add(r_user)
-                q.not_read.add(r_user)
-
+                
+                for item in r_user:
+                    usermodel = UserModel.objects.get(username=item)
+                    user_id = usermodel.pk
+                    q_notify.resposive_person.add(user_id)
+                    q_notify.not_read.add(user_id)
+                    q.resposive_person.add(user_id)
+                    q.not_read.add(user_id)
             p_index += 1
 
     elif action == 'created':
@@ -318,9 +323,13 @@ def make_cat_notification(id, action, action_subject):
                 r_user = p1[p_index].responsibilities_set.all()
                 q = NotificationModel(**kwargs_dict)
                 q.save()
-                q.resposive_person.add(r_user)
-                q.not_read.add(r_user)
-
+                for item in r_user:
+                    usermodel = UserModel.objects.get(username=item)
+                    user_id = usermodel.pk
+                    q_notify.resposive_person.add(user_id)
+                    q_notify.not_read.add(user_id)
+                    q.resposive_person.add(user_id)
+                    q.not_read.add(user_id)
             p_index += 1
 
 @shared_task

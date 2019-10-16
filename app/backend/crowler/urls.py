@@ -23,6 +23,8 @@ urlpatterns = [
     path('notify/read/', NotificationsUpdate.as_view({'post': 'read_notifications'})),
     path('notify/delete/', NotificationsUpdate.as_view({'post': 'delete_notifications'})),
     path('notify/subscriptions/', NotificationsSubscription.as_view({'get': 'subscriptions_list'})),
-    path('notify/categories/', CategoriesList.as_view()),
+    path('notify/subscriptions/update/', NotificationsSubscription.as_view({'post': 'update'})),
+    path('notify/categories/', CategoriesList.as_view({'get': 'list'})),
+
 
 ]

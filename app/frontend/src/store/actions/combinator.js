@@ -1,3 +1,4 @@
+/* eslint-disable no-self-assign */
 import axios from 'axios';
 import * as actionTypes from '../actionTypes';
 //import { checkPropTypes } from 'prop-types';
@@ -56,8 +57,13 @@ export const combinatorAction = (value1, value2, value3, value4, value5, value6,
         })
         .then(res => {
             const wrapedResult = res.data.result.toString().replace(/'/g, '').replace(/,/g, "\n");
-            const result = wrapedResult.replace(/ {2}/g, '')
-            dispatch(combinatorSuccess(result))
+            
+            var result = wrapedResult.replace(/ {2}/g, ' ')// Я не имею ни майлешего представления почему, но обернуть эту строку в цикл мне не помогло.
+            var result2 = result.replace(/ {2}/g, ' ')
+            var result3 = result2.replace(/ {2}/g, ' ')
+            var result4 = result3.replace(/ {2}/g, ' ')
+            dispatch(combinatorSuccess(result4))
+            
         })
         .catch(user_error => {
             if (user_error.res) {
