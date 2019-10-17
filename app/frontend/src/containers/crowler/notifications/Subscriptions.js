@@ -37,9 +37,11 @@ class NotificationSubsciptions extends React.Component {
 
     updateSubscriptions = selectedItems => {
         const token = localStorage.getItem('token');
-        axios.defaults.headers = {
-            "Content-Type": "application/json",
-            Authorization: 'Token ' + token}
+        if (token != null) {
+            axios.defaults.headers = {
+              "Content-Type": "application/json",
+              Authorization: 'Token ' + token}
+            }
         axios.post(`${DataUrl}update/`, {
             responsibilities: this.state.selectedItems
         })

@@ -205,9 +205,11 @@ handleReset = clearFilters => {
 
     fetch = (params = {}) => {
       this.setState({ loading: true });
-      axios.defaults.headers = {
-        "Content-Type": "application/json",
-        Authorization: 'Token ' + token}
+      if (token != null) {
+        axios.defaults.headers = {
+          "Content-Type": "application/json",
+          Authorization: 'Token ' + token}
+        }
       axios.get(`${DataUrl}/?is_actual=${this.props.user_id}`,{
         params: {
           ...params,

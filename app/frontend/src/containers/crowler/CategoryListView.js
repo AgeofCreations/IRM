@@ -96,9 +96,11 @@ class categoryListView extends React.Component {
   
     fetch = (params = {}) => {
       this.setState({ loading: true });
-      axios.defaults.headers = {
-        "Content-Type": "application/json",
-        Authorization: 'Token ' + token}
+      if (token != null) {
+        axios.defaults.headers = {
+          "Content-Type": "application/json",
+          Authorization: 'Token ' + token}
+        }
       axios.get('http://0.0.0.0:8000/crowler/category/',{
         params: {
           ...params,

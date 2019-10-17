@@ -1,14 +1,22 @@
-import { Form, Icon, Input, Button, Tabs, Modal, Radio, Alert } from 'antd';
+import { Form, Icon, Input, Button, Tabs, Modal, Radio, Alert, Spin } from 'antd';
 import React from 'react';
+import { connect } from 'react-redux'
 import axios from 'axios';
 
+import WrappedGroupsManagement from '../../components/auth/groups_management'
+
 const backendUrl = 'http://0.0.0.0:8000/api/admin/verificate_user/'
+
 const token = localStorage.getItem('token');
+
 const { TabPane } = Tabs;
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
+if (token != null) {
 axios.defaults.headers = {
   "Content-Type": "application/json",
   Authorization: 'Token ' + token}
-
+}
 
 
 class Management extends React.Component {
@@ -17,6 +25,20 @@ class Management extends React.Component {
         success: '',
         error: ''
     }
+
+    managementInfo() {
+        Modal.info({
+          title: 'Панель управления пользователями и данными.',
+          content: (<div>
+            <p>Панель позволяет (де)активировать пользователей, добавить их в группы, создать группы, добавить/удалить категории для отслеживания и пр.</p>
+            <p>Для получения доступа требуется быть членом группы admin</p>
+          </div>),
+          onOk() {},
+        });
+      }
+
+
+//----------------АКТИВАЦИЯ ПОЛЬЗОВАТЕЛЯ----------------//
   handleVerification = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -48,16 +70,6 @@ class Management extends React.Component {
     });
   };
 
-  managementInfo() {
-    Modal.info({
-      title: 'Панель управления пользователями и данными.',
-      content: (<div>
-        <p>Панель позволяет (де)активировать пользователей, добавить их в группы, создать группы, добавить/удалить категории для отслеживания и пр.</p>
-        <p>Для получения доступа требуется быть членом группы admin</p>
-      </div>),
-      onOk() {},
-    });
-  }
   verificationInfo() {
     Modal.info({
       title: 'Активация пользователя',
@@ -70,23 +82,22 @@ class Management extends React.Component {
       onOk() {},
     });
   }
+////////////////АКТИВАЦИЯ ПОЛЬЗОВАТЕЛЯ---КОНЕЦ/////////////
+
 
   render() {
     let errorMessage = null;
     let successMessage = null;
 
-    if (this.state.error) {
-        errorMessage =(
-            <Alert style={{marginBottom: '25px'}} message={this.state.error} type="error" />
-        );
-    }
-    if (this.state.success) {
-        successMessage =(
-            <Alert style={{marginBottom: '25px'}} message={this.state.success} type="success" />
-        );
-    }
     const { getFieldDecorator } = this.props.form;
+
     return (
+        
+        <div>
+        {
+            this.props.user_loading ?
+            <Spin indicator={antIcon} /> :
+            this.props.token && (this.props.user_groups[0] === '2' || this.props.user_groups[1] === 2 || this.props.user_groups[3] === 2 || this.props.user_groups[4] === 2) ?
         <div>
         <h1>Панель управления пользователями и данными</h1>
         <Button icon="question-circle" style={{'position': 'absolute', 'right': '10.2%', 'top': '7%', marginBottom: '20px'}} onClick={this.managementInfo}></Button>
@@ -123,7 +134,8 @@ class Management extends React.Component {
       </Form>
         </TabPane>
         <TabPane tab="Назначение групп пользователям" key="2">
-          Content of Tab Pane 2
+            <WrappedGroupsManagement />
+
         </TabPane>
         <TabPane tab="Управление списком категорий" key="3">
           Content of Tab Pane 3
@@ -132,11 +144,27 @@ class Management extends React.Component {
       </div>
       <div>
       </div>
+      </div> 
+      : this.props.token && this.props.user_groups.contains !== 1 ?
+                <div>Тебе не хватает прав.</div> 
+                :
+                <div></div>}
       </div>
+      
     );
   }
 }
 
 const WrappedNormalManagement = Form.create({ name: 'normal_login' })(Management);
 
-export default WrappedNormalManagement;
+const mapStateToProps = (state) => {
+    return {
+        user_error: state.authReducer.user_error,
+        user_groups: state.authReducer.user_groups,
+        token : state.authReducer.token,
+        user_loading: state.authReducer.user_loading,
+    }
+}
+
+
+export default connect(mapStateToProps, null)(WrappedNormalManagement);

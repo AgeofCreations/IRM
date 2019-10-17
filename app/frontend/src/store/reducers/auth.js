@@ -77,7 +77,7 @@ const userProfileGet = (state, action) => {
 
 const userProfileGetSuccess = (state, action) => {
     return updateObject(state, {
-        user_groups: action.user_groups[0],
+        user_groups: action.user_groups,
         user_name: action.user_name,
         user_email: action.user_email,
         user_loading: false,

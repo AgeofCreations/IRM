@@ -99,10 +99,12 @@ export function emailConfirmationAction(key) {
 export const userProfileGetAction = (token) => {
     return dispatch => {
         dispatch(userProfileGet())
+        if (token != null) {
         axios.defaults.headers = {
             "Content-Type": "application/json",
             Authorization: 'Token ' + token 
         }
+    }
         axios.get(`http://${backendAdress}/rest-auth/user/`)
         .then(res => {
             const username = res.data.username;
