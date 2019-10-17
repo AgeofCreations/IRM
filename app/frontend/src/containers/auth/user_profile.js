@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import NotLoggedIn from '../../components/accessDenied/notLoggedIn'
 import { Divider, Col, Row } from 'antd';
 
-const token = localStorage.getItem('token');
 const pStyle = {
   fontSize: 16,
   color: 'rgba(0,0,0,0.85)',

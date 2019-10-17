@@ -4,6 +4,9 @@ import { Descriptions, Breadcrumb, Menu, Icon, BackTop } from 'antd';
 import { Link } from 'react-router-dom';
 
 const token = localStorage.getItem('token');
+axios.defaults.headers = {
+    "Content-Type": "application/json",
+    Authorization: 'Token ' + token}
 const menu = (
     <Menu>
       <Menu.Item>
@@ -16,15 +19,6 @@ class FilterpageRetrieveView extends React.Component {
     state = {
         data: {}
     }
-    // componentWillUpdate () {
-    //     const filterpageID = this.props.match.params.filterpageID; 
-    //     axios.get(`http://0.0.0.0:8000/crowler/filterpage/${filterpageID}`)
-    //         .then(res => {
-    //             this.setState({
-    //                 data: res.data
-    //             })
-    //         })
-    // }
     componentDidMount() {
         const filterpageID = this.props.match.params.filterpageID; 
         axios.get(`http://0.0.0.0:8000/crowler/filterpage/${filterpageID}`)

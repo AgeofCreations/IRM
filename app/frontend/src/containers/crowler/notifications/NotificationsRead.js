@@ -23,7 +23,8 @@ class NotificationsRead extends React.Component {
       data: [],
       pagination: {},
       loading: false,
-      searchText: '',
+      searchPFSID: '',
+      searchCatID: '',
       filters: {},
     };
     componentDidUpdate (prevProps) {
@@ -52,52 +53,58 @@ class NotificationsRead extends React.Component {
     }
 
 //---------------------ПОИСК----------------------
-    getColumnSearchProps = dataIndex => ({
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={node => {
-              this.searchInput = node;
-            }}
-            placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
-            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm)}
-            icon="search"
-            size="small"
-            style={{ width: 90, marginRight: 8 }}
-          >
-            Search
-          </Button>
-          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-            Reset
-          </Button>
-        </div>
-      ),
-      filterIcon: filtered => (
-        <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
-      ),
-      render: text => (text
-      ),
-    });
+getColumnSearchProps = dataIndex => ({
+  filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+    <div style={{ padding: 8 }}>
+      <Input
+        ref={node => {
+          this.searchInput = node;
+        }}
+        placeholder={`Search ${dataIndex}`}
+        value={selectedKeys[0]}
+        onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+        onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+        style={{ width: 188, marginBottom: 8, display: 'block' }}
+      />
+      <Button
+        type="primary"
+        onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+        icon="search"
+        size="small"
+        style={{ width: 90, marginRight: 8 }}
+      >
+        Search
+      </Button>
+      <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+        Reset
+      </Button>
+    </div>
+  ),
+  filterIcon: filtered => (
+    <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+  ),
+  render: text => (text
+  ),
+});
 
-    handleSearch = (selectedKeys, confirm) => {
-      confirm(); 
-      this.setState({ searchText: selectedKeys[0] });
-      var pagination = this.state.pagination
-      var filters = this.state.filters
-      this.handleTableChange(pagination,filters)
-    };
+handleSearch = (selectedKeys, confirm, dataIndex) => {
+  confirm(); 
+  if (dataIndex === 'filterpage_id') {
+    this.setState({ searchPFSID: selectedKeys[0] });
+  } else if (dataIndex === 'category_id'){
+    this.setState({ searchCatID: selectedKeys[0] });
+  }
+  var pagination = this.state.pagination
+  var filters = this.state.filters
+  this.handleTableChange(pagination,filters)
+};
 
-    handleReset = clearFilters => {
-      clearFilters();
-      this.setState({ searchText: '' });
-    };
+handleReset = clearFilters => {
+  clearFilters();
+  this.setState({ searchPFSID: '',
+                  searchCatID: '',
+});
+};
 /////////////////////////////////////////ПОИСК/////////////////////////
 
     columns = [
@@ -105,7 +112,7 @@ class NotificationsRead extends React.Component {
         title: 'ID категории',
         dataIndex: 'category_id',
         key: 'category_id',
-        render: (text, record) => <Link rel="noopener noreferrer" target='_blank' to={`/crowler/filter-pages/${record.category_id}`}>{text}</Link>,
+        ...this.getColumnSearchProps('category_id'),
       },
       {
         title: 'ID ПФС',
@@ -175,7 +182,9 @@ class NotificationsRead extends React.Component {
       axios.post(`${DataUrl}/delete/`, {notification_id: id})
       message
       .loading('Удаляем из базы. Это может занять некоторое время.', 2.5)
-      this.fetch()
+      var pagination = this.state.pagination
+      var filters = this.state.filters
+      this.handleTableChange(pagination,filters)
       this.setState({ loading: false });
     }
 
@@ -189,7 +198,8 @@ class NotificationsRead extends React.Component {
         page: pagination.current,
         action_is: filters.action_is ? filters.action_is.toString() : '',
         action_subjects: filters.action_subjects ? filters.action_subjects.toString() : '',
-        filterpage_id: this.state.searchText,
+        filterpage_id: this.state.searchPFSID,
+        category_id: this.state.searchCatID
       });
     };
 

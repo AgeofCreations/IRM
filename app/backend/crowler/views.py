@@ -25,10 +25,12 @@ class NotificationsFilter(filters.FilterSet):
     action_is = filters.CharFilter(field_name="action_is", lookup_expr='iexact')
     action_subjects = filters.CharFilter(field_name="action_subjects", lookup_expr='icontains')
     filterpage_id = filters.CharFilter(field_name='filterpage_id', lookup_expr='startswith')
+    category_id = filters.CharFilter(field_name='category_id', lookup_expr='startswith')
+    
 
     class Meta:
         model = NotificationModel
-        fields = ['is_actual', 'not_read', 'action_is', 'action_subjects', 'filterpage_id']
+        fields = ['is_actual', 'not_read', 'action_is', 'action_subjects', 'filterpage_id', 'category_id']
 
 
 class CategoryFilter(filters.FilterSet):

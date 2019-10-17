@@ -4,6 +4,9 @@ import { Descriptions, Alert, Breadcrumb, Menu, Icon, BackTop } from 'antd';
 import { Link } from 'react-router-dom';
 
 const token = localStorage.getItem('token');
+axios.defaults.headers = {
+    "Content-Type": "application/json",
+    Authorization: 'Token ' + token}
 const menu = (
     <Menu>
       <Menu.Item>

@@ -4,6 +4,9 @@ import { Descriptions } from 'antd';
 import { Link } from 'react-router-dom';
 
 const token = localStorage.getItem('token');
+axios.defaults.headers = {
+    "Content-Type": "application/json",
+    Authorization: 'Token ' + token}
 
 class CategoryRetrieveView extends React.Component {
     state = {

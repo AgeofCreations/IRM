@@ -1,7 +1,6 @@
 from django.urls import path
-
-from .views import CombinatorFieldsView
+from .views import EmailVerification
 
 urlpatterns = [
-    path('', CombinatorFieldsView.as_view({'post': 'create'})),
+    path('admin/verificate_user/', EmailVerification.as_view({'post': 'update'})),
 ]

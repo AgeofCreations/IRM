@@ -98,8 +98,6 @@ class FilterpageListView extends React.Component {
         }})
         .then(res => {
         const pagination = { ...this.state.pagination };
-        // Read total count from server
-        // pagination.total = data.totalCount;
         pagination.total = res.data.count;
         pagination.pageSize = 25
         pagination.position = 'both'

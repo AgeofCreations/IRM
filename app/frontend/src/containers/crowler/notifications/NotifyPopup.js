@@ -22,12 +22,13 @@ class NotifyPopup extends React.Component {
       data: [],
       pagination: {current: 1},
       loading: false,
-      searchText: '',
+      searchCatID: '',
+      searchPFSID: '',
       filters: {},
     };
     componentDidUpdate (prevProps) {
       if (this.props.user_id !== prevProps.user_id) {
-      this.fetch()
+        this.fetch()
 
       }
   }
@@ -64,12 +65,12 @@ getColumnSearchProps = dataIndex => ({
         placeholder={`Search ${dataIndex}`}
         value={selectedKeys[0]}
         onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-        onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+        onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
         style={{ width: 188, marginBottom: 8, display: 'block' }}
       />
       <Button
         type="primary"
-        onClick={() => this.handleSearch(selectedKeys, confirm)}
+        onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
         icon="search"
         size="small"
         style={{ width: 90, marginRight: 8 }}
@@ -88,9 +89,13 @@ getColumnSearchProps = dataIndex => ({
   ),
 });
 
-handleSearch = (selectedKeys, confirm) => {
+handleSearch = (selectedKeys, confirm, dataIndex) => {
   confirm(); 
-  this.setState({ searchText: selectedKeys[0] });
+  if (dataIndex === 'filterpage_id') {
+    this.setState({ searchPFSID: selectedKeys[0] });
+  } else if (dataIndex === 'category_id'){
+    this.setState({ searchCatID: selectedKeys[0] });
+  }
   var pagination = this.state.pagination
   var filters = this.state.filters
   this.handleTableChange(pagination,filters)
@@ -98,7 +103,9 @@ handleSearch = (selectedKeys, confirm) => {
 
 handleReset = clearFilters => {
   clearFilters();
-  this.setState({ searchText: '' });
+  this.setState({ searchPFSID: '',
+                  searchCatID: '',
+});
 };
 /////////////////////////////////////////ПОИСК/////////////////////////
     columns = [
@@ -106,7 +113,7 @@ handleReset = clearFilters => {
         title: 'ID категории',
         dataIndex: 'category_id',
         key: 'category_id',
-        render: (text, record) => <Link rel="noopener noreferrer" target='_blank' to={`/crowler/filter-pages/${record.category_id}`}>{text}</Link>,
+        ...this.getColumnSearchProps('category_id'),
       },
       {
         title: 'ID ПФС',
@@ -180,7 +187,9 @@ handleReset = clearFilters => {
       axios.post(`${DataUrl}/read/`, {notification_id: id})
       message
       .loading('Помечаем прочитанным. Это может занять некоторое время.', 2.5)
-      this.fetch()
+      var pagination = this.state.pagination
+      var filters = this.state.filters
+      this.handleTableChange(pagination,filters)
       this.setState({ loading: false });
 
     }
@@ -189,11 +198,12 @@ handleReset = clearFilters => {
       axios.post(`${DataUrl}/delete/`, {notification_id: id})
       message
       .loading('Удаляем из базы. Это может занять некоторое время.', 2.5)
-      this.fetch()
+      var pagination = this.state.pagination
+      var filters = this.state.filters
+      this.handleTableChange(pagination,filters)
       this.setState({ loading: false });
     }
-    test = () => {
-    }
+
 
     handleTableChange = (pagination, filters) => {
       const pager = { ...this.state.pagination };
@@ -206,7 +216,8 @@ handleReset = clearFilters => {
         page: pagination.current,
         action_is: filters.action_is ? filters.action_is.toString() : '',
         action_subjects: filters.action_subjects ? filters.action_subjects.toString() : '',
-        filterpage_id: this.state.searchText
+        filterpage_id: this.state.searchPFSID,
+        category_id: this.state.searchCatID,
       });
     };
 
@@ -275,11 +286,5 @@ const mapStateToProps = (state) => {
         user_id: state.authReducer.user_id,
     }
 }
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         onAuth: (username, password) => dispatch(actions.authLogin(username, password)) 
-//     }
-// }
 
 export default connect(mapStateToProps)(NotifyPopup);

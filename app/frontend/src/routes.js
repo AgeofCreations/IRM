@@ -19,6 +19,7 @@ import CategoryChangesView from './containers/crowler/CategoryChangesView'
 import NotifyPopup from './containers/crowler/notifications/NotifyPopup'
 import NotificationsRead from './containers/crowler/notifications/NotificationsRead'
 import NotificationSubsciptions from './containers/crowler/notifications/Subscriptions'
+import WrappedNormalManagement from './containers/auth/management'
 
 
 
@@ -44,6 +45,7 @@ const BaseRouter = () => (
         <Route exact path='/notifications/' component = {NotifyPopup} /> {""}
         <Route exact path='/notifications/is-read/' component = {NotificationsRead} /> {""}
         <Route exact path='/notifications/subscriptions/' component = {NotificationSubsciptions} /> {""}
+        <Route exact path='/management/' component = {WrappedNormalManagement} /> {""}
 
 
 

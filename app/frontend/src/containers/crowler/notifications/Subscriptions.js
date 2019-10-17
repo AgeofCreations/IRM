@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Select } from 'antd'
-import { Link }  from 'react-router-dom'
+import { Button, Select, Alert } from 'antd'
 import axios from 'axios'
 const DataUrl = `http://0.0.0.0:8000/crowler/notify/subscriptions/`;
 const CategoriesUrl = `http://0.0.0.0:8000/crowler/notify/categories/`;
@@ -10,6 +9,8 @@ class NotificationSubsciptions extends React.Component {
     state = {
         selectedItems: [],
         options: [],
+        success: undefined,
+        error: undefined,
     };
     componentDidMount() {
         const token = localStorage.getItem('token');
@@ -42,13 +43,39 @@ class NotificationSubsciptions extends React.Component {
         axios.post(`${DataUrl}update/`, {
             responsibilities: this.state.selectedItems
         })
+            .then(res => {
+                this.setState({
+                    success: res.data
+                })
+            })
+            .catch(error => {
+                this.setState({
+                    error: error.data
+                })
+            })
+            
     }
     render() {
         const { selectedItems } = this.state;
         const filteredOptions = this.state.options.filter(o => !selectedItems.includes(o));
+        let errorMessage = null;
+        let successMessage = null;
+
+        if (this.state.error) {
+            errorMessage =(
+                <Alert style={{marginBottom: '25px'}} message={this.state.error} type="error" />
+            );
+        }
+        if (this.state.success) {
+            successMessage =(
+                <Alert style={{marginBottom: '25px'}} message={this.state.success} type="success" />
+            );
+        }
         return (
           <div>
           <div>
+          {errorMessage}
+          {successMessage}
                 <Select
                     mode="multiple"
                     placeholder="Выберите категории для получения уведомлений"
