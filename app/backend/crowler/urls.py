@@ -25,6 +25,7 @@ urlpatterns = [
     path('notify/subscriptions/', NotificationsSubscription.as_view({'get': 'subscriptions_list'})),
     path('notify/subscriptions/update/', NotificationsSubscription.as_view({'post': 'update'})),
     path('notify/categories/', CategoriesList.as_view({'get': 'list'})),
+    path('notify/categories/update/', CategoriesList.as_view({'post': 'update'})),
 
 
 ]

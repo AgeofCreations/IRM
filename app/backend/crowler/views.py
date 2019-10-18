@@ -6,6 +6,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIV
 from rest_framework.pagination import PageNumberPagination
 from django_filters import rest_framework as filters
 
+from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
 UserModel = get_user_model()
 from .models import (CrowlerCategoryModel, CrowlerFilterPageModel,
@@ -134,7 +135,7 @@ class NotificationsSubscription(CreateModelMixin, GenericViewSet):
             responsibilites_list.append(str(item))
         return Response(responsibilites_list)
 
-    def update(self, request, *args, **kwargs):
+    def update(self, request, *args, **kwargs): #/crowler/notify/subscriptions/update/
         user_id = self.request.user.id
         user = UserModel.objects.get(id=user_id)
         user_set = user.responsibilities_set.all()
@@ -151,16 +152,44 @@ class NotificationsSubscription(CreateModelMixin, GenericViewSet):
 
 
 
-class CategoriesList(CreateModelMixin, GenericViewSet): #/crowler/notify/categories/
+class CategoriesList(CreateModelMixin, GenericViewSet): 
     queryset = Categories.objects.all()
     serializer_class = CategoriesSerializer
     parser_classes = [JSONParser]
-    def list(self, request,*args, **kwargs):
+
+    def list(self, request,*args, **kwargs): #/crowler/notify/categories/
         output_list = []
-        for item in self.queryset:
+        for item in Categories.objects.all():
             output_list.append(str(item.category))
         
         return Response(output_list)
+    
+    def update(self, requset, *args, **kwargs): #/crowler/notify/categories/update/
+        flag = False
+        user_id = self.request.user.id
+        user_groups = self.request.user.groups.all()
+        action = self.request.data['action']
+        for group in user_groups:
+            if str(group) == 'admin':
+                if action == 'add':
+                    if not Categories.objects.filter(category__iexact=self.request.data['category']).exists():
+                        category_to_add = Categories(category=self.request.data['category'])
+                        category_to_add.save()
+                        flag = True
+                        return Response('Категория успешно добавлена. Не забудьте подписаться на неё.')
+                    else: return Response('Категория уже есть в списке.', status=405)
+
+                elif action == 'remove':
+                    if Categories.objects.filter(category__iexact=self.request.data['category']).exists():
+                        category_to_remove = Categories.objects.filter(category__startswith=self.request.data['category'])
+                        category_to_remove.delete()
+                        flag = True
+                        return Response('Категория успешно удалена.')
+                    else: return Response('Категория не существует.', status=405)
+
+
+        if flag == False:
+            return Response('Вы не обладаете достаточными правами для совершения операции',status=403)
 
 
 #----------------------------------------------КАТЕГОРИИ--------------------------------------------

@@ -119,8 +119,10 @@ class CustomLayout extends Component {
                 <Menu.Item key="13">Метрики</Menu.Item>
               </SubMenu>
               <Menu.Item key="14">
-                <Icon type="file" />
-                <span>Заглушка</span>
+                <Link to="/feedback/">
+                  <Icon type="file" />
+                  <span>Обратная связь</span>
+                </Link>
               </Menu.Item>
             </Menu>
           </Sider>
@@ -133,9 +135,8 @@ class CustomLayout extends Component {
               defaultSelectedKeys={['2']}
               style={{ lineHeight: '46px' }}
             >
-              <Menu.Item key="1"><Link to="/combinator/">Приложение</Link></Menu.Item>
+              <Menu.Item key="1"><Link to="/combinator/">Пересекатор</Link></Menu.Item>
               <Menu.Item key="2"><Link to="/notifications/"><Badge count={this.props.notificationsCount} dot>Уведомления</Badge></Link></Menu.Item>
-              <Menu.Item key="3">Заглушка</Menu.Item>
             </Menu>
           </Header>
             <Content id="selectable" style={{ margin: '30px 30px' }}>

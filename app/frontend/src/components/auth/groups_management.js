@@ -64,17 +64,20 @@ class GroupsManagement extends React.Component {
               action: this.state.groupsRadio,
               groups_to_update: this.state.groupsSelected
             })
-                .then(res => {
+            .then(res => {
                 this.setState({
-                    success: res.data
+                    success: res.data,
+                    error: '',
+                })
+            })
+        
+            .catch(error => {
+                this.setState({
+                    error: error.response.data,
+                    success: '',
                 })
             
-                .catch(error => {
-                this.setState({
-                    error: error.data
-                })
-            })
-            })
+        })
             
           }
         });

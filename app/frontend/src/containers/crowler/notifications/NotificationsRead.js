@@ -7,7 +7,11 @@ import { connect } from 'react-redux';
 
 const DataUrl = `http://0.0.0.0:8000/crowler/notify`;
 const token = localStorage.getItem('token');
-
+if (token != null) {
+  axios.defaults.headers = {
+    "Content-Type": "application/json",
+    Authorization: 'Token ' + token}
+  }
 const menu = (
   <Menu>
     <Menu.Item>
@@ -205,11 +209,6 @@ handleReset = clearFilters => {
 
     fetch = (params = {}) => {
       this.setState({ loading: true });
-      if (token != null) {
-        axios.defaults.headers = {
-          "Content-Type": "application/json",
-          Authorization: 'Token ' + token}
-        }
       axios.get(`${DataUrl}/?is_actual=${this.props.user_id}`,{
         params: {
           ...params,
@@ -256,7 +255,7 @@ handleReset = clearFilters => {
         />
         </div>
         :
-        <div>Not Logged In</div>
+        <div>Только для авторизованных пользователей</div>
         }
         </div>
         )
@@ -268,11 +267,5 @@ const mapStateToProps = (state) => {
         user_id: state.authReducer.user_id,
     }
 }
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         onAuth: (username, password) => dispatch(actions.authLogin(username, password)) 
-//     }
-// }
 
 export default connect(mapStateToProps)(NotificationsRead);

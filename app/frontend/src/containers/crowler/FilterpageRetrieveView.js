@@ -33,6 +33,9 @@ class FilterpageRetrieveView extends React.Component {
     render() {
         return(
             <div>
+            {
+            token ?
+            <div>
                  <BackTop />
                     <Breadcrumb style={{marginBottom: '20px'}}>
                         <Breadcrumb.Item><Link to="/"><Icon type="home"></Icon></Link></Breadcrumb.Item>
@@ -67,6 +70,10 @@ class FilterpageRetrieveView extends React.Component {
                         {this.state.data.filterpage_created_at}
                     </Descriptions.Item>
                     </Descriptions>
+                </div>
+                :
+                <div>Только для авторизованных пользователей</div>
+                }
                 </div>
         )
     }

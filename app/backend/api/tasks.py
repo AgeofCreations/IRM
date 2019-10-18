@@ -10,10 +10,13 @@ def user_verification(user_id, verificating_user_id, action):
     verificating_user = UserModel.objects.get(id=verificating_user_id)
     admin_user = UserModel.objects.get(id=user_id)
     verificating_email = EmailAddress.objects.get(email=verificating_user.email)
+    print(verificating_user)
     if action == 'verificate':
         verificating_email.verified = True
+        print('user verified')
     elif action == 'deactivate':
         verificating_email.verified = False
+        print('user deactivated')
     verificating_email.save()
 
 @shared_task

@@ -47,6 +47,9 @@ class FilterpageChangesView extends React.Component {
         let response = this.state.data
         return(
             <div>
+            {
+            token ?
+            <div>
                 <BackTop />
                 <Breadcrumb style={{marginBottom: '20px'}}>
                     <Breadcrumb.Item><Link to="/"><Icon type="home"></Icon></Link></Breadcrumb.Item>
@@ -171,6 +174,10 @@ class FilterpageChangesView extends React.Component {
                         <Alert message={response.new_filterpage_created_at} type='error'></Alert> : response.new_filterpage_created_at}
                     </Descriptions.Item>
                 </Descriptions>
+            </div>
+            :
+            <div>Только для авторизованных пользователей</div>
+            }
             </div>
         )
     }

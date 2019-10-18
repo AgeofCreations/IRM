@@ -22,10 +22,12 @@ class EmailVerification(CreateModelMixin, GenericViewSet):
         action = self.request.data['action']
         for group in user_groups:
             if str(group) == 'admin':
-                verificating_user = self.request.data['verificating_user']
-                verificating_user_id = UserModel.objects.get(username=verificating_user).id
-                tasks.user_verification.delay(user_id, verificating_user_id, action)                    
-                flag = True
+                if UserModel.objects.filter(username__iexact=self.request.data['verificating_user']).exists():
+                    verificating_user = self.request.data['verificating_user']
+                    verificating_user_id = UserModel.objects.get(username=verificating_user).id
+                    tasks.user_verification.delay(user_id, verificating_user_id, action)                    
+                    flag = True
+                else: return Response('Пользователь не существует', status=405)
         
         if flag == True:
             return Response('Данные пользователя обновлены.')
@@ -49,12 +51,14 @@ class GroupsView(CreateModelMixin, GenericViewSet):
         action = self.request.data['action']
         for group in user_groups:
             if str(group) == 'admin':
-                groups_to_update = self.request.data['groups_to_update']
-                updating_user = self.request.data['updating_user']
-                updating_user_id = UserModel.objects.get(username=updating_user).id
-                for group_to_update in groups_to_update:
-                    tasks.user_group_updating.delay(user_id, updating_user_id, action, group_to_update)                    
-                flag = True
+                if UserModel.objects.filter(username__iexact=self.request.data['updating_user']).exists():
+                    groups_to_update = self.request.data['groups_to_update']
+                    updating_user = self.request.data['updating_user']
+                    updating_user_id = UserModel.objects.get(username=updating_user).id
+                    for group_to_update in groups_to_update:
+                        tasks.user_group_updating.delay(user_id, updating_user_id, action, group_to_update)                    
+                    flag = True
+                else: return Response('Пользователь не существует', status=405)
         
         if flag == True:
             return Response('Данные пользователя обновлены.')

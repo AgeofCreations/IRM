@@ -158,7 +158,7 @@ class CombinatorForm extends React.Component {
                 {
             this.props.user_loading ?
             <Spin indicator={antIcon} />
-            : this.props.token && this.props.user_groups === 1 ?
+            : this.props.token ?
                 <div className="container" >
                 <Button icon="question-circle" style={{'position': 'absolute', 'right': '10%', top: '15%'}} onClick={this.info}></Button>
                     <CombinatorSettings style={{marginTop: '30px'}} className="unselectable" />
@@ -231,8 +231,6 @@ class CombinatorForm extends React.Component {
 
                 </div>
 
-                : this.props.token && this.props.user_groups !== 1 ?
-                <div>Тебе не хватает прав.</div>
                 :
                 // <NotLoggedIn {...this.props}></NotLoggedIn>
                 <div>Кто не залогинен, тот ничего не получет ога.</div>

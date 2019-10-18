@@ -37,6 +37,9 @@ class CategoryRetrieveView extends React.Component {
     render() {
         return(
             <div>
+            {
+            token ?
+            <div>
                 <Descriptions title={this.state.data.category_name} bordered layout='vertical'>
                     <Descriptions.Item label="ID">{this.state.data.category_id}</Descriptions.Item>
                     <Descriptions.Item label="Уровень вложенности">{this.state.data.category_lvl}</Descriptions.Item>
@@ -61,6 +64,9 @@ class CategoryRetrieveView extends React.Component {
                         </Link> : 'Не имеет'}
                     </Descriptions.Item>
                 </Descriptions>
+                </div>
+                :
+                <div>Только для авторизованных пользователей</div>}
             </div>
         )
     }

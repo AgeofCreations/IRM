@@ -6,7 +6,6 @@ import Login from './containers/auth/Login';
 import Signup from './containers/auth/signup';
 import Mainpage from './components/mainpage';
 import VerificationSent from './containers/auth/email_verification_sent';
-import EmailConfirmationContainer from './containers/auth/email_confirmed';
 import UserProfile from './containers/auth/user_profile';
 import CategoryListView from './containers/crowler/CategoryListView';
 import FilterpageListView from './containers/crowler/FilterpageListView';
@@ -20,6 +19,7 @@ import NotifyPopup from './containers/crowler/notifications/NotifyPopup'
 import NotificationsRead from './containers/crowler/notifications/NotificationsRead'
 import NotificationSubsciptions from './containers/crowler/notifications/Subscriptions'
 import WrappedNormalManagement from './containers/auth/management'
+import Feedback from './containers/feedback'
 
 
 
@@ -32,7 +32,6 @@ const BaseRouter = () => (
         <Route exact path="/signup/" component={Signup} />{" "}
         <Route exact path='/' component={Mainpage} /> {""}
         <Route exact path='/signup/verification_sent/' component={VerificationSent} /> {""}
-        <Route exact path='/signup/confirm-email/' component={EmailConfirmationContainer} /> {""}
         <Route exact path='/profile/' component={UserProfile} /> {""}
         <Route exact path='/crowler/categories/' component = {CategoryListView} /> {""}
         <Route exact path='/crowler/filter-pages/' component = {FilterpageListView} /> {""}
@@ -46,6 +45,7 @@ const BaseRouter = () => (
         <Route exact path='/notifications/is-read/' component = {NotificationsRead} /> {""}
         <Route exact path='/notifications/subscriptions/' component = {NotificationSubsciptions} /> {""}
         <Route exact path='/management/' component = {WrappedNormalManagement} /> {""}
+        <Route exact path='/feedback/' component = {Feedback} /> {""}
 
 
 

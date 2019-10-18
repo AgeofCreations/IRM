@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { Descriptions, Alert, Breadcrumb, Menu, Icon, BackTop } from 'antd';
+import { Descriptions, Alert, Breadcrumb, Menu, Icon, BackTop, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 
 const token = localStorage.getItem('token');
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 if (token != null) {
     axios.defaults.headers = {
       "Content-Type": "application/json",
@@ -46,6 +47,10 @@ class CategoryChangesView extends React.Component {
     render() {
         let response = this.state.data
         return(
+            <div>
+                            {
+            this.props.user_loading ?
+            <Spin indicator={antIcon} /> : token ?
             <div>
                 <BackTop />
                 <Breadcrumb style={{marginBottom: '20px'}}>
@@ -154,6 +159,8 @@ class CategoryChangesView extends React.Component {
                         </Link> : 'Не имеет'} type='error'></Alert> : response.new_category_parent_id}
                     </Descriptions.Item>
                 </Descriptions>
+                </div> :
+                            <div>Только для авторизованных пользователей</div> }
             </div>
         )
     }

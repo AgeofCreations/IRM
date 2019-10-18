@@ -3,7 +3,13 @@ import { Button, Select, Alert } from 'antd'
 import axios from 'axios'
 const DataUrl = `http://0.0.0.0:8000/crowler/notify/subscriptions/`;
 const CategoriesUrl = `http://0.0.0.0:8000/crowler/notify/categories/`;
-
+const token = localStorage.getItem('token');
+if (token != null) {
+    axios.defaults.headers = {
+        "Content-Type": "application/json",
+        Authorization: 'Token ' + token 
+    }
+}
 
 class NotificationSubsciptions extends React.Component {
     state = {
@@ -13,10 +19,6 @@ class NotificationSubsciptions extends React.Component {
         error: undefined,
     };
     componentDidMount() {
-        const token = localStorage.getItem('token');
-        axios.defaults.headers = {
-            "Content-Type": "application/json",
-            Authorization: 'Token ' + token}
         axios.get(CategoriesUrl)
             .then(res => {
                 this.setState({
@@ -36,12 +38,6 @@ class NotificationSubsciptions extends React.Component {
     };
 
     updateSubscriptions = selectedItems => {
-        const token = localStorage.getItem('token');
-        if (token != null) {
-            axios.defaults.headers = {
-              "Content-Type": "application/json",
-              Authorization: 'Token ' + token}
-            }
         axios.post(`${DataUrl}update/`, {
             responsibilities: this.state.selectedItems
         })
@@ -75,6 +71,9 @@ class NotificationSubsciptions extends React.Component {
         }
         return (
           <div>
+          {
+          token ?
+        <div>
           <div>
           {errorMessage}
           {successMessage}
@@ -108,6 +107,10 @@ class NotificationSubsciptions extends React.Component {
                 <p>Это может занять ОЧЕНЬ длительное время. В зависимости от того, сделает разработчик очистку старых записей в БД или нет.</p>
 
             </div>
+            </div>
+            :
+            <div>Только для авторизованных пользователей</div>
+            }
           </div>
         );
       }

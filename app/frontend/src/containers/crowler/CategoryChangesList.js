@@ -1,10 +1,16 @@
 import React from 'react';
 import axios from 'axios';
-import { Table, Breadcrumb, Menu, Icon, BackTop, Input, Button } from 'antd';
+import { Table, Breadcrumb, Menu, Icon, BackTop, Input, Button, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 
 
 const token = localStorage.getItem('token');
+if (token != null) {
+  axios.defaults.headers = {
+    "Content-Type": "application/json",
+    Authorization: 'Token ' + token}
+  }
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 const menu = (
   <Menu>
     <Menu.Item>
@@ -94,11 +100,6 @@ class CategoryChangesList extends React.Component {
   
     fetch = (params = {}) => {
       this.setState({ loading: true });
-      if (token != null) {
-        axios.defaults.headers = {
-          "Content-Type": "application/json",
-          Authorization: 'Token ' + token}
-        }
       axios.get('http://0.0.0.0:8000/crowler/changes/category/',{
         params: {
           ...params,
@@ -148,6 +149,10 @@ class CategoryChangesList extends React.Component {
     render() {
       return (
         <div>
+                {
+            this.props.user_loading ?
+            <Spin indicator={antIcon} /> : token ?
+            <div>
         <BackTop />
         <Breadcrumb style={{marginBottom: '20px'}}>
             <Breadcrumb.Item><Link to="/"><Icon type="home"></Icon></Link></Breadcrumb.Item>
@@ -165,6 +170,10 @@ class CategoryChangesList extends React.Component {
           loading={this.state.loading}
           onChange={this.handleTableChange}
         />
+        </div>
+        :
+        <div>Только для авторизованных пользователей</div>
+                }
         </div>
         )
     }

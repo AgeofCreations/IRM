@@ -4,6 +4,11 @@ import { Table, Breadcrumb, BackTop, Menu, Icon, Input, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
 const token = localStorage.getItem('token');
+if (token != null) {
+  axios.defaults.headers = {
+    "Content-Type": "application/json",
+    Authorization: 'Token ' + token}
+  }
 const menu = (
   <Menu>
     <Menu.Item>
@@ -96,11 +101,6 @@ class categoryListView extends React.Component {
   
     fetch = (params = {}) => {
       this.setState({ loading: true });
-      if (token != null) {
-        axios.defaults.headers = {
-          "Content-Type": "application/json",
-          Authorization: 'Token ' + token}
-        }
       axios.get('http://0.0.0.0:8000/crowler/category/',{
         params: {
           ...params,
@@ -155,6 +155,9 @@ class categoryListView extends React.Component {
     render() {
       return (
         <div>
+        {
+          token ?
+        <div>
         <BackTop />
         <Breadcrumb>
           <Breadcrumb.Item><Link to="/"><Icon type="home"></Icon></Link></Breadcrumb.Item>
@@ -172,6 +175,10 @@ class categoryListView extends React.Component {
           loading={this.state.loading}
           onChange={this.handleTableChange}
         />
+        </div> 
+        :
+        <div>Только для авторизованных пользователей</div>
+        }
         </div>
         )
     }

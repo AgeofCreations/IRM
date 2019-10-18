@@ -2,7 +2,11 @@ import * as actionTypes from '../actionTypes';
 import axios from 'axios'
 
 const token = localStorage.getItem('token');
-
+if (token != null) {
+    axios.defaults.headers = {
+      "Content-Type": "application/json",
+      Authorization: 'Token ' + token}
+    }
 const backendAdress = '0.0.0.0:8000'
 
 export const notificationsGetStart = () => {
@@ -32,11 +36,6 @@ export const notificationsLogout = () => {
 export const notificationsGetAction = (user_id) => {
     return dispatch => {
         dispatch(notificationsGetStart)
-        if (token != null) {
-            axios.defaults.headers = {
-              "Content-Type": "application/json",
-              Authorization: 'Token ' + token}
-            }
         axios.get(`http://${backendAdress}/crowler/notify/?not_read=${user_id}`)
              .then (res => {
                  const notifications_count = res.data.count;
