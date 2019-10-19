@@ -136,12 +136,34 @@ class CategoryChangesList extends React.Component {
         title: 'Изменённые поля',
         dataIndex: 'changed_fields',
         key: 'changed_fields',
+        render: (text) => <span>{
+          text
+          .replace('category_lvl','Уровень |')
+          .replace('category_is_active', 'Статус |')
+          .replace('category_url' ,'URL |')
+          .replace('category_title','Title |')
+          .replace('category_description','Description |')
+          .replace('category_full_name','FN  |')
+          .replace('category_seo_text','SEO текст |')
+          .replace('category_name','Название |')
+          .replace('category_canonical_url','Canonical URL |')
+          .replace('category_path','Путь к категории |')
+        }</span>,
         filters: [
-          { text: 'Активность', value: 'is_active' },
-          { text: 'Название', value: 'name' },
+          { text: 'Категория | Статус', value: 'is_active' },
+          { text: 'Категория | Уровень', value: 'category_lvl' },
+          { text: 'Категория | URL', value: 'category_url' },
+          { text: 'Категория | Title', value: 'category_title' },
+          { text: 'Категория | Description', value: 'category_description' },
+          { text: 'Категория | FN', value: 'category_full_name' },
+          { text: 'Категория | SEO текст', value: 'category_seo_text' },
+          { text: 'Категория | Название', value: 'category_name' },
+          { text: 'Категория | Canonical URL', value: 'category_canonical_url' },
+          { text: 'Категория | Путь к категории', value: 'category_path' },
+
         ],
-        render: (text) => <p>{text ? text.replace('is_active', 'Активность') : ''}</p>,
         filterMultiple: false
+
   
       },
     ];

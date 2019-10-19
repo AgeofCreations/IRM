@@ -128,8 +128,34 @@ class FilterpageChangesList extends React.Component {
         title: 'Изменённые поля',
         dataIndex: 'changed_fields',
         key: 'changed_fields',
-        filters: [{ text: 'Активность', value: 'is_active' }, { text: 'Название', value: 'name' }],
-        render: (text) => <p>{text ? text.replace('is_active', 'Активность') : ''}</p>,
+        render: (text) => <span>{
+          text
+          .replace('filterpage_disabling_reason','Причина отключения |')
+          .replace('filterpage_is_active_changed_at','Статус изменен (дата) |')
+          .replace('filterpage_is_active', 'Статус |')
+          .replace('filterpage_url','URL |')
+          .replace('filterpage_title','Title |')
+          .replace('filterpage_description','Description |')
+          .replace('filterpage_full_name','FN  |')
+          .replace('filterpage_text','SEO текст |')
+          .replace('filterpage_name','Название |')
+          .replace('filterpage_canonical_url','Canonical URL |')
+          .replace('filterpage_is_top','Под листингом |')
+        }</span>,
+        filters: [
+          { text: 'ПФС | Статус', value: 'is_active' },
+          { text: 'ПФС | Причина отключения', value: 'filterpage_disabling_reason' },
+          { text: 'ПФС | Статус изменён(дата)', value: 'filterpage_is_active_changed_at' },
+          { text: 'ПФС | URL', value: 'filterpage_url' },
+          { text: 'ПФС | Title', value: 'filterpage_title' },
+          { text: 'ПФС | Description', value: 'filterpage_description' },
+          { text: 'ПФС | FN', value: 'filterpage_full_name' },
+          { text: 'ПФС | SEO текст', value: 'filterpage_text' },
+          { text: 'ПФС | Название', value: 'filterpage_name' },
+          { text: 'ПФС | Canonical URL', value: 'filterpage_canonical_url' },
+          { text: 'ПФС | Под листингом', value: 'filterpage_is_top' },
+
+        ],
         filterMultiple: false
   
       },
