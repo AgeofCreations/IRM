@@ -23,7 +23,8 @@ class FilterpageListView extends React.Component {
       data: [],
       pagination: {},
       loading: false,
-      searchText: '',
+      searchPFSID: '',
+      searchPFSURL: '',
       filters: {},
     };
   
@@ -38,15 +39,15 @@ class FilterpageListView extends React.Component {
               ref={node => {
                 this.searchInput = node;
               }}
-              placeholder={`Search ${dataIndex}`}
+              placeholder={`${dataIndex} начинается с...`}
               value={selectedKeys[0]}
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+              onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
               style={{ width: 188, marginBottom: 8, display: 'block' }}
             />
             <Button
               type="primary"
-              onClick={() => this.handleSearch(selectedKeys, confirm)}
+              onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
               icon="search"
               size="small"
               style={{ width: 90, marginRight: 8 }}
@@ -65,13 +66,18 @@ class FilterpageListView extends React.Component {
         ),
       });
   
-      handleSearch = (selectedKeys, confirm) => {
+      handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm(); 
-        this.setState({ searchText: selectedKeys[0] });
+        if (dataIndex === 'filterpage_id') {
+          this.setState({ searchPFSID: selectedKeys[0] });
+        } else if (dataIndex === 'filterpage_url'){
+          this.setState({ searchPFSURL: selectedKeys[0] });
+        }
         var pagination = this.state.pagination
         var filters = this.state.filters
         this.handleTableChange(pagination,filters)
       };
+      
   
       handleReset = clearFilters => {
         clearFilters();
@@ -86,9 +92,9 @@ class FilterpageListView extends React.Component {
       });
       this.fetch({
         page: pagination.current,
-        filterpage_url: filters.filterpage_url ? filters.filterpage_url.toString() : '',
+        filterpage_url: this.state.searchPFSURL,
         filterpage_is_active: filters.filterpage_is_active ? filters.filterpage_is_active.toString() : '',
-        filterpage_id: this.state.searchText
+        filterpage_id: this.state.searchPFSID
       });
     };
   
@@ -129,9 +135,8 @@ class FilterpageListView extends React.Component {
           dataIndex: 'filterpage_url',
           key: 'filterpage_url',
           render: text => <a href={`https://sima-land.ru/${text}`} rel="noopener noreferrer" target='_blank' >{text}</a>,
-          filters: [{ text: 'FPC', value: 'fpc' }, { text: 'FPA', value: 'fpa' }],
-          filterMultiple: false
-  
+          ...this.getColumnSearchProps('filterpage_url'),
+
         },
         {
           title: 'Активна',

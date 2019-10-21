@@ -51,7 +51,7 @@ class CategoryChangesFilter(filters.FilterSet):
 
 
 class FiterpageFilter(filters.FilterSet):
-    filterpage_url = filters.CharFilter(field_name="filterpage_url", lookup_expr='icontains')
+    filterpage_url = filters.CharFilter(field_name="filterpage_url", lookup_expr='startswith')
     filterpage_created_at = filters.CharFilter(field_name="filterpage_created_at", lookup_expr='icontains')
     filterpage_is_active_changed_at = filters.CharFilter(field_name="filterpage_is_active_changed_at", lookup_expr="isnull")
     filterpage_is_active = filters.NumberFilter(field_name="filterpage_is_active")

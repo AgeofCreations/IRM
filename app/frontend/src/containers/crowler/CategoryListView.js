@@ -22,7 +22,8 @@ class categoryListView extends React.Component {
       data: [],
       pagination: {},
       loading: false,
-      searchText: '',
+      searchCatID: '',
+      searchCatURL: '',
       filters: {},
     };
   
@@ -44,15 +45,15 @@ class categoryListView extends React.Component {
             ref={node => {
               this.searchInput = node;
             }}
-            placeholder={`Search ${dataIndex}`}
+            placeholder={`${dataIndex} начинается с...`}
             value={selectedKeys[0]}
             onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+            onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
             style={{ width: 188, marginBottom: 8, display: 'block' }}
           />
           <Button
             type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm)}
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
             icon="search"
             size="small"
             style={{ width: 90, marginRight: 8 }}
@@ -67,13 +68,15 @@ class categoryListView extends React.Component {
       filterIcon: filtered => (
         <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
       ),
-      render: text => (text
-      ),
     });
 
-    handleSearch = (selectedKeys, confirm) => {
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
       confirm(); 
-      this.setState({ searchText: selectedKeys[0] });
+      if (dataIndex === 'category_id') {
+        this.setState({ searchCatID: selectedKeys[0] });
+      } else if (dataIndex === 'category_url'){
+        this.setState({ searchCatURL: selectedKeys[0] });
+      }
       var pagination = this.state.pagination
       var filters = this.state.filters
       this.handleTableChange(pagination,filters)
@@ -93,9 +96,9 @@ class categoryListView extends React.Component {
       });
       this.fetch({
         page: pagination.current,
-        category_url: filters.category_url ? filters.category_url.toString() : '',
+        category_url: this.state.searchCatURL,
         category_is_active: filters.category_is_active ? filters.category_is_active.toString() : '',
-        category_id: this.state.searchText
+        category_id: this.state.searchCatID,
       });
     };
   
@@ -135,12 +138,9 @@ class categoryListView extends React.Component {
           dataIndex: 'category_url',
           key: 'category_url',
           render: text => <a href={`https://sima-land.ru/${text}`} rel="noopener noreferrer" target='_blank' >{text}</a>,
-          filters: [
-            { text: 'Праздники', value: 'prazdniki' },
-            { text: 'Канцтовары', value: 'kanctovary' },
-            { text: 'Товары для взрослых', value: 'ehroticheskie-tovary-dlya-vzroslyh'}
-          ],
-          filterMultiple: false
+          ...this.getColumnSearchProps('category_url'),
+          
+
   
         },
         {
