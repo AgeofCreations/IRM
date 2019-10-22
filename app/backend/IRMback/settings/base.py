@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'django_filters',
 
     'crowler',
-    'combinator'
+    'combinator',
+    'mainpage'
 ]
 SITE_ID = 1
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 99999

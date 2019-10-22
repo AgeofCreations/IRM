@@ -16,6 +16,8 @@ services:
     command: >
       sh -c "python manage.py makemigrations --noinput &&
              python manage.py migrate &&
+             python manage.py makegroups &&
+             python manage.py createsu &&
              gunicorn -w 4 IRMback.wsgi -b 0.0.0.0:8000"
     depends_on:
       - postgres
@@ -50,12 +52,20 @@ services:
       - 4369:4369
   celery_worker:
     <<: *python
-    # command: celery -A IRMback worker --loglevel=info && celery -A IRMback beat -l info -S django
-    command: sh -c "celery -A IRMback worker --loglevel=info && celery -A IRMback beat -l info -S django"
-    # Ещё не тестил запись выше. Цель - запустить селери, а после запустить celery-beat как субпроцесс.
+    command: sh -c "celery -A IRMback worker --loglevel=info"
     environment:
       - C_FORCE_ROOT=true
     ports: []
     depends_on:
       - rabbitmq
       - postgres
+  celery_beat:
+    <<: *python
+    command: sh -c "celery -A IRMback beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    environment:
+      - C_FORCE_ROOT=true
+    ports: []
+    depends_on:
+      - rabbitmq
+      - postgres
+      - celery_worker
