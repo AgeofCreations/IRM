@@ -1,9 +1,10 @@
 import { Form, Icon, Input, Button, Modal, Radio, Alert } from 'antd';
 import React from 'react';
 import axios from 'axios';
+import backendURL from '../../consts'
 
 
-const backendUrl = 'http://0.0.0.0:8000/api/admin/verificate_user/'
+
 
 const token = localStorage.getItem('token');
 
@@ -31,7 +32,7 @@ class UserVerification extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
-            axios.post(backendUrl, {
+            axios.post(`${backendURL}/api/admin/verificate_user/`, {
               verificating_user: values.username,
               action: this.state.verificationRadio
             })

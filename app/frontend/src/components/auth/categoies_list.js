@@ -1,9 +1,8 @@
 import { Form, Icon, Input, Button, Modal, Radio, Alert } from 'antd';
 import React from 'react';
 import axios from 'axios';
+import backendURL from '../../consts'
 
-
-const backendUrl = 'http://0.0.0.0:8000/crowler/notify/categories/update/'
 
 const token = localStorage.getItem('token');
 
@@ -31,7 +30,7 @@ class CategoriesUpdate extends React.Component {
         this.props.form.validateFields((err, values) => {
           if (!err) {
             axios
-                .post(backendUrl, {
+                .post(`${backendURL}/crowler/notify/categories/update/`, {
                     category: values.username,
                     action: this.state.categoriesRadio
                     })

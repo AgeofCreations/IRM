@@ -14,9 +14,11 @@ export interface ArgsProps {
     type: NoticeType;
     onClose?: () => void;
     icon?: React.ReactNode;
+    key?: string | number;
 }
 declare type ConfigContent = React.ReactNode | string;
 declare type ConfigDuration = number | (() => void);
+declare type JointContent = ConfigContent | ArgsProps;
 export declare type ConfigOnClose = () => void;
 export interface ConfigOptions {
     top?: number;
@@ -27,12 +29,12 @@ export interface ConfigOptions {
     maxCount?: number;
 }
 export interface MessageApi {
-    info(content: ConfigContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
-    success(content: ConfigContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
-    error(content: ConfigContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
-    warn(content: ConfigContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
-    warning(content: ConfigContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
-    loading(content: ConfigContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
+    info(content: JointContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
+    success(content: JointContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
+    error(content: JointContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
+    warn(content: JointContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
+    warning(content: JointContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
+    loading(content: JointContent, duration?: ConfigDuration, onClose?: ConfigOnClose): MessageType;
     open(args: ArgsProps): MessageType;
     config(options: ConfigOptions): void;
     destroy(): void;

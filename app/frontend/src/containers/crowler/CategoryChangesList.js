@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Table, Breadcrumb, Menu, Icon, BackTop, Input, Button, Spin } from 'antd';
 import { Link } from 'react-router-dom';
+import backendURL from '../../consts'
 
 
 const token = localStorage.getItem('token');
@@ -100,7 +101,7 @@ class CategoryChangesList extends React.Component {
   
     fetch = (params = {}) => {
       this.setState({ loading: true });
-      axios.get('http://0.0.0.0:8000/crowler/changes/category/',{
+      axios.get(`${backendURL}/crowler/changes/category/`,{
         params: {
           ...params,
         }})

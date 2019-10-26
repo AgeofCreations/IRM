@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import AnchorLink from './AnchorLink';
 import { ConfigConsumerProps } from '../config-provider';
-declare function getDefaultContainer(): Window;
+declare function getDefaultContainer(): Window & typeof globalThis;
 export declare type AnchorContainer = HTMLElement | Window;
 export interface AnchorProps {
     prefixCls?: string;
@@ -22,6 +22,8 @@ export interface AnchorProps {
     }) => void;
     /** Scroll to target offset value, if none, it's offsetTop prop value or 0. */
     targetOffset?: number;
+    /** Listening event when scrolling change active link */
+    onChange?: (currentActiveLink: string) => void;
 }
 export interface AnchorState {
     activeLink: null | string;
@@ -70,6 +72,7 @@ export default class Anchor extends React.Component<AnchorProps, AnchorState> {
     getCurrentAnchor(offsetTop?: number, bounds?: number): string;
     handleScrollTo: (link: string) => void;
     saveInkNode: (node: HTMLSpanElement) => void;
+    setCurrentActiveLink: (link: string) => void;
     handleScroll: () => void;
     updateInk: () => void;
     renderAnchor: ({ getPrefixCls }: ConfigConsumerProps) => JSX.Element;

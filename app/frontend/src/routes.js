@@ -20,7 +20,7 @@ import NotificationsRead from './containers/crowler/notifications/NotificationsR
 import NotificationSubsciptions from './containers/crowler/notifications/Subscriptions'
 import WrappedNormalManagement from './containers/auth/management'
 import Feedback from './containers/feedback'
-
+import MetricsMain from './containers/metrics/metrics_main'
 
 
 
@@ -46,6 +46,7 @@ const BaseRouter = () => (
         <Route exact path='/notifications/subscriptions/' component = {NotificationSubsciptions} /> {""}
         <Route exact path='/management/' component = {WrappedNormalManagement} /> {""}
         <Route exact path='/feedback/' component = {Feedback} /> {""}
+        <Route exact path='/metrics/' component = {MetricsMain} /> {""}
 
 
 

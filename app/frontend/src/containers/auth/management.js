@@ -1,7 +1,6 @@
 import { Form, Icon, Button, Tabs, Modal, Spin } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux'
-import axios from 'axios';
 
 import WrappedGroupsManagement from '../../components/auth/groups_management'
 import WrappedUserVerification from '../../components/auth/user_verification'

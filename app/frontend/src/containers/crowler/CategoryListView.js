@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Table, Breadcrumb, BackTop, Menu, Icon, Input, Button } from 'antd';
 import { Link } from 'react-router-dom';
+import backendURL from '../../consts'
 
 const token = localStorage.getItem('token');
 if (token != null) {
@@ -104,7 +105,7 @@ class categoryListView extends React.Component {
   
     fetch = (params = {}) => {
       this.setState({ loading: true });
-      axios.get('http://0.0.0.0:8000/crowler/category/',{
+      axios.get(`${backendURL}/crowler/category/`,{
         params: {
           ...params,
         }})

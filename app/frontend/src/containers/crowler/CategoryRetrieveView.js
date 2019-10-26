@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Descriptions } from 'antd';
 import { Link } from 'react-router-dom';
+import backendURL from '../../consts'
 
 const token = localStorage.getItem('token');
 if (token != null) {
@@ -17,7 +18,7 @@ class CategoryRetrieveView extends React.Component {
     componentDidUpdate (prevProps) {
         if (this.props.match.params.categoryID !== prevProps.match.params.categoryID) {
         const categoryID = this.props.match.params.categoryID; 
-        axios.get(`http://0.0.0.0:8000/crowler/category/${categoryID}/`)
+        axios.get(`${backendURL}/crowler/category/${categoryID}/`)
             .then(res => {
                 this.setState({
                     data: res.data
@@ -27,7 +28,7 @@ class CategoryRetrieveView extends React.Component {
     }
     componentWillMount() {
         const categoryID = this.props.match.params.categoryID; 
-        axios.get(`http://0.0.0.0:8000/crowler/category/${categoryID}/`)
+        axios.get(`${backendURL}/crowler/category/${categoryID}/`)
             .then(res => {
                 this.setState({
                     data: res.data

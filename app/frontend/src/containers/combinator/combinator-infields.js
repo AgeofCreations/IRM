@@ -194,7 +194,7 @@ class CombinatorForm extends React.Component {
                         <Checkbox type="checkbox" name="col6" checked={this.state.col6} onChange={this.handleCheckboxChange} style={{marginLeft: '16.3%', marginTop: '10px'}}>Столбец 6</Checkbox>
                         <Checkbox type="checkbox" name="col7" checked={this.state.col7} onChange={this.handleCheckboxChange} style={{marginLeft: '16.1%', marginTop: '10px'}}>Столбец 7</Checkbox>
                         <Checkbox type="checkbox" name="col8" checked={this.state.col8} onChange={this.handleCheckboxChange} style={{marginLeft: '16.2%', marginTop: '10px'}}>Столбец 8</Checkbox>
-                        <Button type="danger" name="target8" icon="close" onClick={this.handleColumnClear}></Button>
+                        {/* <Button type="danger" name="target8" icon="close" onClick={this.handleColumnClear}></Button> */}
                         </div>
                     {getFieldDecorator('value5')(
                         <TextArea placeholder="Столбец 5" name="target5" onChange={this.onChangeColumn} allowclear="true" style={{ height: '250px', width: '20%', resize: 'none', marginLeft: '50px', marginTop: '5px' }}/>,

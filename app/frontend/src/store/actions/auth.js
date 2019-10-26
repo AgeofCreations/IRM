@@ -2,7 +2,8 @@ import axios from 'axios';
 import * as actionTypes from '../actionTypes';
 import * as notificationsActions from './notifications';
 
-const backendAdress = '0.0.0.0:8000'
+import backendURL from '../../consts'
+
 
 export const authStart = () => {
     return {
@@ -84,7 +85,7 @@ export function emailConfirmationAction(key) {
     return dispatch => {
       dispatch(emailConfirmationRequest())
       axios
-        .post(`http://${backendAdress}/account-confirm-email/`, key )
+        .post(`${backendURL}/account-confirm-email/`, key )
         .then(response => {
           dispatch(emailConfirmationRequestSuccess())
         })
@@ -105,7 +106,7 @@ export const userProfileGetAction = (token) => {
             Authorization: 'Token ' + token 
         }
     }
-        axios.get(`http://${backendAdress}/rest-auth/user/`)
+        axios.get(`${backendURL}/rest-auth/user/`)
         .then(res => {
             const username = res.data.username;
             const email = res.data.email;
@@ -125,7 +126,7 @@ export const userProfileGetAction = (token) => {
 export const authLogin = (username, password) => {
     return dispatch => {
         dispatch(authStart());
-        axios.post(`http://${backendAdress}/rest-auth/login/`, {
+        axios.post(`${backendURL}/rest-auth/login/`, {
             username: username,
             password: password
         })
@@ -151,7 +152,7 @@ export const authLogin = (username, password) => {
 export const authSignup = (username, email, password1, password2) => {
     return dispatch => {
         dispatch(authStart());
-        axios.post(`http://${backendAdress}/rest-auth/registration/`, {
+        axios.post(`${backendURL}/rest-auth/registration/`, {
             username: username,
             email: email,
             password1: password1,

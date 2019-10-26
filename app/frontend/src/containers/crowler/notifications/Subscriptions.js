@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button, Select, Alert } from 'antd'
 import axios from 'axios'
-const DataUrl = `http://0.0.0.0:8000/crowler/notify/subscriptions/`;
-const CategoriesUrl = `http://0.0.0.0:8000/crowler/notify/categories/`;
+import backendURL from '../../../consts'
+
+
+
 const token = localStorage.getItem('token');
 if (token != null) {
     axios.defaults.headers = {
@@ -19,13 +21,13 @@ class NotificationSubsciptions extends React.Component {
         error: undefined,
     };
     componentDidMount() {
-        axios.get(CategoriesUrl)
+        axios.get(`${backendURL}/crowler/notify/categories/`)
             .then(res => {
                 this.setState({
                     options: res.data
                 })
             })
-        axios.get(DataUrl)
+        axios.get(`${backendURL}/crowler/notify/subscriptions/`)
             .then(res => {
                 this.setState({
                     selectedItems: res.data
@@ -37,8 +39,8 @@ class NotificationSubsciptions extends React.Component {
         this.setState({ selectedItems });
     };
 
-    updateSubscriptions = selectedItems => {
-        axios.post(`${DataUrl}update/`, {
+    updateSubscriptions = () => {
+        axios.post(`${backendURL}/crowler/notify/subscriptions/update/`, {
             responsibilities: this.state.selectedItems
         })
             .then(res => {

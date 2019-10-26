@@ -1,9 +1,18 @@
 from rest_framework import serializers
 
-from .models import CombinatorCols
+from .models import Month, Week, MetricsCategories
 
-class CombinatorSerializer(serializers.ModelSerializer):
+class MonthSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CombinatorCols
-        fields = ('pk', 'first_column', 'second_column', 'third_column', 'fourth_column', 'fifth_column', 'sixth_column', 'seventh_column',
-             'eighth_column', 'result', 'account_owner')
+        model = Month
+        fields = ('__all__')
+
+class WeekSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Week
+        fields = ('__all__')
+
+class MetricsCategoriesSerializer(serializers.Serializer):
+    class Meta:
+        model = MetricsCategories
+        fields = ('__all__')

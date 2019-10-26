@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Descriptions, Alert, Breadcrumb, Menu, Icon, BackTop, Spin } from 'antd';
 import { Link } from 'react-router-dom';
+import backendURL from '../../consts'
 
 const token = localStorage.getItem('token');
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -27,7 +28,7 @@ class CategoryChangesView extends React.Component {
     componentDidUpdate (prevProps) {
         if (this.props.match.params.categoryID !== prevProps.match.params.categoryID) {
         const categoryID = this.props.match.params.categoryID; 
-        axios.get(`http://0.0.0.0:8000/crowler/changes/category/${categoryID}/`)
+        axios.get(`${backendURL}/crowler/changes/category/${categoryID}/`)
             .then(res => {
                 this.setState({
                     data: res.data
@@ -37,7 +38,7 @@ class CategoryChangesView extends React.Component {
     }
     componentDidMount() {
         const categoryID = this.props.match.params.categoryID; 
-        axios.get(`http://0.0.0.0:8000/crowler/changes/category/${categoryID}/`)
+        axios.get(`${backendURL}/crowler/changes/category/${categoryID}/`)
             .then(res => {
                 this.setState({
                     data: res.data

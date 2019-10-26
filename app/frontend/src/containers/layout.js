@@ -90,7 +90,7 @@ class CustomLayout extends Component {
               >
                 <Menu.Item key="6"><Link to="/combinator/">Пересекатор</Link></Menu.Item>
                 <Menu.Item key="7">Заглушка</Menu.Item>
-                <Menu.Item key="8">Метрика</Menu.Item>
+                <Menu.Item key="8"><Link to="/metrics/">Метрика</Link></Menu.Item>
                 <Menu.Item key="9">E-mail шаблонизатор</Menu.Item>
               </SubMenu>
               <SubMenu

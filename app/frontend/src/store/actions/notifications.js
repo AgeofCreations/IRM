@@ -1,5 +1,6 @@
 import * as actionTypes from '../actionTypes';
 import axios from 'axios'
+import backendURL from '../../consts'
 
 const token = localStorage.getItem('token');
 if (token != null) {
@@ -7,7 +8,6 @@ if (token != null) {
       "Content-Type": "application/json",
       Authorization: 'Token ' + token}
     }
-const backendAdress = '0.0.0.0:8000'
 
 export const notificationsGetStart = () => {
     return{
@@ -36,7 +36,7 @@ export const notificationsLogout = () => {
 export const notificationsGetAction = (user_id) => {
     return dispatch => {
         dispatch(notificationsGetStart)
-        axios.get(`http://${backendAdress}/crowler/notify/?not_read=${user_id}`)
+        axios.get(`${backendURL}/crowler/notify/?not_read=${user_id}`)
              .then (res => {
                  const notifications_count = res.data.count;
                  dispatch(notificationsGetSuccess(notifications_count));

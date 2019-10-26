@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 
     'crowler',
     'combinator',
+    'metrics',
     'mainpage'
 ]
 SITE_ID = 1

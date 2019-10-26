@@ -2,8 +2,8 @@
 import axios from 'axios';
 import * as actionTypes from '../actionTypes';
 //import { checkPropTypes } from 'prop-types';
+import backendURL from '../../consts'
 
-const backendAdress = '0.0.0.0:8000'
 
 
 
@@ -44,7 +44,7 @@ export const combinatorAction = (value1, value2, value3, value4, value5, value6,
     value8 ? value8 = value8 : value8 = ""
     return dispatch => {
         dispatch(combinatorStart())
-        axios.post(`http://${backendAdress}/combinator/`, {
+        axios.post(`${backendURL}/combinator/`, {
             first_column: value1,
             second_column: value2,
             third_column: value3,

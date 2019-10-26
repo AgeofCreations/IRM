@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Descriptions, Alert, Breadcrumb, Menu, Icon, BackTop } from 'antd';
 import { Link } from 'react-router-dom';
+import backendURL from '../../consts'
+
 
 const token = localStorage.getItem('token');
 if (token != null) {
@@ -26,7 +28,7 @@ class FilterpageChangesView extends React.Component {
     componentDidUpdate (prevProps) {
         if (this.props.match.params.categoryID !== prevProps.match.params.categoryID) {
         const filterpageID = this.props.match.params.filterpageID; 
-        axios.get(`http://0.0.0.0:8000/crowler/changes/filterpage/${filterpageID}/`)
+        axios.get(`${backendURL}/crowler/changes/filterpage/${filterpageID}/`)
             .then(res => {
                 this.setState({
                     data: res.data
@@ -36,7 +38,7 @@ class FilterpageChangesView extends React.Component {
     }
     componentDidMount() {
         const filterpageID = this.props.match.params.filterpageID; 
-        axios.get(`http://0.0.0.0:8000/crowler/changes/filterpage/${filterpageID}/`)
+        axios.get(`${backendURL}/crowler/changes/filterpage/${filterpageID}/`)
             .then(res => {
                 this.setState({
                     data: res.data

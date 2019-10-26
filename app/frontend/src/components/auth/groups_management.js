@@ -1,9 +1,9 @@
 import React from 'react'
 import axios from 'axios'
 import { Form, Icon, Input, Button, Modal, Radio, Alert, Select } from 'antd';
+import backendURL from '../../consts'
 
 
-const GroupsUrl = `http://0.0.0.0:8000/api/admin/groups/`;
 
 const token = localStorage.getItem('token');
 
@@ -23,7 +23,7 @@ class GroupsManagement extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(GroupsUrl)
+        axios.get(`${backendURL}/api/admin/groups/`)
             .then(res => {
                 this.setState({
                     groupsOptions: res.data
@@ -59,7 +59,7 @@ class GroupsManagement extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
-            axios.post(`${GroupsUrl}update/`, {
+            axios.post(`${backendURL}/api/admin/groups/update/`, {
               updating_user: values.groupsUsername,
               action: this.state.groupsRadio,
               groups_to_update: this.state.groupsSelected

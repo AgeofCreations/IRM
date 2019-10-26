@@ -3,9 +3,9 @@ import { BackTop, Menu, Table, Breadcrumb, Icon, Button, message, Modal, Input }
 import axios from 'axios'
 import { Link }  from 'react-router-dom'
 import { connect } from 'react-redux';
+import backendURL from '../../../consts'
 
 
-const DataUrl = `http://0.0.0.0:8000/crowler/notify`;
 const token = localStorage.getItem('token');
 if (token != null) {
   axios.defaults.headers = {
@@ -37,6 +37,11 @@ class NotificationsRead extends React.Component {
 
       }
   }
+  componentDidMount() {
+    if (this.props.user_id){ 
+      this.fetch()
+    }
+  }
   info() {
     Modal.info({
       title: 'Прочитанные уведомления',
@@ -49,12 +54,6 @@ class NotificationsRead extends React.Component {
       onOk() {},
     });
   }
-
-    componentDidMount() {
-      if (this.props.user_id){ 
-        this.fetch()
-      }
-    }
 
 //---------------------ПОИСК----------------------
 getColumnSearchProps = dataIndex => ({
@@ -183,7 +182,7 @@ handleReset = clearFilters => {
 
     delete = (id) => {
       this.setState({ loading: true });
-      axios.post(`${DataUrl}/delete/`, {notification_id: id})
+      axios.post(`${backendURL}crowler/notify/delete/`, {notification_id: id})
       message
       .loading('Удаляем из базы. Это может занять некоторое время.', 2.5)
       var pagination = this.state.pagination
@@ -209,7 +208,7 @@ handleReset = clearFilters => {
 
     fetch = (params = {}) => {
       this.setState({ loading: true });
-      axios.get(`${DataUrl}/?is_actual=${this.props.user_id}`,{
+      axios.get(`${backendURL}/crowler/notify/?is_actual=${this.props.user_id}`,{
         params: {
           ...params,
           
