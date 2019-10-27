@@ -21,14 +21,14 @@ class MonthView(GenericViewSet, CreateModelMixin): #/metrics/month/<pk>/
         request_data = self.request.data['month'].split('-')
         year = request_data[0]
         month = request_data[1]
-        qs = Month.objects.get(name=month, year=year)
-        categories_all = MetricsCategories.objects.all()
+        month_q = Month.objects.get(name=month, year=year)
+        categories_all = month_q.categoriesdata_set.all()
         categories = []
         for category in categories_all:
             category_data = {}
             weeks_data = []
             for week in category.week_set.all().order_by('in_month'):
-                if week.month == qs:
+                if week.month == month_q:
                     weeks_data.append({
                         'first_day': week.first_day,
                         'last_day': week.last_day,
@@ -36,18 +36,20 @@ class MonthView(GenericViewSet, CreateModelMixin): #/metrics/month/<pk>/
                         'in_month': week.in_month,
                     })
             category_data.update({
-                'name': category.category_url,
+                'name': category.category_name,
+                'category_plan': category.category_plan,
+                'category_factual': category.category_factual,
                 'weeks_data': weeks_data
             })
             categories.append(category_data)
         month = []
         data_response = {
-            'name': qs.name,
-            'year': qs.year,
-            'monthly_target': qs.monthly_target,
-            'monthly_factual': qs.monthly_factual,
-            'site_target': qs.site_target,
-            'site_factual': qs.site_factual,
+            'name': month_q.name,
+            'year': month_q.year,
+            'monthly_target': month_q.monthly_target,
+            'monthly_factual': month_q.monthly_factual,
+            'site_target': month_q.site_target,
+            'site_factual': month_q.site_factual,
             'categories': categories
         }
         month.append(data_response)

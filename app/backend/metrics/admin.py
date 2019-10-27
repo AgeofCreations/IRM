@@ -1,5 +1,5 @@
 from django.contrib import admin
-from metrics.models import (Month, MetricsToken, MetricsCategories, Week)
+from metrics.models import (Month, MetricsToken, MetricsCategories, Week, CategoriesData)
 # Register your models here.
 
 @admin.register(Month)
@@ -17,6 +17,10 @@ class WeekAdmin(admin.ModelAdmin):
 
 @admin.register(MetricsCategories)
 class MetricsCategoriesAdmin(admin.ModelAdmin):
+    list_display = ('__str__', )
+
+@admin.register(CategoriesData)
+class CategoriesDataAdmin(admin.ModelAdmin):
     list_display = ('__str__', )
 
 # @admin.register(MetricsOldData)

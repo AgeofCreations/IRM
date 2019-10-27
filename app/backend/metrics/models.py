@@ -5,12 +5,12 @@ UserModel = get_user_model()
 
 
 
-
 class MetricsCategories(models.Model):
     category_url = models.CharField(max_length=250, blank=True)
-
+    
     def __str__(self):
         return str(self.category_url)
+
 
 class Month(models.Model):
     name = models.CharField(max_length=250, null=True)
@@ -26,10 +26,20 @@ class Month(models.Model):
     def __str__(self):
         return str(self.name) + str(self.year)
 
+class CategoriesData(models.Model):
+    month = models.ForeignKey(Month, on_delete=models.DO_NOTHING, null=True)
+    category_name = models.CharField(max_length=250, blank=True)
+    category_plan = models.IntegerField(blank=True, null=True)
+    category_factual = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.category_name)
+
+
 
 class Week(models.Model):
     month = models.ForeignKey(Month, on_delete=models.DO_NOTHING)
-    category = models.ForeignKey(MetricsCategories, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(CategoriesData, on_delete=models.DO_NOTHING)
     first_day = models.CharField(max_length=250, null=True)
     last_day = models.CharField(max_length=250, null=True)
     weekly_traffic = models.IntegerField(blank=True, null=True)

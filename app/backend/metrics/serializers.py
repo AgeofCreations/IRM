@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Month, Week, MetricsCategories
+from .models import Month, Week, MetricsCategories, CategoriesData
 
 class MonthSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,6 +10,11 @@ class MonthSerializer(serializers.ModelSerializer):
 class WeekSerializer(serializers.ModelSerializer):
     class Meta:
         model = Week
+        fields = ('__all__')
+
+class CategoriesDataSerializer(serializers.Serializer):
+    class Meta:
+        model = CategoriesData
         fields = ('__all__')
 
 class MetricsCategoriesSerializer(serializers.Serializer):
