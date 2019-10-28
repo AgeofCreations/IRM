@@ -66,7 +66,7 @@ class NormalLoginForm extends React.Component {
                     <Form.Item>
                         <Button type="primary" htmlType="submit" style={{marginRight: '10px'}}>Войти</Button>
                         или
-                        <NavLink style={{marginRight: '10px'}} to='/signup/'>  Загеристрироваться</NavLink>
+                        <NavLink style={{marginRight: '10px'}} to='/signup/'>  Зарегистрироваться</NavLink>
 
                     </Form.Item>
 

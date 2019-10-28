@@ -170,7 +170,6 @@ export const authSignup = (username, email, password1, password2) => {
         .catch(error => {
             if(error.response) {
                 dispatch(authFail(error.response.data))
-                console.error(error.response.data)
             }
         })
     }

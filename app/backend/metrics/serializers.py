@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Month, Week, MetricsCategories, CategoriesData
+from .models import Month, Week, MetricsCategories, CategoriesData, MetricsToken
 
 class MonthSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,3 +21,8 @@ class MetricsCategoriesSerializer(serializers.Serializer):
     class Meta:
         model = MetricsCategories
         fields = ('__all__')
+
+class MetricsTokenSerializer(serializers.Serializer):
+    class Meta:
+        model = MetricsToken
+        fileds = ('__all__')

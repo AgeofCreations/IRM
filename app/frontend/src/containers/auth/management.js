@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import WrappedGroupsManagement from '../../components/auth/groups_management'
 import WrappedUserVerification from '../../components/auth/user_verification'
 import CategoriesUpdateForm from '../../components/auth/categoies_list'
+import MetricsCategoriesUpdateForm from '../../components/auth/metrics_categoies_list'
 
 
 const { TabPane } = Tabs;
@@ -49,6 +50,9 @@ class Management extends React.Component {
         </TabPane>
         <TabPane tab="Управление списком категорий" key="3">
           <CategoriesUpdateForm />
+        </TabPane>
+        <TabPane tab = "Управление категорями для метрики" key="4">
+          <MetricsCategoriesUpdateForm />
         </TabPane>
       </Tabs>
       </div>

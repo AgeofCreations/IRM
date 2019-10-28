@@ -15,11 +15,11 @@ class MetricsCategories(models.Model):
 class Month(models.Model):
     name = models.CharField(max_length=250, null=True)
     year = models.IntegerField(default=2020)
-    monthly_target = models.IntegerField(blank=True, null=True)
+    monthly_target = models.IntegerField(default=0)
     monthly_factual = models.IntegerField(blank=True, null=True)
     month_starts = models.CharField(max_length=250, null=True)
     month_ends = models.CharField(max_length=250, null=True)
-    site_target = models.IntegerField(blank=True, null=True)
+    site_target = models.IntegerField(default=0)
     site_factual = models.IntegerField(blank=True, null=True)
     is_now = models.BooleanField(default=True)
 
@@ -29,7 +29,7 @@ class Month(models.Model):
 class CategoriesData(models.Model):
     month = models.ForeignKey(Month, on_delete=models.DO_NOTHING, null=True)
     category_name = models.CharField(max_length=250, blank=True)
-    category_plan = models.IntegerField(blank=True, null=True)
+    category_plan = models.IntegerField(default=0)
     category_factual = models.IntegerField(blank=True, null=True)
 
     def __str__(self):

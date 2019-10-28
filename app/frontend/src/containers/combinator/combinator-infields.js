@@ -2,7 +2,7 @@ import { Input, Button, Popover, Icon, Spin, Form, Checkbox, Modal} from 'antd';
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/combinator'
-import CombinatorSettings from '../../components/combinator/combinator-settings'
+// import CombinatorSettings from '../../components/combinator/combinator-settings'
 
 const { TextArea } = Input;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -125,12 +125,6 @@ class CombinatorForm extends React.Component {
                         length8: length8
             });
           }
-    handleColumnClear = e => {
-        const target = e.target
-        const value = target.type === 'danger' ? '' : target.value;
-        const name = target.name
-        
-    }
 
     clearFields = () => {
         this.props.form.resetFields();
@@ -160,12 +154,11 @@ class CombinatorForm extends React.Component {
             <Spin indicator={antIcon} />
             : this.props.token ?
                 <div className="container" >
-                <Button icon="question-circle" style={{'position': 'absolute', 'right': '10%', top: '15%'}} onClick={this.info}></Button>
-                    <CombinatorSettings style={{marginTop: '30px'}} className="unselectable" />
+                <Button icon="question-circle" style={{'position': 'absolute', 'right': '10%', top: '10%'}} onClick={this.info}></Button>
+                    {/* <CombinatorSettings style={{marginTop: '30px'}} className="unselectable" /> */}
                     <Form  onSubmit={this.handleSubmit}>
                         <div>
                             <Checkbox type="checkbox" name="col1" checked={this.state.col1} onChange={this.handleCheckboxChange} style={{marginLeft: '4%', marginTop: '40px'}}>Столбец 1</Checkbox>
-                            <Button type="danger" name="target1" icon="close" onClick={this.handleCheckboxChange}></Button>
                             <Checkbox type="checkbox" name="col2" checked={this.state.col2} onChange={this.handleCheckboxChange} style={{marginLeft: '16.3%', marginTop: '40px'}}>Столбец 2</Checkbox>
                             <Checkbox type="checkbox" name="col3" checked={this.state.col3} onChange={this.handleCheckboxChange} style={{marginLeft: '16.1%', marginTop: '40px'}}>Столбец 3</Checkbox>
                             <Checkbox type="checkbox" name="col4" checked={this.state.col4} onChange={this.handleCheckboxChange} style={{marginLeft: '16.2%', marginTop: '40px'}}>Столбец 4</Checkbox>

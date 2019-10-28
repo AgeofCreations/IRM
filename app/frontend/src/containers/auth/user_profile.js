@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { connect } from 'react-redux'
-import NotLoggedIn from '../../components/accessDenied/notLoggedIn'
-import { Divider, Col, Row } from 'antd';
+import { Divider, Col, Row, Form, Input } from 'antd';
+import axios from 'axios'
+import backendURL from '../../consts'
 
 const pStyle = {
   fontSize: 16,
@@ -37,7 +38,14 @@ const DescriptionItem = ({ title, content }) => (
 
 
 class UserProfile extends React.Component {
-    state = { visible: false };
+    state = {
+       visible: false,
+       token: null
+      };
+
+    componentDidMount() {
+      this.getMetricsToken()
+    }
 
     showDrawer = () => {
       this.setState({
@@ -50,7 +58,30 @@ class UserProfile extends React.Component {
         visible: false,
       });
     };
+
+    getMetricsToken = () => {
+      axios.get(`${backendURL}/metrics/token/`)
+           .then(res => {
+             this.setState({
+               token: res.data
+             })
+           })
+    }
+    handleNewToken = e => {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          axios.post(`${backendURL}/metrics/token/`, {
+            token: values.token
+          })  
+          this.getMetricsToken()
+        }
+      });
+    };
+
     render() {
+    const { getFieldDecorator } = this.props.form;
+
         return(
             <div>
                 {
@@ -65,11 +96,33 @@ class UserProfile extends React.Component {
            
                   </Row>
                   <Row>
-                    <Col span={24}>
+                    <Col span={12}>
                       <DescriptionItem
                         title="Статус"
                         content="Активен"
                       />
+                    </Col>
+                    <Col span={12}>
+                      <DescriptionItem
+                        title="Токен метрики"
+                        content={this.state.token}
+                      />
+                      {
+                        this.state.token == null? 
+                        <Form onSubmit={this.handleNewToken} className="token-form">
+                          <Form.Item style={{marginTop: '20px'}}>
+                            {getFieldDecorator('token', {
+                                rules: [{ required: true, message: 'Введите новый токен.' }],
+                            })(
+                                <Input
+                                placeholder="Новый токен"
+                                />,
+                            )}
+                          </Form.Item>
+                        </Form>
+                      :
+                      <div></div>
+                      }
                     </Col>
                   </Row>
                   <Divider />
@@ -91,12 +144,15 @@ class UserProfile extends React.Component {
 
                 :
 
-                <NotLoggedIn {...this.props}></NotLoggedIn>
+                <div>Для просмотра этой страницы требуется вход.</div>
                 }
             </div>
         )
     }
 }
+
+const WrappedUserProfile = Form.create({ name: 'normal_profile' })(UserProfile);
+
 
 
 const mapStateToProps = (state) => {
@@ -109,4 +165,4 @@ const mapStateToProps = (state) => {
         user_email: state.authReducer.user_email
     }
 }
-export default connect(mapStateToProps)(UserProfile);
+export default connect(mapStateToProps)(WrappedUserProfile);
