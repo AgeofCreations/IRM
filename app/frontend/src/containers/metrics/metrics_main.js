@@ -70,34 +70,51 @@ class MetricsMain extends React.Component {
           render: (text) => <span>{text}</span>,
         },
         {
+          title: 'План за месяц',
+          dataIndex: 'category_plan',
+          key: 'action_subjects',
+          render: (text) => <span>{text}</span>,
+  
+        },
+        {
           title: this.state.first_week,
           dataIndex: 'weeks_data[0].weekly_traffic',
           key: 'first_week_col',
           render: (text) => <span>{text}</span>,
         },
         {
-            title: 'Действие',
-            dataIndex: 'action_is',
+            title: 'Вторая неделя',
+            dataIndex: 'weeks_data[1].weekly_traffic',
             key: 'action_is',
-            render: (text, record) => <span>{text === 'created'? <div>Создано</div> : <div><Link rel="noopener noreferrer" target='_blank' to={record.filterpage_id ? `/crowler/changes/filter-pages/${record.action_id}`: `/crowler/changes/categories/${record.action_id}`}>Изменено</Link></div>}</span>,
+            render: (text) => <span>{text}</span>,
     
           },
           {
-            title: 'Изменённые поля',
-            dataIndex: 'action_subjects',
+            title: 'Третья неделя',
+            dataIndex: 'weeks_data[2].weekly_traffic',
             key: 'action_subjects',
             render: (text) => <span>{text}</span>,
     
           },
-          { 
-            title: 'Действия',
-            dataIndex: 'id',
-            key: 'actions',
-            render: (text, row) => (
-            <span>
-            <span style={{'color': 'red', 'cursor': 'pointer'}} onClick={() => this.delete(row.id)}>Удалить</span>
-            </span>
-            )
+          {
+            title: 'Четвёртая неделя',
+            dataIndex: 'weeks_data[3].weekly_traffic',
+            key: 'action_subjects',
+            render: (text) => <span>{text}</span>,
+    
+          },
+          {
+            title: 'Пятая неделя',
+            dataIndex: 'weeks_data[4].weekly_traffic',
+            key: 'action_subjects',
+            render: (text) => <span>{text}</span>,
+    
+          },
+          {
+            title: 'Суммарно за месяц',
+            dataIndex: 'category_factual',
+            key: 'action_subjects',
+            render: (text) => <span>{text}</span>,
     
           },
       ];
@@ -130,7 +147,10 @@ class MetricsMain extends React.Component {
           this.setState({
             loading: false,
             data: res.data.categories,
-            // first_week: res.data.categories.weeks_data[0].first_day + '-' + res.data.categories.weeks_data[0].last_day,
+            first_week: res.data.categories[0].weeks_data[0].first_day + '-' + res.data.categories[0].weeks_data[0].last_day,
+            second_week: res.data.categories[0].weeks_data[1].first_day + '-' + res.data.categories[0].weeks_data[1].last_day,
+            third_week: res.data.categories[0].weeks_data[2].first_day + '-' + res.data.categories[0].weeks_data[2].last_day,
+            fourth_week: res.data.categories[0].weeks_data[3].first_day + '-' + res.data.categories[0].weeks_data[3].last_day,
           });
         });
       };

@@ -8,7 +8,7 @@ ALLOWED_HOSTS = '*'
 INSTALLED_APPS += [
     'django_extensions'
 ]
-
+#a30dm16i21n
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -19,7 +19,7 @@ DATABASES = {
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
 		}
     }
-CELERY_BROKER_URL = 'amqp://10.12.73.161:5672/'
+CELERY_BROKER_URL = 'amqp://localhost:5672/'
 CELERY_BROKER_USER = "ageofcreations"
 CELERY_BROKER_PASSWORD = "soletstry"
 CELERY_BROKER_VHOST = "/"
