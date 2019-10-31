@@ -28,7 +28,8 @@ class CombinatorForm extends React.Component {
           length6: 1,
           length7: 1,
           length8: 1,
-          target8: '1111'
+          target8: '1111',
+          loading: false,
 
         }
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
@@ -208,14 +209,14 @@ class CombinatorForm extends React.Component {
                         )}
 
 
-                        <Button type="primary" htmlType="submit" style={{marginTop: '40px', height: '45px', width: '30%'}}>Скомбинировать {this.state.allLength} фраз </Button>
+                        <Button type="primary" htmlType="submit" style={{marginTop: '40px', height: '45px', width: '30%'}} loading={this.props.combinator_loading}>Скомбинировать {this.state.allLength} фраз </Button>
                         <Button type="default" size="large" onClick={this.copyText} style={{position: 'sticky', marginLeft: '45%', width: '25%'}}>Скопировать результат</Button>
                         <div style={{marginTop: '10px', marginLeft: '80%'}}>
                         <Popover content="Скачать в .TXT">
-                            <Button type="primary" onClick={this.saveTXT} shape="circle" icon="download" size={"default"} />
+                            <Button type="primary" onClick={this.saveTXT} shape="circle" icon="download" size={"default"} loading={this.props.combinator_loading} />
                         </Popover>,
                         <Popover content="Скачать в .CSV"> 
-                            <Button type="default" onClick={this.saveCSV} shape="circle" icon="download" size={"default"} style={{marginLeft: '50%'}} />
+                            <Button type="default" onClick={this.saveCSV} shape="circle" icon="download" size={"default"} style={{marginLeft: '50%'}} loading={this.props.combinator_loading} />
                         </Popover>
                         </div>
                         <TextArea placeholder="Тут будет результат" disabled={false} id="result" value={this.state.allLength < 100000 ? this.props.combinator_result : "Нельзя отобразить более 100000 результатов. Скачайте в файле"} autosize={{minRows: 2, maxRows: 6}} style={{marginTop: '20px'}}></TextArea>

@@ -113,7 +113,6 @@ class CustomLayout extends Component {
                   <Menu.Item key="15"><Link to="/crowler/changes/categories/">Категории</Link></Menu.Item>
                   <Menu.Item key="16"><Link to="/crowler/changes/filter-pages/">ПФС</Link></Menu.Item>
               </SubMenu>
-                <Menu.Item key="13">Метрики</Menu.Item>
               </SubMenu>
               <Menu.Item key="14">
                 <Link to="/feedback/">

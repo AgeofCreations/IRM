@@ -5,8 +5,11 @@ from rest_framework.mixins import  CreateModelMixin
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
-from .serializers import MonthSerializer, WeekSerializer, MetricsCategoriesSerializer, MetricsTokenSerializer
-from .models import Month, Week, MetricsCategories, MetricsToken
+from .serializers import (MonthSerializer, WeekSerializer, MetricsCategoriesSerializer,
+                         MetricsTokenSerializer, ThirdLevelCategoriesDataSerializer, CategoriesDataSerializer)
+from .models import (Month, Week, MetricsCategories, MetricsToken,
+                    ThirdLevelCategories, ThirdLevelCategoriesData,
+                    ThirdLevelWeeks, CategoriesData)
 from . import tasks
 
 
@@ -24,6 +27,7 @@ class MonthView(GenericViewSet, CreateModelMixin): #/metrics/month/<pk>/
         month_q = Month.objects.get(name=month, year=year)
         categories_all = month_q.categoriesdata_set.all()
         categories = []
+        month_plan = 0
         for category in categories_all:
             category_data = {}
             weeks_data = []
@@ -36,30 +40,29 @@ class MonthView(GenericViewSet, CreateModelMixin): #/metrics/month/<pk>/
                         'in_month': week.in_month,
                     })
             category_data.update({
+                'id': category.id,
                 'name': category.category_name,
                 'category_plan': category.category_plan,
                 'category_factual': category.category_factual,
-                'percentage': int(category.category_factual / category.category_plan * 100),
+                'percentage': int(category.category_factual / category.category_plan * 100) if category.category_plan != 0 else 0,
                 'weeks_data': weeks_data,
             })
+            month_plan += category.category_plan
             categories.append(category_data)
         month = []
         data_response = {
             'name': month_q.name,
             'year': month_q.year,
-            'monthly_target': month_q.monthly_target,
+            'monthly_target': month_plan,
             'monthly_factual': month_q.monthly_factual,
-            'site_target': month_q.site_target,
+            'site_target':  int(month_q.site_prev + month_q.site_prev / 100 * month_q.site_multiplication_percentage),
+            'multiplier': month_q.site_multiplication_percentage,
             'site_factual': month_q.site_factual,
-            'categories': categories
+            'categories': categories,
         }
         month.append(data_response)
 
         return Response (data_response)
-
-    def test_task(self, request, *args, **kwargs):
-        tasks.collect_data.delay()
-        return Response('тест начат')
 
     def add_category_data(self, request, *args, **kwargs):
         request_year, request_month = self.request.data['month'].split('-')
@@ -75,8 +78,7 @@ class MonthView(GenericViewSet, CreateModelMixin): #/metrics/month/<pk>/
     def add_month_data(self, request, *args, **kwargs):
         request_year, request_month = self.request.data['month'].split('-')
         month_q = Month.objects.get(name=request_month, year=request_year)
-        month_q.site_target = self.request.data['site_target']
-        month_q.monthly_target = self.request.data['monthly_target']
+        month_q.site_multiplication_percentage = self.request.data['site_target']
         month_q.save()
 
         return Response('Данные обновлены')
@@ -86,13 +88,13 @@ class CategoriesList(CreateModelMixin, GenericViewSet):
     serializer_class = MetricsCategoriesSerializer
     parser_classes = [JSONParser]
 
-    def categories_list(self, request,*args, **kwargs): #/crowler/notify/categories/
+    def categories_list(self, request,*args, **kwargs): #/metrics/categories/list/
         output_list = []
         for item in MetricsCategories.objects.all():
             output_list.append(str(item.category_url))
         return Response(output_list)
     
-    def update(self, requset, *args, **kwargs): #/crowler/notify/categories/update/
+    def update(self, requset, *args, **kwargs): #/metrics/categories/list/update/
         flag = False
         user_id = self.request.user.id
         user_groups = self.request.user.groups.all()
@@ -119,6 +121,35 @@ class CategoriesList(CreateModelMixin, GenericViewSet):
         if flag == False:
             return Response('Вы не обладаете достаточными правами для совершения операции',status=403)
 
+    def third_level_update(self, requset, *args, **kwargs): #/metrics/categories/third_level/update/
+        flag = False
+        user_id = self.request.user.id
+        user_groups = self.request.user.groups.all()
+        action = self.request.data['action']
+        head_category = MetricsCategories.objects.get(category_url=self.request.data['head_category'])
+
+        for group in user_groups:
+            if str(group) == 'admin':
+                if action == 'add':
+                    if not ThirdLevelCategories.objects.filter(child_category__iexact=self.request.data['category']).exists():
+                        category_to_add = ThirdLevelCategories(head_category=head_category, child_category=self.request.data['category'])
+                        category_to_add.save()
+                        flag = True
+                        return Response('Категория успешно добавлена.')
+                    else: return Response('Категория уже есть в списке.', status=405)
+
+                elif action == 'remove':
+                    if ThirdLevelCategories.objects.filter(child_category__iexact=self.request.data['category']).exists():
+                        category_to_remove = ThirdLevelCategories.objects.get(child_category=self.request.data['category'])
+                        category_to_remove.delete()
+                        flag = True
+                        return Response('Категория успешно удалена.')
+                    else: return Response('Категория не существует.', status=405)
+
+
+        if flag == False:
+            return Response('Вы не обладаете достаточными правами для совершения операции',status=403)
+
 class MetricsTokenView(CreateModelMixin, GenericViewSet): #/metrics/week/<pk>/
     queryset = MetricsToken
     serializer_class = MetricsTokenSerializer
@@ -131,8 +162,27 @@ class MetricsTokenView(CreateModelMixin, GenericViewSet): #/metrics/week/<pk>/
         return Response(token.token)
 
     def update(self, request, *args, **kwargs):
-        # user = self.request.user
         metricstoken = MetricsToken(token=self.request.data['token'], related_user=self.request.user)
         metricstoken.save()        
 
         return Response('Токен добавлен.')
+
+class RunTasks(CreateModelMixin, GenericViewSet):
+    queryset = Month
+    serializer_class = MonthSerializer
+    parser_classes = [JSONParser]
+
+    def collect_data(self, request, *args, **kwargs):
+        tasks.collect_data.delay()
+        return Response('Сбор данных по текущему месяцу начат')
+    
+    def create_dates(self, request, *args, **kwargs):
+        tasks.create_dates.delay(force=self.request.data['force'])
+        return Response('Проверка и создание дат начаты.')
+
+
+
+class CategoryDataRetrieveView(RetrieveAPIView):
+    queryset = CategoriesData.objects.all()
+    serializer_class = CategoriesDataSerializer
+    parser_classes = [JSONParser]

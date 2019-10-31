@@ -28,18 +28,18 @@ TIME_ZONE = 'Asia/Yekaterinburg'
 CELERY_BEAT_SCHEDULE = {
     'parse-categories': { 
         'task': 'crowler.tasks.category_parsing_task', 
-        'schedule': crontab(minute=30, hour=0),
+        'schedule': crontab(minute=00, hour=19),
     },   
     'parse-filterpages': { 
          'task': 'crowler.tasks.filterpage_parsing_task', 
-         'schedule': crontab(minute=50, hour=0),
+         'schedule': crontab(minute=30, hour=19),
         },  
     'create-metrics-dates': { 
          'task': 'metrics.tasks.create_dates', 
-         'schedule': crontab(minute=30, hour=2),
+         'schedule': crontab(minute=30, hour=21),
         },          
     'collect-metrics-dates': { 
          'task': 'metrics.tasks.collect_data', 
-         'schedule': crontab(minute=40, hour=2),
+         'schedule': crontab(minute=40, hour=21),
         },  
 }

@@ -1,12 +1,14 @@
 
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, Button, Form, DatePicker, Statistic, Col, Row, Modal } from 'antd';
+import { Table, Input, Button, Form, DatePicker, Statistic, Col, Row, Modal, InputNumber } from 'antd';
 import axios from 'axios'
 import backendURL from '../../consts'
+import { Link } from 'react-router-dom'
 
 const EditableContext = React.createContext();
 const {MonthPicker} = DatePicker;
+const token = localStorage.getItem('token');
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -14,6 +16,9 @@ const EditableRow = ({ form, index, ...props }) => (
   </EditableContext.Provider>
 );
 
+const pagination = {
+  pageSize: 100,
+  defaultCurrent: 1}
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
@@ -91,6 +96,7 @@ class EditableCell extends React.Component {
   }
 }
 
+
 class MetricsTest extends React.Component {
   constructor(props) {
     super(props);
@@ -99,6 +105,7 @@ class MetricsTest extends React.Component {
         title: 'Название категории',
         dataIndex: 'name',
         'key': 'name',
+        render: (text, record) => <Link to={`/metrics/third_level_categories/${record.id}`}>{text}</Link>,
       },
       {
         title: 'План по траффику',
@@ -204,7 +211,7 @@ class MetricsTest extends React.Component {
       .then(res => {
       const pagination = { ...this.state.pagination };
       pagination.total = res.data.count;
-      pagination.pageSize = 25
+      pagination.pageSize = 100
       pagination.position = 'both'
       this.setState({
         loading: false,
@@ -213,6 +220,7 @@ class MetricsTest extends React.Component {
         site_target: res.data.site_target,
         monthly_factual: res.data.monthly_factual,
         site_factual: res.data.site_factual,
+        multiplier: res.data.multiplier,
         first_week: res.data.categories[0].weeks_data[0].first_day + '-' + res.data.categories[0].weeks_data[0].last_day,
         second_week: res.data.categories[0].weeks_data[1].first_day + '-' + res.data.categories[0].weeks_data[1].last_day,
         third_week: res.data.categories[0].weeks_data[2].first_day + '-' + res.data.categories[0].weeks_data[2].last_day,
@@ -224,7 +232,7 @@ class MetricsTest extends React.Component {
     axios.post(`${backendURL}/metrics/add/category/`, {
         ...params
     })
-    this.fetchcats()
+    setTimeout(this.fetchcats, 500)
   }
 
   onChangeMonth = (date, dateString) => {
@@ -240,9 +248,8 @@ class MetricsTest extends React.Component {
         axios.post(`${backendURL}/metrics/add/monthly/`, {
           month: this.state.month,
           site_target: values.site_target,
-          monthly_target: values.monthly_target
         })  
-        this.fetchcats()
+        setTimeout(this.fetchcats, 500)
       }
     });
   };
@@ -262,10 +269,6 @@ class MetricsTest extends React.Component {
       ...row,
     });
   };
-  newTarget = {
-
-  }
-
   render() {
     const components = {
       body: {
@@ -290,60 +293,60 @@ class MetricsTest extends React.Component {
     });
     const { getFieldDecorator } = this.props.form;
     return (
-      <div>
+            <div>
+                        {
+            token ?
+            <div>
+        <Button type="default" size="small" style={{'position': 'absolute', 'right': '20%'}}><Link to="/metrics/third_level_categories/">Категории 3-го уровня</Link></Button>
         <MonthPicker onChange={this.onChangeMonth} placeholder="Выберите месяц" />
         <Button type="primary" style={{'marginLeft': '20px', 'marginBottom': '20px'}} onClick={this.fetchcats}>OK</Button>
         <Button icon="question-circle" style={{'position': 'absolute', 'right': '10%'}} onClick={this.info}></Button>
 
         <Row gutter={16}>
-            <Col span={5}>
+            <Col span={3}>
                 <Statistic title="Цель траффика на сайте" value={this.state.site_target} />
                 <Statistic title="Траффик на сайте" value={this.state.site_factual} />
                 <Statistic title="Процент выполнения" value={Math.round(this.state.site_factual / this.state.site_target * 100)+ '%'} />
             </Col>
-            <Col span={5}>
+            <Col span={7}>
             
             <Form onSubmit={this.handleNewTarget} className="login-form">
                     <Form.Item style={{marginTop: '20px'}}>
+                    <span className="ant-form-text">к предыдущему периоду: {this.state.multiplier}</span>
                     {getFieldDecorator('site_target', {
                         rules: [{ required: true, message: 'Введите цель для сайта' }],
                     })(
-                        <Input
+                        
+                        <InputNumber
+                        formatter={value => `${value}%`}
                         placeholder="Новая цель"
                         value={this.state.site_target}
                         />,
+                        <span className="ant-form-text">к предыдущему периоду</span>
+                        
                     )}
                     </Form.Item>
                     </Form>
             </Col>
-            <Col span={5}>
+            <Col span={9}>
                 <Statistic title="Цель по отслеживаемым категориям" value={this.state.monthly_target} />
                 <Statistic title="Траффик по отслеживаемым категориям" value={this.state.monthly_factual} />
                 <Statistic title="Процент выполнения" value={Math.round(this.state.monthly_factual / this.state.monthly_target * 100)+ '%'} />
-            </Col>
-            <Col span={4}>
-                <Form onSubmit={this.handleNewTarget} className="login-form">
-                    <Form.Item style={{marginTop: '20px'}}>
-                    {getFieldDecorator('monthly_target', {
-                        rules: [{ required: true, message: 'Введите цель для категорий' }],
-                    })(
-                        <Input
-                        placeholder="Новая цель"
-                        value={this.state.monthly_target}
-                        />,
-                    )}
-                    </Form.Item>
-                </Form>
             </Col>
         </Row>
         <Table
           components={components}
           rowClassName={() => 'editable-row'}
           bordered
+          pagination={pagination}
           dataSource={this.state.data}
           columns={columns}
         />
-      </div>
+              </div>
+                :
+                <div>Только для авторизованных пользователей</div>
+                }
+                </div>
     );
   }
 }

@@ -1,5 +1,7 @@
 from django.contrib import admin
-from metrics.models import (Month, MetricsToken, MetricsCategories, Week, CategoriesData)
+from metrics.models import (Month, MetricsToken, MetricsCategories,
+                             Week, CategoriesData, ThirdLevelCategories,
+                             ThirdLevelCategoriesData, ThirdLevelWeeks)
 # Register your models here.
 
 @admin.register(Month)
@@ -13,7 +15,7 @@ class MetricsTokenAdmin(admin.ModelAdmin):
 
 @admin.register(Week)
 class WeekAdmin(admin.ModelAdmin):
-    list_display = ('first_day',)
+    list_display = ('__str__',)
 
 @admin.register(MetricsCategories)
 class MetricsCategoriesAdmin(admin.ModelAdmin):
@@ -21,6 +23,18 @@ class MetricsCategoriesAdmin(admin.ModelAdmin):
 
 @admin.register(CategoriesData)
 class CategoriesDataAdmin(admin.ModelAdmin):
+    list_display = ('__str__', )
+
+@admin.register(ThirdLevelCategories)
+class ThirdLevelCategoriesAdmin(admin.ModelAdmin):
+    list_display = ('__str__', )
+
+@admin.register(ThirdLevelCategoriesData)
+class ThirdLevelCategoriesDataAdmin(admin.ModelAdmin):
+    list_display = ('__str__', )
+
+@admin.register(ThirdLevelWeeks)
+class ThirdLevelWeeksAdmin(admin.ModelAdmin):
     list_display = ('__str__', )
 
 # @admin.register(MetricsOldData)

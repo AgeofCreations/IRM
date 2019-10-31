@@ -5,7 +5,7 @@
     user-select: none;	
   }	
   
-.selectabe {	
+.selectable {	
     -moz-user-select: all;	
     -khtml-user-select: all;	
     -webkit-user-select: all;	

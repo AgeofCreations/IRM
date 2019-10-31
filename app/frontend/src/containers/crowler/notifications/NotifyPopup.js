@@ -157,6 +157,16 @@ handleReset = clearFilters => {
             .replace('filterpage_name','Название |')
             .replace('filterpage_canonical_url','Canonical URL |')
             .replace('filterpage_is_top','Под листингом |')
+            .replace('category_lvl','Уровень |')
+            .replace('category_is_active', 'Статус |')
+            .replace('category_url' ,'URL |')
+            .replace('category_title','Title |')
+            .replace('category_description','Description |')
+            .replace('category_full_name','FN  |')
+            .replace('category_seo_text','SEO текст |')
+            .replace('category_name','Название |')
+            .replace('category_canonical_url','Canonical URL |')
+            .replace('category_path','Путь к категории |')
           }</span>,
           filters: [
             { text: 'ПФС | Статус', value: 'is_active' },
@@ -170,6 +180,16 @@ handleReset = clearFilters => {
             { text: 'ПФС | Название', value: 'filterpage_name' },
             { text: 'ПФС | Canonical URL', value: 'filterpage_canonical_url' },
             { text: 'ПФС | Под листингом', value: 'filterpage_is_top' },
+            { text: 'Категория | Статус', value: 'is_active' },
+            { text: 'Категория | Уровень', value: 'category_lvl' },
+            { text: 'Категория | URL', value: 'category_url' },
+            { text: 'Категория | Title', value: 'category_title' },
+            { text: 'Категория | Description', value: 'category_description' },
+            { text: 'Категория | FN', value: 'category_full_name' },
+            { text: 'Категория | SEO текст', value: 'category_seo_text' },
+            { text: 'Категория | Название', value: 'category_name' },
+            { text: 'Категория | Canonical URL', value: 'category_canonical_url' },
+            { text: 'Категория | Путь к категории', value: 'category_path' },
   
           ],
           filterMultiple: false

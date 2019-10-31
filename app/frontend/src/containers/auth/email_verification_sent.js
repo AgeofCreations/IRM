@@ -5,15 +5,13 @@ import { Steps, Icon } from 'antd';
 
 const { Step } = Steps;
 class VerificationSent extends React.Component {
+
+
     render() {
         return (
             <div>
-            {
-                this.props.success === false ?
-                this.props.history.push('/')
-                :
+            {this.props.logout}
 
-            
             <Steps style={{width: '70%', marginLeft: '10%'}}>
                 <Step status="finish" title="Регистрация" description="
                 Вы успешно предоставили данные и прошли регистрацию." icon={<Icon type="user" />} />
@@ -22,8 +20,8 @@ class VerificationSent extends React.Component {
                 <Step status="wait" title="Успех!" description="
                 После активации, вы станете полноправным пользователем и сможете осуществить вход." icon={<Icon type="smile" />} />
             </Steps>
-            }
-        </div>
+            </div>
+            
         )
     }
 }
@@ -37,7 +35,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (username, password) => dispatch(actions.authLogin(username, password)) 
+        onAuth: (username, password) => dispatch(actions.authLogin(username, password)), 
+        logout: () => dispatch(actions.authLogout()),
     }
 }
 

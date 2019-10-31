@@ -1,3 +1,3 @@
-const backendURL = 'http://10.50.20.193:8000'
+const backendURL = 'http://10.30.37.65:3000'
 
 export default backendURL;

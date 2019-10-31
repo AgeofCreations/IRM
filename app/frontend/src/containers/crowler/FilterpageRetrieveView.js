@@ -49,25 +49,25 @@ class FilterpageRetrieveView extends React.Component {
                         <Breadcrumb.Item>{this.state.data.filterpage_id}</Breadcrumb.Item>
                     </Breadcrumb>
                 <Descriptions title={this.state.data.filterpage_name} bordered layout='vertical'>
-                    <Descriptions.Item label="ID">{this.state.data.filterpage_id}</Descriptions.Item>
-                    <Descriptions.Item label="ПФС активна">{this.state.data.filterpage_is_active === 1 ? 'Да' : 'Нет'}</Descriptions.Item>
-                    <Descriptions.Item label="Причина отключения">{this.state.data.filterpage_disabling_reason}</Descriptions.Item>
-                    <Descriptions.Item label="Выводится под листингом">
+                    <Descriptions.Item className="selectable" label="ID">{this.state.data.filterpage_id}</Descriptions.Item>
+                    <Descriptions.Item className="selectable" label="ПФС активна">{this.state.data.filterpage_is_active === 1 ? 'Да' : 'Нет'}</Descriptions.Item>
+                    <Descriptions.Item className="selectable" label="Причина отключения">{this.state.data.filterpage_disabling_reason}</Descriptions.Item>
+                    <Descriptions.Item className="selectable" label="Выводится под листингом">
                     {this.state.data.filterpage_is_top === true ? 'Да' : 'Нет'}</Descriptions.Item>
-                    <Descriptions.Item label="URL" span={2}>
+                    <Descriptions.Item className="selectable" label="URL" span={2}>
                         {<a href={`https://sima-land.ru/${this.state.data.filterpage_url}/` } rel="noopener noreferrer" target='_blank'>
                         {this.state.data.filterpage_url}
                         </a>}
                     </Descriptions.Item>
-                    <Descriptions.Item label="Full_name" span={1}>
+                    <Descriptions.Item className="selectable" label="Full_name" span={1}>
                         {this.state.data.filterpage_full_name}
                     </Descriptions.Item>
-                    <Descriptions.Item label="Title">{this.state.data.filterpage_title}</Descriptions.Item>
-                    <Descriptions.Item label="Description" span={1}>{this.state.data.filterpage_description}</Descriptions.Item>
-                    <Descriptions.Item label="SEO текст" span={3}>{this.state.data.filterpage_text}</Descriptions.Item>
-                    <Descriptions.Item label="Дата обновления" span ={1}>{this.state.data.filterpage_data_updated}</Descriptions.Item>
-                    <Descriptions.Item label="Canonical URL" span ={1}>{this.state.data.filterpage_canonical_url}</Descriptions.Item>
-                    <Descriptions.Item label="Впервые появилась" span ={1}>
+                    <Descriptions.Item className="selectable" label="Title">{this.state.data.filterpage_title}</Descriptions.Item>
+                    <Descriptions.Item className="selectable" label="Description" span={1}>{this.state.data.filterpage_description}</Descriptions.Item>
+                    <Descriptions.Item className="selectable" label="SEO текст" span={3}>{this.state.data.filterpage_text}</Descriptions.Item>
+                    <Descriptions.Item className="selectable" label="Дата обновления" span ={1}>{this.state.data.filterpage_data_updated}</Descriptions.Item>
+                    <Descriptions.Item className="selectable" label="Canonical URL" span ={1}>{this.state.data.filterpage_canonical_url}</Descriptions.Item>
+                    <Descriptions.Item className="selectable" label="Впервые появилась" span ={1}>
                         {this.state.data.filterpage_created_at}
                     </Descriptions.Item>
                     </Descriptions>

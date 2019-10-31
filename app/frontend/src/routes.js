@@ -21,6 +21,8 @@ import NotificationSubsciptions from './containers/crowler/notifications/Subscri
 import WrappedNormalManagement from './containers/auth/management'
 import Feedback from './containers/feedback'
 import MetricsMain from './containers/metrics/metrics_main'
+import MetricsThirdLeveCategoriesForm from './containers/metrics/metrics_cats'
+import MetricsRetrieve from './containers/metrics/metrics_retrieve'
 
 
 
@@ -47,6 +49,8 @@ const BaseRouter = () => (
         <Route exact path='/management/' component = {WrappedNormalManagement} /> {""}
         <Route exact path='/feedback/' component = {Feedback} /> {""}
         <Route exact path='/metrics/' component = {MetricsMain} /> {""}
+        <Route exact path='/metrics/third_level_categories/' component = {MetricsThirdLeveCategoriesForm} /> {""}
+        <Route exact path='/metrics/third_level_categories/:categoryDataID' component= {MetricsRetrieve} /> {""}
 
 
 
